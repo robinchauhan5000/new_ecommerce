@@ -33,6 +33,9 @@ dependencies:
   multi_image_picker: ^4.7.14
   images_picker:
   flutter_absolute_path: ^1.0.6
+  pin_code_fields: ^6.0.0
+  google_fonts:
+
   flutter:
     sdk: flutter
 

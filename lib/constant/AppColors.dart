@@ -47,3 +47,9 @@ const translogincolor = Color(0xAA0E5B55);
 const textPrimaryColor = Color(0xFF2E3033);
 const textSecondaryColor = Color(0xFF757575);
 const goldcolor = Color(0xffFFCB5E);
+const appmaincolor = Color(0xffF4FAFF);
+const appmainthemecolor = Color(0xff0D72A0);
+const appredcolor = Color(0xffE33B3B);
+
+
+
