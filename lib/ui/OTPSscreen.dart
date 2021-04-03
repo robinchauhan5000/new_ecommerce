@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -173,35 +174,49 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 ),
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: SizeConfig.blockSizeHorizontal*31,
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4.5
-                          ,right: SizeConfig.blockSizeHorizontal*8),
-                      padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.25,
-                      ),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                      ),
-                          color: appredcolor,
-                          boxShadow: [BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 2.75,
-                          ),]
-                      ),
-                      child:Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
-                          Text("Submit",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                          SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
-                          Icon(Icons.arrow_forward_ios,color: Colors.white,size:
-                          SizeConfig.blockSizeVertical*2.75,)
+                InkWell(
+                  onTap: ()
+                  {
+                    if (currentpin.length < 6) {
+                      errorController.add(ErrorAnimationType
+                          .shake); // Triggering error shake animation
+                      setState(() {
+                        hasError = true;
+                      });
+                    } else {
+                      Fluttertoast.showToast(msg: "Success!");
+                    }
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                        alignment: Alignment.center,
+                        width: SizeConfig.blockSizeHorizontal*31,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4.5
+                            ,right: SizeConfig.blockSizeHorizontal*8),
+                        padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.25,
+                        ),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
+                        ),
+                            color: appredcolor,
+                            boxShadow: [BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 2.75,
+                            ),]
+                        ),
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
+                            Text("Submit",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
+                            Icon(Icons.arrow_forward_ios,color: Colors.white,size:
+                            SizeConfig.blockSizeVertical*2.75,)
 
 
-                        ],
-                      )),
+                          ],
+                        )),
+                  ),
                 ),
 
             ],),)
