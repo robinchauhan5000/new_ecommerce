@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,10 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+
+import 'package:flutter_ecommerce/data/repo/SignUpUser.dart';
+import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 
 
 class RegisterScreen extends StatefulWidget
@@ -41,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var passFocus = FocusNode();
   var cpassFocus = FocusNode();
   var zipFocus = FocusNode();
+  var registerrepo = new SignUpUserRepo();
 
   var applogo = "";
   bool hasError = false,
@@ -49,6 +53,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       isinterest = false,
       isloading = false;
   StreamController<ErrorAnimationType> errorController;
+  var signUpUserRepo = SignUpUserRepo();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -64,7 +70,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     SizeConfig().init(context);
-    return SafeArea(
+    List<Widget> widgetList = new List<Widget>();
+    var child =  SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
@@ -443,7 +450,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               if (formKey.currentState.validate())
                               {
                                 formKey.currentState.save();
-                                Fluttertoast.showToast(msg: "Success!");
+                                setState(() {
+                                  isloading = true;
+                                });
+                                registerrepo.signUpUser(context, emailCont.text.trim().toString(),
+                                    username.text.trim().toString(),
+                                    password.text.trim().toString(),
+                                    countrycode.toString()+mobile.text.trim().toString(),
+                                    zipcode.text.trim().toString(),
+                                    "India", "manual").then((value) {
+                                    setState(() {
+                                      isloading = false;
+                                    });
+                                    if(value.status==1)
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => OTPScreen(countrycode.toString()+mobile.text.trim().toString())),
+                                        );
+                                      }
+                                    else
+                                      {
+                                        showAlertDialog(context,value.message,"");
+                                      }
+                                }).catchError((onError){
+                                  setState(() {
+                                    isloading = false;
+                                  });
+                                });
                               } else {
                                 autoValidate = true;
                               }
@@ -511,6 +545,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),),),),
     );
+
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Colors.pink),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(
+          children: widgetList
+      );
+      
   }
 
   void _onCountryChange(CountryCode countryCodeq)

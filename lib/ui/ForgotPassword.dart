@@ -8,6 +8,7 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:flutter_ecommerce/data/repo/ResendOtp.dart';
 
 
 class ForgotPassword extends StatefulWidget
@@ -34,6 +35,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       isinterest = false,
       isloading = false;
   StreamController<ErrorAnimationType> errorController;
+  var forgotPasswordRepo = ForgotPasswordRepo();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -264,8 +267,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
-                                Text("Submit",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
+                                InkWell(
+                                  onTap: (){
+                                    //todo : implement forgot pwd api
+                                  },
+                                  child: Text("Submit",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                                  SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
+                                ),
                                 Icon(Icons.arrow_forward_ios,color: Colors.white,size: SizeConfig.blockSizeVertical*2.75,)
 
 

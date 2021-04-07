@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_ecommerce/data/api/ApiHitter.dart';
 
 class BaseRepository {

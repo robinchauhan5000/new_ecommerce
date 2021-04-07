@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:async/async.dart';
-
 import 'ApiEndPoint.dart';
 
 
@@ -20,6 +19,7 @@ class ApiHitter {
           baseUrl: ApiEndpoint.BaseUrl,
           connectTimeout: 300000,
           receiveTimeout: 300000);
+
       return new Dio(options)
         ..interceptors
             .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
