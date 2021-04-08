@@ -50,7 +50,7 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
           child: Container(
             height: 60,
             padding: EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 4.0),
-            color: logincolor,
+            color: appmainthemecolor,
             child: Center(
                 child: Image.asset("assets/popup_info.png",
                     height: 30, width: 30)),
@@ -85,7 +85,7 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                 alignment: Alignment.bottomCenter,
                 margin: EdgeInsets.only(top: 10),
                 child: Material(
-                  color: logincolor,
+                  color: appmainthemecolor,
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(

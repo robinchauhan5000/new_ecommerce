@@ -10,6 +10,7 @@ import 'package:flutter_ecommerce/ui/ResetPassword.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_ecommerce/data/repo/LogInUser.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
 class LoginScreen extends StatefulWidget
 {
@@ -25,10 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
   bool autoValidate = false;
   var passCont = TextEditingController();
   bool isRegisterd = false;
+  var isloading = false;
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
   var applogo = "";
   var loginRepo = LoginUserRepo();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,7 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     SizeConfig().init(context);
-    return SafeArea(
+    List<Widget> widgetList = new List<Widget>();
+    var child = SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
@@ -109,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OTPScreen()),
+                            MaterialPageRoute(builder: (context) => OTPScreen("")),
                           );
                         },
                         child: Container(
@@ -220,7 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             MaterialPageRoute(builder: (context) => ForgotPassword()),
                           );
-
                       },
                       child: Container(
                           alignment: Alignment.centerLeft,
@@ -234,18 +237,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: ()
                       {
 
-                        FocusScope.of(context).unfocus();
-                        if (formKey.currentState.validate())
-                        {
-                          formKey.currentState.save();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditProfile()),
-                          );
-                        } else {
-                          autoValidate = true;
-                        }
-                        setState(() {});
 
                       },
                       child: Align(
@@ -271,7 +262,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
                                 InkWell(
                                   onTap: (){
-                                    //todo: implement login api
+                                    FocusScope.of(context).unfocus();
+                                    if (formKey.currentState.validate())
+                                    {
+                                      formKey.currentState.save();
+                                      setState(() {
+                                        isloading =true;
+                                      });
+                                      loginRepo.loginUser(emailCont.text.trim().toString(), passCont.text.trim().toString(), context).then((value) {
+                                        setState(() {
+                                          isloading = false;
+                                        });
+                                        if(value.status==1)
+                                        {
+                                          showAlertDialog(context,value.message,"");
+                                        }
+                                        else
+                                        {
+                                          showAlertDialog(context,value.message,"");
+                                        }
+                                      }).catchError((onError){
+                                        setState(() {
+                                          isloading = false;
+                                        });
+                                      });
+
+                                    } else {
+                                      autoValidate = true;
+                                    }
+                                    setState(() {});
                                   },
                                   child: Text("Login",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
                                   SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
@@ -306,7 +325,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
                         ],),),
+
 /*
+>>>>>>> 85114e0be3afde7606b3096914345e56e5937029
                     InkWell(
                       onTap: ()
                       {
@@ -328,6 +349,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
                           SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
                     )
+<<<<<<< HEAD
+=======
 */
                   ],
                 ),
@@ -339,5 +362,31 @@ class _LoginScreenState extends State<LoginScreen> {
           ),),),),
       ),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Colors.pink),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(
+          children: widgetList
+      );
   }
 }

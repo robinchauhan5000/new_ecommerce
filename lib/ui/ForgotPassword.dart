@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:flutter_ecommerce/data/repo/ForgotPassword.dart';
+import 'package:flutter_ecommerce/data/repo/ResendOtp.dart';
 
 
 class ForgotPassword extends StatefulWidget
@@ -35,6 +36,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       isloading = false;
   StreamController<ErrorAnimationType> errorController;
   var forgotPasswordRepo = ForgotPasswordRepo();
+
   @override
   void initState() {
     // TODO: implement initState

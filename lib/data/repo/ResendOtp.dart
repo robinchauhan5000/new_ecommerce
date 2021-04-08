@@ -8,13 +8,13 @@ import '../api/ApiHitter.dart';
 class ForgotPasswordRepo extends BaseRepository{
 
   Future<ForgotPasswordEntity> forgotPassword(
-      String email, BuildContext context
+      String mobile, BuildContext context
       ) async {
-    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.forgetpwd,
+    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.resendOtp,
     headers: {'content-type' : 'application/json'},
         context: context,
     data: {
-      "email" : email
+      "user_registration_mobile_number" : mobile
     });
     try {
       if (apiResponse.status) {

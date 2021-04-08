@@ -17,12 +17,19 @@ import 'package:flutter_ecommerce/utils/SharedPref.dart';
 
 
 /// This variable is used to get dynamic colors when theme mode is changed
-
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 var getData;
 bool ios13 = false;
 void main() async {
 //region Entry Point
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 //endregion
 }

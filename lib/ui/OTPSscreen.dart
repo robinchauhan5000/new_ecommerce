@@ -8,10 +8,13 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'package:flutter_ecommerce/data/repo/VerifyOtp.dart';
 
 class OTPScreen extends StatefulWidget
 {
+  String mobilenumber;
+  OTPScreen(this.mobilenumber);
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -27,12 +30,14 @@ class _OTPScreenState extends State<OTPScreen> {
   bool isRegisterd = false;
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
+  var otprepo = VerifyOtpRepo();
   var applogo = "";
   bool hasError = false,
       iscode = false,
       isdetail = false,
       isinterest = false,
       isloading = false;
+
   StreamController<ErrorAnimationType> errorController;
   @override
   void initState() {
@@ -49,7 +54,8 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     SizeConfig().init(context);
-    return SafeArea(
+    List<Widget> widgetList = new List<Widget>();
+    var child =   SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
@@ -184,7 +190,26 @@ class _OTPScreenState extends State<OTPScreen> {
                         hasError = true;
                       });
                     } else {
-                      Fluttertoast.showToast(msg: "Success!");
+                     setState(() {
+                       isloading = true;
+                     });
+                     otprepo.loginUser( widget.mobilenumber, currentpin, context).then((value) {
+                       setState(() {
+                         isloading = false;
+                       });
+                       if(value.status==1)
+                         {
+                           showAlertDialog(context,value.message,"");
+                         }
+                       else
+                         {
+                           showAlertDialog(context,value.message,"");
+                         }
+                     }).catchError((onError){
+                       setState(() {
+                         isloading = false;
+                       });
+                     });
                     }
                   },
                   child: Align(
@@ -227,5 +252,32 @@ class _OTPScreenState extends State<OTPScreen> {
           ),),),),
       ),
     );
+
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  Colors.pink),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(
+          children: widgetList
+      );
   }
 }

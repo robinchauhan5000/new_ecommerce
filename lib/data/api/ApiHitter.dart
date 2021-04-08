@@ -19,6 +19,7 @@ class ApiHitter {
           baseUrl: ApiEndpoint.BaseUrl,
           connectTimeout: 300000,
           receiveTimeout: 300000);
+
       return new Dio(options)
         ..interceptors
             .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
