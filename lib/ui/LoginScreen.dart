@@ -2,14 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
+import 'package:flutter_ecommerce/ui/EditProfile.dart';
+import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 import 'package:flutter_ecommerce/ui/RegisterScreen.dart';
 import 'package:flutter_ecommerce/ui/ResetPassword.dart';
+import 'package:flutter_ecommerce/utils/Dialogs.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_ecommerce/data/repo/LogInUser.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'dart:io';
+import 'package:flutter_ecommerce/utils/SocialLoginMethods.dart';
+import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
+import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
 
 class LoginScreen extends StatefulWidget
 {
@@ -30,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   var passFocus = FocusNode();
   var applogo = "";
   var loginRepo = LoginUserRepo();
+  var fbrepo = FbUserRepo();
+  var googlerepo = GoogleUserRepo();
 
   @override
   void initState() {
@@ -90,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6),
                     width:SizeConfig.blockSizeHorizontal*70,
                     height: SizeConfig.blockSizeVertical*7,
-                    child: Image.asset("assets/applogo.png"),),
+                    child: Image.asset('assets/editprofile.png'),),
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
@@ -110,10 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: ()
                         {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => OTPScreen("")),
-                          );
+                        fbLogin(context: context);
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -131,10 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: ()
                         {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ResetPassword()),
-                          );
+                         googleLogin(context: context);
                         },
                         child: Container(
                             alignment: Alignment.center,
@@ -387,5 +390,88 @@ class _LoginScreenState extends State<LoginScreen> {
       Stack(
           children: widgetList
       );
+  }
+  Future fbLogin({BuildContext context}) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        SocialLogin().fbLogin(context: context).then((value) async {
+          // Dialogs.showLoadingDialog(context, loginloader);
+          if (value != null &&
+              value != "") {
+              setState(() {
+                isloading = true;
+              });
+              fbrepo.loginUser(value.profile['email'], value.profile['picture']['data']['url'], context).then((value) {
+                setState(() {
+                  isloading = false;
+                });
+                if(value.status==1)
+                  {
+                    showAlertDialog(context,value.message,"");
+                  }
+                else
+                  {
+                    showAlertDialog(context,value.message,"");
+                  }
+              }).catchError((error){
+                setState(() {
+                  isloading = false;
+                });
+              });
+
+          } else {
+            //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
+            showAlertDialog(context,"No Data", "Login");
+          }
+        });
+      }
+    } on SocketException catch (_) {
+
+    }
+  }
+
+  Future googleLogin({
+    BuildContext context,
+  }) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        SocialLogin().googleLogin().then((value) async {
+          if (value != null &&
+              value != "" &&
+              value.googleProfile.email != null &&
+              value.googleProfile.email != "") {
+            //  SharedPreferenceData().saveGoogleDetails(data: value.googleProfile);
+            setState(() {
+              isloading = true;
+            });
+            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((value) {
+              setState(() {
+                isloading = false;
+              });
+              if(value.status==1)
+              {
+                showAlertDialog(context,value.message,"");
+              }
+              else
+              {
+                showAlertDialog(context,value.message,"");
+              }
+            }).catchError((error){
+              setState(() {
+                isloading = false;
+              });
+            });
+
+          } else {
+            Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
+            showAlertDialog(context, "No Data", "Login");
+          }
+        });
+      }
+    } on SocketException catch (_) {
+
+    }
   }
 }

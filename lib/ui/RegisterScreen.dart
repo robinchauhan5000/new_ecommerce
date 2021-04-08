@@ -12,7 +12,10 @@ import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
 import 'package:flutter_ecommerce/data/repo/SignUpUser.dart';
 import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
-
+import 'package:flutter_ecommerce/utils/SocialLoginMethods.dart';
+import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
+import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
+import 'dart:io';
 
 class RegisterScreen extends StatefulWidget
 {
@@ -54,7 +57,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       isloading = false;
   StreamController<ErrorAnimationType> errorController;
   var signUpUserRepo = SignUpUserRepo();
-
+  var fbrepo = FbUserRepo();
+  var googlerepo = GoogleUserRepo();
   @override
   void initState() {
     // TODO: implement initState
@@ -581,5 +585,90 @@ class _RegisterScreenState extends State<RegisterScreen> {
       country = countryCodeq;
       countrycode = country.dialCode;
     });
+  }
+  Future fbLogin({BuildContext context}) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        SocialLogin().fbLogin(context: context).then((value) async {
+          // Dialogs.showLoadingDialog(context, loginloader);
+          if (value != null &&
+              value != "" &&
+              value.profile['email'] != null &&
+              value.profile['email'] != "") {
+            setState(() {
+              isloading = true;
+            });
+            fbrepo.loginUser(value.profile['email'], value.profile['image'], context).then((value) {
+              setState(() {
+                isloading = false;
+              });
+              if(value.status==1)
+              {
+                showAlertDialog(context,value.message,"");
+              }
+              else
+              {
+                showAlertDialog(context,value.message,"");
+              }
+            }).catchError((error){
+              setState(() {
+                isloading = false;
+              });
+            });
+
+          } else {
+            //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
+            showAlertDialog(context,"No Data", "Login");
+          }
+        });
+      }
+    } on SocketException catch (_) {
+
+    }
+  }
+
+  Future googleLogin({
+    BuildContext context,
+  }) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        SocialLogin().googleLogin().then((value) async {
+          if (value != null &&
+              value != "" &&
+              value.googleProfile.email != null &&
+              value.googleProfile.email != "") {
+            //  SharedPreferenceData().saveGoogleDetails(data: value.googleProfile);
+            setState(() {
+              isloading = true;
+            });
+            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((value) {
+              setState(() {
+                isloading = false;
+              });
+              if(value.status==1)
+              {
+                showAlertDialog(context,value.message,"");
+              }
+              else
+              {
+                showAlertDialog(context,value.message,"");
+              }
+            }).catchError((error){
+              setState(() {
+                isloading = false;
+              });
+            });
+
+          } else {
+            Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
+            showAlertDialog(context, "No Data", "Login");
+          }
+        });
+      }
+    } on SocketException catch (_) {
+
+    }
   }
 }

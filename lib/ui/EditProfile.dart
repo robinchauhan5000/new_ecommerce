@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
@@ -69,12 +67,23 @@ class _EditProfileState extends State<EditProfile> {
                 key: formKey,
                 autovalidate: autoValidate,
                 child: Column(children: [
-                  Container(
-                    alignment: Alignment.centerRight,
-                   margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
-                       right: SizeConfig.blockSizeHorizontal*4),
-                    child: Icon(Icons.notifications_on_outlined,size:
-                  SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
+                            left: SizeConfig.blockSizeHorizontal*4),
+                        child: Icon(Icons.sort,size:
+                        SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
+                      Container(
+                        alignment: Alignment.centerRight,
+                       margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
+                           right: SizeConfig.blockSizeHorizontal*4),
+                        child: Icon(Icons.notifications_on_outlined,size:
+                      SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
+                    ],
+                  ),
                   InkWell(
                     onTap: ()
                     {
@@ -214,7 +223,7 @@ class _EditProfileState extends State<EditProfile> {
                           fontWeight: FontWeight.w400)),
                           border: InputBorder.none
                       ),
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.phone,
                       validator: (s) {
                         if (s.trim().isEmpty) return "Mobile is required";
                         return null;
@@ -253,7 +262,12 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
                         ),
-                            color: appredcolor
+                            color: appredcolor,boxShadow: [BoxShadow(
+                              color: Colors.grey[800],
+                              spreadRadius: 2.0,
+                              offset: Offset.fromDirection(1,1),
+                              blurRadius: 2.0
+                            )]
                         ),
                         child:Text("Save",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
                         SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_ecommerce/models/UserResults.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_ecommerce/models/UserResults.dart';
 
 
 class SocialLogin {
@@ -26,6 +26,7 @@ class SocialLogin {
           profile = json.decode(graphResponse.body);
           print("profile" + profile.toString());
         } else {
+
           print("Error");
         }
         break;
