@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
 import 'package:flutter_ecommerce/ui/EditProfile.dart';
+import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 import 'package:flutter_ecommerce/ui/RegisterScreen.dart';
@@ -91,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6),
                     width:SizeConfig.blockSizeHorizontal*70,
                     height: SizeConfig.blockSizeVertical*7,
-                    child: Image.asset("assets/applogo.png"),),
+                    child: Image.asset('assets/editprofile.png'),),
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OTPScreen("")),
+                            MaterialPageRoute(builder: (context) => EditProfile2()),
                           );
                         },
                         child: Container(

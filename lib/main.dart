@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/ui/LoginScreen.dart';
+import 'package:flutter_ecommerce/ui/MainLists.dart';
+import 'package:flutter_ecommerce/ui/ProductList.dart';
 import 'package:flutter_ecommerce/ui/SplashScreen.dart';
 
 
