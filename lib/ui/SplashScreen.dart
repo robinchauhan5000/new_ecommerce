@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
 import 'package:flutter_ecommerce/ui/LoginScreen.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
 
 class SplashScreen extends StatefulWidget
 {
