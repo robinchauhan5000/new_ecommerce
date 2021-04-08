@@ -36,6 +36,8 @@ dependencies:
   pin_code_fields: ^6.0.0
   country_code_picker: ^1.6.0
   google_fonts:
+  sizer: ^1.1.8
+
 
   flutter:
     sdk: flutter
