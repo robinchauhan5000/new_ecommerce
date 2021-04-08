@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
-import 'package:flutter_ecommerce/ui/EditProfile.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 import 'package:flutter_ecommerce/ui/RegisterScreen.dart';
