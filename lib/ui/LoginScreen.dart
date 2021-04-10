@@ -17,6 +17,8 @@ import 'dart:io';
 import 'package:flutter_ecommerce/utils/SocialLoginMethods.dart';
 import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
 import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
+import 'package:flutter_ecommerce/ui/CheckoutScreen.dart';
+import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 
 class LoginScreen extends StatefulWidget
 {
@@ -224,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ForgotPassword()),
+                            MaterialPageRoute(builder: (context) => ItemListGrid()),
                           );
                       },
                       child: Container(

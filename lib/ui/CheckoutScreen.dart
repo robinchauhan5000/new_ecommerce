@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import'package:sizer/sizer.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
+import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 
-class ProductList extends StatefulWidget {
+class CheckoutScreen extends StatefulWidget {
   @override
-  _ProductListState createState() => _ProductListState();
+  _CheckoutScreenState createState() => _CheckoutScreenState();
 }
 
-class _ProductListState extends State<ProductList> {
+class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff0D72A0),
         elevation: 0,
@@ -135,18 +134,25 @@ class _ProductListState extends State<ProductList> {
                 child: Icon(Icons.subdirectory_arrow_right_outlined),
               )
           ),
-          FloatingActionButton(
-            backgroundColor: Color(0xffE33B3B),
-            onPressed: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/my list/Ellipse 2.png'),
-                      fit: BoxFit.fill
-                  )
-              ),
-              child: Icon(
-                Icons.shopping_cart,
+          Container(
+            width: SizeConfig.screenWidth * 0.4,
+            child: FloatingActionButton(shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                    SizeConfig.blockSizeVertical * 5
+                )
+            ) ,
+              backgroundColor: Color(0xffE33B3B),
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("Checkout",style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.blockSizeVertical * 2
+                  ),),
+                  Icon(Icons.arrow_forward_ios_sharp,color: Colors.white,)
+                ],
               ),
             ),
           ),
