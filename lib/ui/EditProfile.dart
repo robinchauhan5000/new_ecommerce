@@ -6,7 +6,7 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 
 import 'dart:io';
 
@@ -249,6 +249,10 @@ class _EditProfileState extends State<EditProfile> {
                       {
                         formKey.currentState.save();
                         Fluttertoast.showToast(msg: "Success!");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditProfile2()),
+                        );
                       } else {
                         autoValidate = true;
                       }

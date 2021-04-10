@@ -100,14 +100,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     width:SizeConfig.blockSizeHorizontal*70,
                     height: SizeConfig.blockSizeVertical*7,
                     child: Image.asset('assets/editprofile.png'),),
-                    Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                      width:SizeConfig.blockSizeHorizontal*70,
-                      height: SizeConfig.blockSizeVertical*7,
-                      child: Text("LOGIN",style: GoogleFonts.poppins(textStyle:
-                      TextStyle(fontSize: SizeConfig.blockSizeVertical*4,color: Colors.white,
-                          fontWeight: FontWeight.w500)))),
+                    InkWell(
+                      onTap: ()
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditProfile()),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
+                        width:SizeConfig.blockSizeHorizontal*70,
+                        height: SizeConfig.blockSizeVertical*7,
+                        child: Text("LOGIN",style: GoogleFonts.poppins(textStyle:
+                        TextStyle(fontSize: SizeConfig.blockSizeVertical*4,color: Colors.white,
+                            fontWeight: FontWeight.w500)))),
+                    ),
 
                 ],),),
 
