@@ -413,7 +413,7 @@ class _LoginScreenState extends State<LoginScreen> {
               setState(() {
                 isloading = true;
               });
-              fbrepo.loginUser(value.profile['email'], value.profile['picture']['data']['url'], context).then((value) {
+              fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((value) {
                 setState(() {
                   isloading = false;
                 });

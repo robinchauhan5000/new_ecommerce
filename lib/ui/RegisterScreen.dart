@@ -169,31 +169,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.blockSizeHorizontal*34,
-                                  margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
-                                  padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                                  ),
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                                  ),
-                                      color: appmainthemecolor
-                                  ),
-                                  child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                  SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight:
-                                  FontWeight.w600)),)),
-                              Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.blockSizeHorizontal*34,
-                                  margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
-                                  padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                                  ),
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                                  ),
-                                      color: appredcolor
-                                  ),
-                                  child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                  SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),))
+                              InkWell(
+                                onTap: ()
+                                {
+                                  fbLogin(context: context);
+                                },
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    width: SizeConfig.blockSizeHorizontal*34,
+                                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
+                                    padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                                    ),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
+                                    ),
+                                        color: appmainthemecolor
+                                    ),
+                                    child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                                    SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight:
+                                    FontWeight.w600)),)),
+                              ),
+                              InkWell(
+                                onTap: ()
+                                {
+                                  googleLogin(context:context);
+                                },
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    width: SizeConfig.blockSizeHorizontal*34,
+                                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
+                                    padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                                    ),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
+                                    ),
+                                        color: appredcolor
+                                    ),
+                                    child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                                    SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                              )
                             ],),
 
                           Container(
