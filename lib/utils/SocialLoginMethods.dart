@@ -26,7 +26,6 @@ class SocialLogin {
           profile = json.decode(graphResponse.body);
           print("profile" + profile.toString());
         } else {
-
           print("Error");
         }
         break;
