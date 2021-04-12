@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
+import 'package:flutter_ecommerce/ui/MainLists.dart';
 
 Color textPrimaryColorGlobal = textPrimaryColor;
 Color textSecondaryColorGlobal = textSecondaryColor;
@@ -95,6 +96,15 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).pop();
+                      if(type == "otp"){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                          return MainListPage();
+                        }));
+                      }else if(type == "login"){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                          return MainListPage();
+                        }));
+                      }
                     },
                     /*   onTap: () async {
                       try {

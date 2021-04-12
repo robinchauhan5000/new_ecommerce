@@ -199,7 +199,7 @@ class _OTPScreenState extends State<OTPScreen> {
                        });
                        if(value.status==1)
                          {
-                           showAlertDialog(context,value.message,"");
+                           showAlertDialog(context,value.message,"otp");
                          }
                        else
                          {

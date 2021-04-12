@@ -288,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                         if(value.status==1)
                                         {
-                                          showAlertDialog(context,value.message,"");
+                                          showAlertDialog(context,value.message,"login");
                                         }
                                         else
                                         {
