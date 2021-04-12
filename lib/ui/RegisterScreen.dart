@@ -262,39 +262,94 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textInputAction: TextInputAction.next,
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: mobile,
-                              focusNode: mobFocus,
+                          Row(
+                            children: [
+                              Container(
+                                width: SizeConfig.screenWidth * 0.25,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
+                                    color: Colors.white,
+                                    boxShadow: [BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 1.5,
+                                    ),]
+                                ),
+                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
+                                    left: SizeConfig.blockSizeHorizontal*8,
+                                right: SizeConfig.blockSizeHorizontal * 4),
+                                child: /*TextFormField(
+                              controller: emailCont,
                               cursorColor:logincolor,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(8),
-                                  hintText: "Mobile",hintStyle:
+                                  hintText: "Country",hintStyle:
                               GoogleFonts.poppins(textStyle:
                               TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
                                   fontWeight: FontWeight.w400)),
                                   border: InputBorder.none
                               ),
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.emailAddress,
                               validator: (s) {
-                                if (s.trim().isEmpty) return "Mobile is required";
+                                if (s.trim().isEmpty) return "Email is required";
                                 return null;
                               },
                               onFieldSubmitted: (s) =>
                                   FocusScope.of(context).requestFocus(passFocus),
                               textInputAction: TextInputAction.next,
-                            ),
+                            ),*/
+                                CountryCodePicker(
+                                  onChanged: _onCountryChange,
+                                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                  initialSelection: 'US',showFlagMain: true,
+                                  // optional. Shows only country name and flag
+                                  showCountryOnly: false,hideMainText: false,
+                                  padding: EdgeInsets.only(right: 4.0),
+                                  textStyle: GoogleFonts.poppins(textStyle:
+                                  TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black,
+                                      fontWeight: FontWeight.w400)),
+                                  showFlag: true,
+                                  // optional. Shows only country name and flag when popup is closed.
+                                  showOnlyCountryWhenClosed: false,
+                                  // optional. aligns the flag and the Text left
+                                  alignLeft: true,
+                                ),
+                              ),
+                              Container(
+                                width: SizeConfig.screenWidth * 0.5,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
+                                    color: Colors.white,
+                                    boxShadow: [BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 1.5,
+                                    ),]
+                                ),
+                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
+                                    right: SizeConfig.blockSizeHorizontal*8,
+                                left: SizeConfig.blockSizeHorizontal * 4),
+                                child: TextFormField(
+                                  controller: mobile,
+                                  focusNode: mobFocus,
+                                  cursorColor:logincolor,
+                                  style: TextStyle(fontSize: 16.0 ),showCursor: true,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(8),
+                                      hintText: "Mobile",hintStyle:
+                                  GoogleFonts.poppins(textStyle:
+                                  TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
+                                      fontWeight: FontWeight.w400)),
+                                      border: InputBorder.none
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  validator: (s) {
+                                    if (s.trim().isEmpty) return "Mobile is required";
+                                    return null;
+                                  },
+                                  onFieldSubmitted: (s) =>
+                                      FocusScope.of(context).requestFocus(passFocus),
+                                  textInputAction: TextInputAction.next,
+                                ),
+                              ),
+                            ],
                           ),
                           Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
@@ -360,56 +415,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onFieldSubmitted: (s) =>
                                   FocusScope.of(context).requestFocus(zipFocus),
                               textInputAction: TextInputAction.next,
-                            ),
-                          ),
-                          Container(
-                            width: SizeConfig.blockSizeHorizontal*90,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: /*TextFormField(
-                              controller: emailCont,
-                              cursorColor:logincolor,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
-                                  hintText: "Country",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Email is required";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(passFocus),
-                              textInputAction: TextInputAction.next,
-                            ),*/
-                            CountryCodePicker(
-                              onChanged: _onCountryChange,
-                              // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                              initialSelection: 'US',showFlagMain: true,
-                              // optional. Shows only country name and flag
-                              showCountryOnly: false,hideMainText: false,
-                              padding: EdgeInsets.only(right: 4.0),
-                              textStyle: GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black,
-                                  fontWeight: FontWeight.w400)),
-                              showFlag: true,
-                              // optional. Shows only country name and flag when popup is closed.
-                              showOnlyCountryWhenClosed: false,
-                              // optional. aligns the flag and the Text left
-                              alignLeft: true,
                             ),
                           ),
                           Container(
