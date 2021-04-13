@@ -20,8 +20,7 @@ import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
 import 'package:flutter_ecommerce/ui/CheckoutScreen.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 
-class LoginScreen extends StatefulWidget
-{
+class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -47,9 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
+        statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark
+        //or set color with: Color(0xFF0000FF)
+        ));
   }
 
   @override
@@ -63,281 +62,393 @@ class _LoginScreenState extends State<LoginScreen> {
         //   drawer: Container(child:new Drawer()),
         body: Container(
           color: appmaincolor,
-          width: SizeConfig.blockSizeHorizontal*100,
-          height: SizeConfig.blockSizeVertical*100,
-          child: SingleChildScrollView(child: Container(child:
-          Form(
-            key: formKey,
-            autovalidate: autoValidate,
-            child: Stack(
-              children: [
-                Container(
-                  height: SizeConfig.blockSizeVertical*100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                     Container(
-                       width: SizeConfig.blockSizeHorizontal*100,
-                       height: SizeConfig.blockSizeVertical*32,
-                       decoration: BoxDecoration(image: new DecorationImage(
-                           fit: BoxFit.fill,
-                           image:
-                     AssetImage('assets/login_upper.png'))),),
-                      Container(
-                        width: SizeConfig.blockSizeHorizontal*100,
-                        height: SizeConfig.blockSizeVertical*15,
-                        decoration: BoxDecoration(image: new DecorationImage(
-                            fit: BoxFit.fill,
-                            image:
-                            AssetImage('assets/login_shape.png'))),)
-                    ],),
-                ),
-                Container(
-                  width: SizeConfig.blockSizeHorizontal*100,
-                  height: SizeConfig.blockSizeVertical*100,
-                  child: Column(children: [
-                  Container(
-                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6),
-                    width:SizeConfig.blockSizeHorizontal*70,
-                    height: SizeConfig.blockSizeVertical*7,
-                    child: Image.asset('assets/editprofile.png'),),
-                    InkWell(
-                      onTap: ()
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditProfile()),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                        width:SizeConfig.blockSizeHorizontal*70,
-                        height: SizeConfig.blockSizeVertical*7,
-                        child: Text("LOGIN",style: GoogleFonts.poppins(textStyle:
-                        TextStyle(fontSize: SizeConfig.blockSizeVertical*4,color: Colors.white,
-                            fontWeight: FontWeight.w500)))),
-                    ),
-
-                ],),),
-
-                Column(
+          width: SizeConfig.blockSizeHorizontal * 100,
+          height: SizeConfig.blockSizeVertical * 100,
+          child: SingleChildScrollView(
+            child: Container(
+              child: Form(
+                key: formKey,
+                autovalidate: autoValidate,
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                      InkWell(
-                        onTap: ()
-                        {
-                        fbLogin(context: context);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: SizeConfig.blockSizeHorizontal*34,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                               ),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                            ),
-                                color: appmainthemecolor
-                            ),
-                            child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
-                      ),
-                      InkWell(
-                        onTap: ()
-                        {
-                         googleLogin(context: context);
-                        },
-                        child: Container(
-                            alignment: Alignment.center,
-                            width: SizeConfig.blockSizeHorizontal*34,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                            ),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                            ),
-                                color: appredcolor
-                            ),
-                            child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
-                      )
-                    ],),
                     Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                          color: Colors.white,
-                          boxShadow: [BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 1.5,
-                          ),]
-                      ),
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,
-                          left: SizeConfig.blockSizeHorizontal*8,right:
-                          SizeConfig.blockSizeHorizontal*8),
-                      child: TextFormField(
-                        controller: emailCont,
-                        cursorColor:logincolor,
-                        style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(8),
-                         hintText: "Username",hintStyle:
-                        GoogleFonts.poppins(textStyle:
-                        TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                            fontWeight: FontWeight.w400)),
-                         border: InputBorder.none
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (s) {
-                          if (s.trim().isEmpty) return "Username is required";
-                          return null;
-                        },
-                        onFieldSubmitted: (s) =>
-                            FocusScope.of(context).requestFocus(passFocus),
-                        textInputAction: TextInputAction.next,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                          color: Colors.white,
-                          boxShadow: [BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 1.5,
-                          ),]
-                      ),
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,
-                          left: SizeConfig.blockSizeHorizontal*8,right:
-                          SizeConfig.blockSizeHorizontal*8),
-                      child: TextFormField(
-                        controller: passCont,
-                        cursorColor:logincolor,focusNode: passFocus,
-                        style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(8),
-                            hintText: "Password",hintStyle:
-                        GoogleFonts.poppins(textStyle:
-                        TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                            fontWeight: FontWeight.w400)),
-                            border: InputBorder.none
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (s) {
-                          if (s.trim().isEmpty) return "Password is required";
-                          return null;
-                        },
-                        onFieldSubmitted: (s) =>
-                            FocusScope.of(context).unfocus(),
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: ()
-                      {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ItemListGrid()),
-                          );
-                      },
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          width: SizeConfig.blockSizeHorizontal*84,
-                          padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*2.25,),
-                          child:Text("Forgot Password ?",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                          SizeConfig.blockSizeVertical*2.1,color: Colors.black,fontWeight: FontWeight.w400)),)),
-                    ),
-
-                    InkWell(
-                      onTap: ()
-                      {
-
-
-                      },
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                            alignment: Alignment.center,
-                            width: SizeConfig.blockSizeHorizontal*31,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*1.5
-                                ,right: SizeConfig.blockSizeHorizontal*8),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.25,
-                            ),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                            ),
-                                color: appredcolor,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 2.75,
-                                ),]
-                            ),
-                            child:Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
-                                InkWell(
-                                  onTap: (){
-                                    FocusScope.of(context).unfocus();
-                                    if (formKey.currentState.validate())
-                                    {
-                                      formKey.currentState.save();
-                                      setState(() {
-                                        isloading =true;
-                                      });
-                                      loginRepo.loginUser(emailCont.text.trim().toString(), passCont.text.trim().toString(), context).then((value) {
-                                        setState(() {
-                                          isloading = false;
-                                        });
-                                        if(value.status==1)
-                                        {
-                                          showAlertDialog(context,value.message,"login");
-                                        }
-                                        else
-                                        {
-                                          showAlertDialog(context,value.message,"");
-                                        }
-                                      }).catchError((onError){
-                                        setState(() {
-                                          isloading = false;
-                                        });
-                                      });
-
-                                    } else {
-                                      autoValidate = true;
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: Text("Login",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                  SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
-                                ),
-                                Icon(Icons.arrow_forward_ios,color: Colors.white,size: SizeConfig.blockSizeVertical*2.75,)
-
-
-                              ],
-                            )),
-                      ),
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      height: SizeConfig.blockSizeVertical * 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      Container(child:  Text("New Here ? ",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                      SizeConfig.blockSizeVertical*2.15,color: Colors.black,fontWeight:
-                      FontWeight.w500)),)),
+                          Container(
+                            width: SizeConfig.blockSizeHorizontal * 100,
+                            height: SizeConfig.blockSizeVertical * 32,
+                            decoration: BoxDecoration(
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image:
+                                        AssetImage('assets/login_upper.png'))),
+                          ),
+                          Container(
+                            width: SizeConfig.blockSizeHorizontal * 100,
+                            height: SizeConfig.blockSizeVertical * 15,
+                            decoration: BoxDecoration(
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image:
+                                        AssetImage('assets/login_shape.png'))),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: SizeConfig.blockSizeHorizontal * 100,
+                      height: SizeConfig.blockSizeVertical * 100,
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: SizeConfig.blockSizeVertical * 6),
+                            width: SizeConfig.blockSizeHorizontal * 70,
+                            height: SizeConfig.blockSizeVertical * 7,
+                            child: Image.asset('assets/editprofile.png'),
+                          ),
                           InkWell(
-                            onTap: ()
-                            {
+                            onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => RegisterScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => EditProfile()),
                               );
                             },
-                            child: Container(child:  Text("Register",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.15,color:appredcolor ,fontWeight: FontWeight.w500)),)),
-                          )
-
-
-                        ],),),
+                            child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: SizeConfig.blockSizeVertical * 4),
+                                width: SizeConfig.blockSizeHorizontal * 70,
+                                height: SizeConfig.blockSizeVertical * 7,
+                                child: Text("LOGIN",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    4,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500)))),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                fbLogin(context: context);
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  width: SizeConfig.blockSizeHorizontal * 34,
+                                  margin: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeVertical * 36.5),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        SizeConfig.blockSizeVertical * 1.4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          6.0,
+                                        ),
+                                      ),
+                                      color: appmainthemecolor),
+                                  child: Text(
+                                    "Facebook",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.1,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600)),
+                                  )),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                googleLogin(context: context);
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  width: SizeConfig.blockSizeHorizontal * 34,
+                                  margin: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeVertical * 36.5),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        SizeConfig.blockSizeVertical * 1.4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          6.0,
+                                        ),
+                                      ),
+                                      color: appredcolor),
+                                  child: Text(
+                                    "Google",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.1,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600)),
+                                  )),
+                            )
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  6.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 1.5,
+                                ),
+                              ]),
+                          margin: EdgeInsets.only(
+                              top: SizeConfig.blockSizeVertical * 4,
+                              left: SizeConfig.blockSizeHorizontal * 8,
+                              right: SizeConfig.blockSizeHorizontal * 8),
+                          child: TextFormField(
+                            controller: emailCont,
+                            cursorColor: logincolor,
+                            style: TextStyle(fontSize: 16.0),
+                            showCursor: true,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(8),
+                                hintText: "Username",
+                                hintStyle: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeVertical * 2.15,
+                                        color: Colors.black38,
+                                        fontWeight: FontWeight.w400)),
+                                border: InputBorder.none),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (s) {
+                              if (s.trim().isEmpty)
+                                return "Username is required";
+                              return null;
+                            },
+                            onFieldSubmitted: (s) =>
+                                FocusScope.of(context).requestFocus(passFocus),
+                            textInputAction: TextInputAction.next,
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  6.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 1.5,
+                                ),
+                              ]),
+                          margin: EdgeInsets.only(
+                              top: SizeConfig.blockSizeVertical * 4,
+                              left: SizeConfig.blockSizeHorizontal * 8,
+                              right: SizeConfig.blockSizeHorizontal * 8),
+                          child: TextFormField(
+                            controller: passCont,
+                            cursorColor: logincolor,
+                            focusNode: passFocus,
+                            style: TextStyle(fontSize: 16.0),
+                            showCursor: true,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(8),
+                                hintText: "Password",
+                                hintStyle: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeVertical * 2.15,
+                                        color: Colors.black38,
+                                        fontWeight: FontWeight.w400)),
+                                border: InputBorder.none),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (s) {
+                              if (s.trim().isEmpty)
+                                return "Password is required";
+                              return null;
+                            },
+                            onFieldSubmitted: (s) =>
+                                FocusScope.of(context).unfocus(),
+                            textInputAction: TextInputAction.done,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ItemListGrid()),
+                            );
+                          },
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              width: SizeConfig.blockSizeHorizontal * 84,
+                              padding: EdgeInsets.symmetric(
+                                vertical: SizeConfig.blockSizeVertical * 2.25,
+                              ),
+                              child: Text(
+                                "Forgot Password ?",
+                                style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeVertical * 2.1,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400)),
+                              )),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                                alignment: Alignment.center,
+                                width: SizeConfig.blockSizeHorizontal * 31,
+                                margin: EdgeInsets.only(
+                                    top: SizeConfig.blockSizeVertical * 1.5,
+                                    right: SizeConfig.blockSizeHorizontal * 8),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: SizeConfig.blockSizeVertical * 1.25,
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        6.0,
+                                      ),
+                                    ),
+                                    color: appredcolor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 2.75,
+                                      ),
+                                    ]),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 2.75,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        if (formKey.currentState.validate()) {
+                                          formKey.currentState.save();
+                                          setState(() {
+                                            isloading = true;
+                                          });
+                                          loginRepo
+                                              .loginUser(
+                                                  emailCont.text
+                                                      .trim()
+                                                      .toString(),
+                                                  passCont.text
+                                                      .trim()
+                                                      .toString(),
+                                                  context)
+                                              .then((value) {
+                                            setState(() {
+                                              isloading = false;
+                                            });
+                                            if (value.status == 1) {
+                                              showAlertDialog(context,
+                                                  value.message, "login");
+                                            } else {
+                                              showAlertDialog(
+                                                  context, value.message, "");
+                                            }
+                                          }).catchError((onError) {
+                                            setState(() {
+                                              isloading = false;
+                                            });
+                                          });
+                                        } else {
+                                          autoValidate = true;
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Text(
+                                        "Login",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    2.1,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.white,
+                                      size: SizeConfig.blockSizeVertical * 2.75,
+                                    )
+                                  ],
+                                )),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: SizeConfig.blockSizeVertical * 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  child: Text(
+                                "New Here ? ",
+                                style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize:
+                                            SizeConfig.blockSizeVertical * 2.15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500)),
+                              )),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterScreen()),
+                                  );
+                                },
+                                child: Container(
+                                    child: Text(
+                                  "Register",
+                                  style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize:
+                                              SizeConfig.blockSizeVertical *
+                                                  2.15,
+                                          color: appredcolor,
+                                          fontWeight: FontWeight.w500)),
+                                )),
+                              )
+                            ],
+                          ),
+                        ),
 
 /*
 >>>>>>> 85114e0be3afde7606b3096914345e56e5937029
@@ -365,14 +476,14 @@ class _LoginScreenState extends State<LoginScreen> {
 <<<<<<< HEAD
 =======
 */
+                      ],
+                    ),
                   ],
                 ),
-
-
-
-              ],
+              ),
             ),
-          ),),),),
+          ),
+        ),
       ),
     );
     widgetList.add(child);
@@ -385,8 +496,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           new Center(
             child: new CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                  Colors.pink),
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
             ),
           ),
         ],
@@ -395,51 +505,50 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return
-      /* WillPopScope(
+        /* WillPopScope(
             onWillPop: ,
             child:*/
-      Stack(
-          children: widgetList
-      );
+        Stack(children: widgetList);
   }
+
   Future fbLogin({BuildContext context}) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         SocialLogin().fbLogin(context: context).then((value) async {
           // Dialogs.showLoadingDialog(context, loginloader);
-          if (value != null &&
-              value != "") {
+          if (value != null && value != "") {
+            setState(() {
+              isloading = true;
+            });
+            fbrepo
+                .loginUser(
+                    value.profile['email'] != null
+                        ? value.profile['email']
+                        : "",
+                    value.profile['picture']['data']['url'],
+                    context)
+                .then((value) {
               setState(() {
-                isloading = true;
+                isloading = false;
               });
-              fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((value) {
-                setState(() {
-                  isloading = false;
-                });
-                if(value.status==1)
-                  {
-                    showAlertDialog(context,value.message,"");
-                  }
-                else
-                  {
-                    showAlertDialog(context,value.message,"");
-                  }
-              }).catchError((error){
-                setState(() {
-                  isloading = false;
-                });
+              if (value.status == 1) {
+                showAlertDialog(context, value.message, "");
+              } else {
+                showAlertDialog(context, value.message, "");
+              }
+            }).catchError((error) {
+              setState(() {
+                isloading = false;
               });
-
+            });
           } else {
             //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
-            showAlertDialog(context,"No Data", "Login");
+            showAlertDialog(context, "No Data", "Login");
           }
         });
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
 
   Future googleLogin({
@@ -457,32 +566,29 @@ class _LoginScreenState extends State<LoginScreen> {
             setState(() {
               isloading = true;
             });
-            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((value) {
+            googlerepo
+                .googlelogin(value.googleProfile.email,
+                    value.googleProfile.photoUrl, context)
+                .then((value) {
               setState(() {
                 isloading = false;
               });
-              if(value.status==1)
-              {
-                showAlertDialog(context,value.message,"");
+              if (value.status == 1) {
+                showAlertDialog(context, value.message, "");
+              } else {
+                showAlertDialog(context, value.message, "");
               }
-              else
-              {
-                showAlertDialog(context,value.message,"");
-              }
-            }).catchError((error){
+            }).catchError((error) {
               setState(() {
                 isloading = false;
               });
             });
-
           } else {
             Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
             showAlertDialog(context, "No Data", "Login");
           }
         });
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
 }
