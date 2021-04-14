@@ -8,6 +8,8 @@ import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -16,21 +18,42 @@ class MainListPage extends StatefulWidget {
 
 class _MainListPageState extends State<MainListPage> {
   GetLoginUserEntity entity = new GetLoginUserEntity();
+
+  var getItemsList = CartListRepo();
+  bool isloading = false;
+  var getListItemsModel = CartListEntity();
+
   @override
   void initState() {
-    // TODO: implement initState
+    isloading = true;
     super.initState();
     SharedPreferencesTest().saveuserdata("get").then((value) {
       setState(() {
         Map userupdateddata = json.decode(value);
         entity = GetLoginUserEntity.fromJson(userupdateddata);
+    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+      setState(() {
+        isloading = false;
+      });
+    if(value.status == 1){
+     setState(() {
+       getListItemsModel = value;
+     });
+    }
+    }).catchError((onError)
+    {
+      setState(() {
+        isloading = false;
+      });
+    });
       });
     });
   }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
+    List<Widget> widgetList = new List<Widget>();
+    var child = Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffE33B3B),
         onPressed: () {},
@@ -245,7 +268,7 @@ class _MainListPageState extends State<MainListPage> {
             ),
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,itemCount: 10,
+              shrinkWrap: true,itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length:0,
               itemBuilder: (context,index) {
                 return Container(
                   margin: EdgeInsets.only(
@@ -259,6 +282,7 @@ class _MainListPageState extends State<MainListPage> {
                   ),
                   child: ListTile(
                     onTap: () {
+                      print("xbjcbj");
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ProductList()),
@@ -272,11 +296,11 @@ class _MainListPageState extends State<MainListPage> {
                         fontWeight: FontWeight.bold,
                       ),),
                     ),
-                    subtitle: Text('Money Spent : 3500'),
+                    subtitle: Text(getListItemsModel != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length>0 ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice}':""),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(child: Text('Item Qty: 35',
+                        Container(child: Text(getListItemsModel != null  && getListItemsModel.docs.length>0 &&getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity}':"",
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: SizeConfig.blockSizeVertical * 1.75
@@ -301,5 +325,27 @@ class _MainListPageState extends State<MainListPage> {
         ),
       ),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

@@ -77,13 +77,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     Container(
-                       width: SizeConfig.blockSizeHorizontal*100,
-                       height: SizeConfig.blockSizeVertical*32,
-                       decoration: BoxDecoration(image: new DecorationImage(
-                           fit: BoxFit.fill,
-                           image:
-                     AssetImage('assets/login_upper.png'))),),
+                      Container(
+                        width: SizeConfig.blockSizeHorizontal*100,
+                        height: SizeConfig.blockSizeVertical*32,
+                        decoration: BoxDecoration(image: new DecorationImage(
+                            fit: BoxFit.fill,
+                            image:
+                            AssetImage('assets/login_upper.png'))),),
                       Container(
                         width: SizeConfig.blockSizeHorizontal*100,
                         height: SizeConfig.blockSizeVertical*15,
@@ -97,11 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: SizeConfig.blockSizeHorizontal*100,
                   height: SizeConfig.blockSizeVertical*100,
                   child: Column(children: [
-                  Container(
-                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6),
-                    width:SizeConfig.blockSizeHorizontal*70,
-                    height: SizeConfig.blockSizeVertical*7,
-                    child: Image.asset('assets/editprofile.png'),),
+                    Container(
+                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6),
+                      width:SizeConfig.blockSizeHorizontal*70,
+                      height: SizeConfig.blockSizeVertical*7,
+                      child: Image.asset('assets/editprofile.png'),),
                     InkWell(
                       onTap: ()
                       {
@@ -111,59 +111,59 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                        width:SizeConfig.blockSizeHorizontal*70,
-                        height: SizeConfig.blockSizeVertical*7,
-                        child: Text("LOGIN",style: GoogleFonts.poppins(textStyle:
-                        TextStyle(fontSize: SizeConfig.blockSizeVertical*4,color: Colors.white,
-                            fontWeight: FontWeight.w500)))),
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
+                          width:SizeConfig.blockSizeHorizontal*70,
+                          height: SizeConfig.blockSizeVertical*7,
+                          child: Text("LOGIN",style: GoogleFonts.poppins(textStyle:
+                          TextStyle(fontSize: SizeConfig.blockSizeVertical*4,color: Colors.white,
+                              fontWeight: FontWeight.w500)))),
                     ),
 
-                ],),),
+                  ],),),
 
                 Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                      InkWell(
-                        onTap: ()
-                        {
-                        fbLogin(context: context);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: SizeConfig.blockSizeHorizontal*34,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                               ),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                            ),
-                                color: appmainthemecolor
-                            ),
-                            child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
-                      ),
-                      InkWell(
-                        onTap: ()
-                        {
-                         googleLogin(context: context);
-                        },
-                        child: Container(
-                            alignment: Alignment.center,
-                            width: SizeConfig.blockSizeHorizontal*34,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                            ),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                            ),
-                                color: appredcolor
-                            ),
-                            child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
-                      )
-                    ],),
+                        InkWell(
+                          onTap: ()
+                          {
+                            fbLogin(context: context);
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              width: SizeConfig.blockSizeHorizontal*34,
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
+                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                              ),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
+                              ),
+                                  color: appmainthemecolor
+                              ),
+                              child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                              SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                        ),
+                        InkWell(
+                          onTap: ()
+                          {
+                            googleLogin(context: context);
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              width: SizeConfig.blockSizeHorizontal*34,
+                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*36.5),
+                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                              ),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
+                              ),
+                                  color: appredcolor
+                              ),
+                              child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                              SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                        )
+                      ],),
                     Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
                           color: Colors.white,
@@ -180,12 +180,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         cursorColor:logincolor,
                         style: TextStyle(fontSize: 16.0 ),showCursor: true,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(8),
-                         hintText: "Username",hintStyle:
+                            contentPadding: EdgeInsets.all(8),
+                            hintText: "Username",hintStyle:
                         GoogleFonts.poppins(textStyle:
                         TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
                             fontWeight: FontWeight.w400)),
-                         border: InputBorder.none
+                            border: InputBorder.none
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (s) {
@@ -233,10 +233,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: ()
                       {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgotPassword()),
-                          );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ForgotPassword()),
+                        );
                       },
                       child: Container(
                           alignment: Alignment.centerLeft,
@@ -349,9 +349,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                      Container(child:  Text("New Here ? ",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                      SizeConfig.blockSizeVertical*2.15,color: Colors.black,fontWeight:
-                      FontWeight.w500)),)),
+                          Container(child:  Text("New Here ? ",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                          SizeConfig.blockSizeVertical*2.15,color: Colors.black,fontWeight:
+                          FontWeight.w500)),)),
                           InkWell(
                             onTap: ()
                             {
@@ -438,26 +438,26 @@ class _LoginScreenState extends State<LoginScreen> {
           // Dialogs.showLoadingDialog(context, loginloader);
           if (value != null &&
               value != "") {
+            setState(() {
+              isloading = true;
+            });
+            fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((value) {
               setState(() {
-                isloading = true;
+                isloading = false;
               });
-              fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((value) {
-                setState(() {
-                  isloading = false;
-                });
-                if(value.status==1)
-                  {
-                    showAlertDialog(context,value.message,"");
-                  }
-                else
-                  {
-                    showAlertDialog(context,value.message,"");
-                  }
-              }).catchError((error){
-                setState(() {
-                  isloading = false;
-                });
+              if(value.status==1)
+              {
+                showAlertDialog(context,value.message,"");
+              }
+              else
+              {
+                showAlertDialog(context,value.message,"");
+              }
+            }).catchError((error){
+              setState(() {
+                isloading = false;
               });
+            });
 
           } else {
             //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();

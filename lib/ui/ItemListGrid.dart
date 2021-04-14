@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:flutter_ecommerce/Widgets/ItemGrid.dart';
+import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 class ItemListGrid extends StatefulWidget {
   @override
@@ -9,10 +11,35 @@ class ItemListGrid extends StatefulWidget {
 }
 
 class _ItemListGridState extends State<ItemListGrid> {
+  var getItemsList = CartListRepo();
+  bool isloading = false;
+  var getListItemsModel = CartListEntity();
+
+  @override
+  void initState() {
+    super.initState();
+    isloading = true;
+    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+      setState(() {
+        isloading = false;
+      });
+      if(value.status == 1){
+        setState(() {
+          getListItemsModel = value;
+        });
+      }
+    }).catchError((onError)
+    {
+      setState(() {
+        isloading = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
+    List<Widget> widgetList = new List<Widget>();
+    var child =  Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff0D72A0),
         elevation: 0,
@@ -121,7 +148,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                         ),
                         Column(
                           children: [
-                            Text("12",style: TextStyle(color: Colors.white,
+                            Text("${getListItemsModel !=null && getListItemsModel.docs!= null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length.toString():""}",style: TextStyle(color: Colors.white,
                                 fontSize: SizeConfig.blockSizeVertical * 2.25,
                                 fontWeight: FontWeight.bold),),
                             SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
@@ -132,7 +159,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                         ),
                         Column(
                           children: [
-                            Text("1200",style: TextStyle(color: Colors.white,
+                            Text("${getListItemsModel !=null && getListItemsModel.docs!= null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).totalCost:""}",style: TextStyle(color: Colors.white,
                                 fontSize: SizeConfig.blockSizeVertical * 2.25,
                                 fontWeight: FontWeight.bold),),
                             SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
@@ -159,7 +186,11 @@ class _ItemListGridState extends State<ItemListGrid> {
             ),
             Container(
               margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
-              child: GridView(
+              child: GridView.builder(
+                itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0) != null && getListItemsModel.docs.elementAt(0).productDetails.length > 0? getListItemsModel.docs.elementAt(0).productDetails.length:0,
+                itemBuilder: (context, index){
+                  return itemGrid(context,getListItemsModel != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity:"",getListItemsModel != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ?getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productName : 0,getListItemsModel != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ?getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice:"");
+                },
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -168,12 +199,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                   mainAxisSpacing: SizeConfig.blockSizeVertical * 3,
                   crossAxisCount: 2,
                 ),
-                children: [
-                  itemGrid(context,"Dove Soap","30g","15"),
-                  itemGrid(context,"Tresemme","50ml","15"),
-                  itemGrid(context,"Facewash","50ml","15"),
-                  itemGrid(context,"Colgate","50g","15"),
-                ],
+
               ),
             )
           ],
@@ -181,5 +207,29 @@ class _ItemListGridState extends State<ItemListGrid> {
         ),
       ),
     );
+
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
+
   }
 }

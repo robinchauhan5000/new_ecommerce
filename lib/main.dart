@@ -1,24 +1,10 @@
-//region imports
-
-//endregion
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_ecommerce/ui/LoginScreen.dart';
-import 'package:flutter_ecommerce/ui/MainLists.dart';
-import 'package:flutter_ecommerce/ui/ProductList.dart';
 import 'package:flutter_ecommerce/ui/SplashScreen.dart';
-
-
 import 'dart:async';
-
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 
 
-/// This variable is used to get dynamic colors when theme mode is changed
 class MyHttpOverrides extends HttpOverrides{
   @override
   HttpClient createHttpClient(SecurityContext context){
