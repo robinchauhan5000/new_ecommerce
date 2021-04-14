@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'dart:io';
+import 'package:flutter_ecommerce/ui/EditProfile.dart';
 
 
 class EditProfile2 extends StatefulWidget {
@@ -42,10 +43,7 @@ class _EditProfile2State extends State<EditProfile2> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
+
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
   @override
@@ -73,12 +71,18 @@ class _EditProfile2State extends State<EditProfile2> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.sort,
+                          InkWell(
+                            onTap:()
+            {
+              Navigator.pop(context);
+            },
+                            child: Icon(Icons.arrow_back,
+                              color: Colors.white,
+                            size: SizeConfig.blockSizeHorizontal * 10,),
+                          ),
+                         /* Icon(Icons.notifications_active_outlined,
                             color: Colors.white,
-                          size: SizeConfig.blockSizeHorizontal * 10,),
-                          Icon(Icons.notifications_active_outlined,
-                            color: Colors.white,
-                            size: SizeConfig.blockSizeHorizontal * 10,)
+                            size: SizeConfig.blockSizeHorizontal * 10,)*/
                         ],
                       ),
                     ),
@@ -126,10 +130,9 @@ class _EditProfile2State extends State<EditProfile2> {
                                 fontWeight: FontWeight.w500)))),
                         InkWell(
                           onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MainListPage()),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return EditProfile();
+                            }));
                           },
                           child: Container(
                               alignment: Alignment.center,
@@ -157,10 +160,9 @@ class _EditProfile2State extends State<EditProfile2> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(child: Text("Address",style: TextStyle(color: Colors.black),),
+                      Container(child: Text("Address",style: TextStyle(color: Colors.black,fontSize: SizeConfig.blockSizeVertical*2,fontWeight: FontWeight.w600),),
                        ),
                       Container(
-                        height: SizeConfig.screenHeight * 0.15,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/tile.png'),
@@ -172,7 +174,7 @@ class _EditProfile2State extends State<EditProfile2> {
                           controller: address,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
-                          maxLines: 8,
+                          maxLines: 5,
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.black,
                           decoration: InputDecoration(

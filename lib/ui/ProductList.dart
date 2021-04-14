@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import'package:sizer/sizer.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
+import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
+
 
 class ProductList extends StatefulWidget {
   @override
@@ -9,10 +12,34 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  var getItemsList = CartListRepo();
+  bool isloading = false;
+  var getListItemsModel = CartListEntity();
+  @override
+  void initState() {
+    super.initState();
+    isloading = true;
+    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+      setState(() {
+        isloading = false;
+      });
+      if(value.status == 1){
+        setState(() {
+          getListItemsModel = value;
+        });
+      }
+    }).catchError((onError)
+    {
+      setState(() {
+        isloading = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return  Scaffold(
+    List<Widget> widgetList = new List<Widget>();
+    var child =   Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff0D72A0),
         elevation: 0,
@@ -22,126 +49,17 @@ class _ProductListState extends State<ProductList> {
               labelColor: Theme.of(context).accentColor),
         ],
       ),
-      backgroundColor: Color(0XFFEFF2FF),
-      drawer: Drawer(
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/drawer/Rectangle 55.jpg'),
-                    fit: BoxFit.cover
-                )
-            ),
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: SizeConfig.blockSizeVertical * 5,
-                        backgroundColor: Colors.white,
-                        child: Image(image: AssetImage(''),),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 1.5
-                        ),
-                        child: Text("User Name",style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold,
-                            fontSize: SizeConfig.blockSizeVertical * 2.25
-                        ),),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 0.08
-                        ),
-                        child: Text("Username@mail.com",style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold,
-                            fontSize: SizeConfig.blockSizeVertical *1.5
-                        ),),
-                      )
-                    ],
-                  ),
-                ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 1.jpg'))),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
-                  ),
-                  child: Text("Home",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
-                  ),
-                  child: Text("My List",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
-                  ),
-                  child: Text("Profile",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
-                ),
-                SizedBox(
-                  height: SizeConfig.screenHeight * 0.4,
-                ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 2.jpg'))),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
-                  ),
-                  child: Text("Logout",style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
-                ),
-
-
-              ],
-            ),
-          )
-      ),
+ //    backgroundColor: Color(0XFFEFF2FF),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-              backgroundColor: Color(0xffE33B3B),
-              mini: true,
-              onPressed: () {},
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/homepage/Ellipse 1.png'),
-                        fit: BoxFit.fill
-                    )
-                ),
-                child: Icon(Icons.subdirectory_arrow_right_outlined),
-              )
-          ),
           FloatingActionButton(
             backgroundColor: Color(0xffE33B3B),
             onPressed: () {},
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/my list/Ellipse 2.png'),
+                      image: AssetImage('assets/Ellipse 2.png'),
                       fit: BoxFit.fill
                   )
               ),
@@ -160,7 +78,7 @@ class _ProductListState extends State<ProductList> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/my list/Rectangle 55.png'),
+                      image: AssetImage('assets/Rectangle 55.png'),
                       fit: BoxFit.fill
                   )
               ),
@@ -171,7 +89,7 @@ class _ProductListState extends State<ProductList> {
                     height: SizeConfig.screenHeight * 0.16,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/my list/Rectangle 32.png',),
+                            image: AssetImage('assets/Rectangle 32.png',),
                             fit: BoxFit.fill
                         )
                     ),
@@ -199,7 +117,7 @@ class _ProductListState extends State<ProductList> {
                                 width:SizeConfig.screenWidth * 0.8,
                                 decoration: BoxDecoration(
                                     image:  DecorationImage(
-                                        image: AssetImage('assets/my list/tile.png'),
+                                        image: AssetImage('assets/tile.png'),
                                         fit: BoxFit.fitWidth
                                     )),
                                 child: TextFormField(
@@ -235,7 +153,7 @@ class _ProductListState extends State<ProductList> {
                         ),
                         Column(
                           children: [
-                            Text("12",style: TextStyle(color: Colors.white,
+                            Text("${getListItemsModel !=null && getListItemsModel.docs!= null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length.toString():""}",style: TextStyle(color: Colors.white,
                                 fontSize: SizeConfig.blockSizeVertical * 2.25,
                                 fontWeight: FontWeight.bold),),
                             SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
@@ -246,7 +164,7 @@ class _ProductListState extends State<ProductList> {
                         ),
                         Column(
                           children: [
-                            Text("1200",style: TextStyle(color: Colors.white,
+                            Text("${getListItemsModel !=null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).totalCost:""}",style: TextStyle(color: Colors.white,
                                 fontSize: SizeConfig.blockSizeVertical * 2.25,
                                 fontWeight: FontWeight.bold),),
                             SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
@@ -271,11 +189,11 @@ class _ProductListState extends State<ProductList> {
                 style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.25, fontWeight: FontWeight.bold),
               ),
             ),
-            ListView(
+            ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              children: [
-                Container(
+              itemBuilder: (context, index){
+                return                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
@@ -292,11 +210,11 @@ class _ProductListState extends State<ProductList> {
                         margin: EdgeInsets.only(
                             bottom: SizeConfig.blockSizeVertical * 2
                         ),
-                        child: Text('Dove Soap',style: TextStyle(
+                        child: Text(getListItemsModel !=null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productName:"",style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),),
                       ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
+                      subtitle: Text('Qty: ${getListItemsModel !=null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity:""} Pc  |  Price: \$${getListItemsModel !=null && getListItemsModel.docs != null &&  getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice:""}'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
                       trailing: Container(
                         width: SizeConfig.screenWidth * 0.2,
@@ -311,7 +229,7 @@ class _ProductListState extends State<ProductList> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -326,434 +244,41 @@ class _ProductListState extends State<ProductList> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
                         ),
                       )
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Parachute Oil',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Colgate Toothpaste',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Neem Facewash',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.02,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                      onTap: (){
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
-                        ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
-                      leading: Image(image: AssetImage('assets/dove.jpg')),
-                      trailing: Container(
-                        width: SizeConfig.screenWidth * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )
-                              ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
-                            ),
-                            Container(child: Text("1"),
-                              margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
-                                color: Colors.green,),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-
-
-              ],
+                );
+              },
             )
           ],
         ),
       ),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

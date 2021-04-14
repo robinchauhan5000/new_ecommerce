@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
-import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 import 'package:flutter_ecommerce/ui/MainLists.dart';
 
 Color textPrimaryColorGlobal = textPrimaryColor;
@@ -33,9 +32,7 @@ List<BoxShadow> defaultBoxShadow({
     )
   ];
 }
-
-showAlertDialog(BuildContext context, String message, String type,
-    {double rate, bool isfeedback}) {
+showAlertDialog(BuildContext context, String message, String type,{double rate,bool isfeedback}) {
   // set up the buttons
   // set up the buttons;
 
@@ -99,16 +96,16 @@ showAlertDialog(BuildContext context, String message, String type,
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).pop();
-                      if (type == "otp") {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
+                      if(type == "otp"){
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
-                        }));
-                      } else if (type == "login") {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return ItemListGrid();
-                        }));
+                        }));*/
+                      }else if(type == "login"){
+                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                          return MainListPage();
+                        }));*/
                       }
                     },
                     /*   onTap: () async {
@@ -163,8 +160,7 @@ showAlertDialog(BuildContext context, String message, String type,
 
   // show the dialog
   showDialog(
-    context: context,
-    barrierDismissible: false,
+    context: context,barrierDismissible: false,
     builder: (BuildContext context) {
       return alert;
     },

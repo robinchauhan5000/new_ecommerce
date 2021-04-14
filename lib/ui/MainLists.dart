@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/ui/ProductList.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
+import 'package:flutter_ecommerce/ui/EditProfile2.dart';
+import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
+import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -9,10 +13,35 @@ class MainListPage extends StatefulWidget {
 }
 
 class _MainListPageState extends State<MainListPage> {
+  var getItemsList = CartListRepo();
+  bool isloading = false;
+  var getListItemsModel = CartListEntity();
+
+  @override
+  void initState() {
+    isloading = true;
+    super.initState();
+    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+      setState(() {
+        isloading = false;
+      });
+    if(value.status == 1){
+     setState(() {
+       getListItemsModel = value;
+     });
+    }
+    }).catchError((onError)
+    {
+      setState(() {
+        isloading = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
+    List<Widget> widgetList = new List<Widget>();
+    var child = Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffE33B3B),
         onPressed: () {},
@@ -34,7 +63,7 @@ class _MainListPageState extends State<MainListPage> {
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/drawer/Rectangle 55.jpg'),
+                    image: AssetImage('assets/Rectangle 55.jpg'),
                     fit: BoxFit.cover
                 )
             ),
@@ -45,13 +74,13 @@ class _MainListPageState extends State<MainListPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: SizeConfig.blockSizeVertical * 5,
+                        radius: SizeConfig.blockSizeVertical * 4.75,
                         backgroundColor: Colors.white,
                         child: Image(image: AssetImage(''),),
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                            top: SizeConfig.blockSizeVertical * 1.5
+                            top: SizeConfig.blockSizeVertical * 1.25
                         ),
                         child: Text("User Name",style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
@@ -70,44 +99,69 @@ class _MainListPageState extends State<MainListPage> {
                     ],
                   ),
                 ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 1.jpg'))),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
+                Container(child: Image(image: AssetImage('assets/Line 1.jpg'))),
+                InkWell(
+                  onTap: ()
+                  {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 4.5,
+                        left: SizeConfig.blockSizeVertical * 4.5
+                    ),
+                    child: Text("Home",style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig.blockSizeVertical * 2.25
+                    ),),
                   ),
-                  child: Text("Home",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
+                InkWell(
+                  onTap: ()
+                  {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ItemListGrid()),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 4.5,
+                        left: SizeConfig.blockSizeVertical * 4.5
+                    ),
+                    child: Text("My List",style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig.blockSizeVertical * 2.25
+                    ),),
                   ),
-                  child: Text("My List",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 4.5,
-                      left: SizeConfig.blockSizeVertical * 4.5
+                InkWell(
+                  onTap: ()
+                  {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return EditProfile2();
+                    }));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        top: SizeConfig.blockSizeVertical * 4.5,
+                        left: SizeConfig.blockSizeVertical * 4.5
+                    ),
+                    child: Text("Profile",style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig.blockSizeVertical * 2.25
+                    ),),
                   ),
-                  child: Text("Profile",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2.25
-                  ),),
                 ),
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.4,
                 ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 2.jpg'))),
+                Container(child: Image(image: AssetImage('assets/Line 2.jpg'))),
                 Container(
                   margin: EdgeInsets.only(
                       top: SizeConfig.blockSizeVertical * 4.5,
@@ -131,7 +185,7 @@ class _MainListPageState extends State<MainListPage> {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/edit profile/Rectangle 25.png'),
+                    image: AssetImage('assets/Rectangle 25.png'),
                     fit: BoxFit.fill
                 ),
               ),
@@ -145,7 +199,7 @@ class _MainListPageState extends State<MainListPage> {
                         top: SizeConfig.screenHeight * 0.05,
                         bottom: SizeConfig.screenHeight * 0.05,
                       ),
-                      child: Image(image: AssetImage('assets/listogetlogo1.png'),
+                      child: Image(image: AssetImage('assets/applogo.png'),
                         height: SizeConfig.blockSizeVertical * 8,
                         width: SizeConfig.screenWidth * 0.8,)
                   ),
@@ -160,7 +214,7 @@ class _MainListPageState extends State<MainListPage> {
                     width: SizeConfig.screenWidth * 0.8,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/my list/tile.png'),
+                            image: AssetImage('assets/tile.png'),
                             fit: BoxFit.fitWidth
                         )),
                     child: TextFormField(
@@ -182,7 +236,7 @@ class _MainListPageState extends State<MainListPage> {
                     ),
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/homepage/Rectangle 26.png'),
+                            image: AssetImage('assets/Rectangle 26.png'),
                             fit: BoxFit.fill
                         )),
                   )
@@ -200,11 +254,11 @@ class _MainListPageState extends State<MainListPage> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            ListView(
+            ListView.builder(
               physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              children: [
-                Container(
+              shrinkWrap: true,itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length:0,
+              itemBuilder: (context,index) {
+                return Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.05,
                       left: SizeConfig.screenWidth * 0.03,
@@ -215,7 +269,8 @@ class _MainListPageState extends State<MainListPage> {
                       borderRadius: BorderRadius.circular(5.0)
                   ),
                   child: ListTile(
-                    onTap: (){
+                    onTap: () {
+                      print("xbjcbj");
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ProductList()),
@@ -225,107 +280,60 @@ class _MainListPageState extends State<MainListPage> {
                       margin: EdgeInsets.only(
                           bottom: SizeConfig.blockSizeVertical * 2
                       ),
-                      child: Text('Monthly List',style: TextStyle(
+                      child: Text('Monthly List', style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),),
                     ),
-                    subtitle: Text('Money Spent : 3500'),
+                    subtitle: Text(getListItemsModel != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length>0 ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice}':""),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(child: Text('Item Qty: 35',
+                        Container(child: Text(getListItemsModel != null  && getListItemsModel.docs.length>0 &&getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity}':"",
                           style: TextStyle(
                               color: Colors.grey,
                               fontSize: SizeConfig.blockSizeVertical * 1.75
                           ),),
                           margin: EdgeInsets.only(
-                              bottom: SizeConfig.blockSizeVertical * 2
+                              bottom: SizeConfig.blockSizeVertical * 1
                           ),
                         ),
-                        Icon(Icons.add,color: Colors.green,)
+                        Container(
+                            decoration: BoxDecoration(shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Colors.green, width: 1.0)),
+                            child: Icon(Icons.add, color: Colors.green,))
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.05,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                    title: Container(
-                      margin: EdgeInsets.only(
-                          bottom: SizeConfig.blockSizeVertical * 2
-                      ),
-                      child: Text('Occasion List',style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    ),
-                    subtitle: Text('Money Spent : 3500'),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(child: Text('Item Qty: 35',
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: SizeConfig.blockSizeVertical * 1.75
-                          ),),
-                          margin: EdgeInsets.only(
-                              bottom: SizeConfig.blockSizeVertical * 2
-                          ),
-                        ),
-                        Icon(Icons.add,color: Colors.green,)
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: SizeConfig.screenHeight * 0.05,
-                      left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
-                  child: ListTile(
-                    title: Container(
-                      margin: EdgeInsets.only(
-                          bottom: SizeConfig.blockSizeVertical * 2
-                      ),
-                      child: Text('Daily List',style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    ),
-                    subtitle: Text('Money Spent : 3500'),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(child: Text('Item Qty: 35',
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: SizeConfig.blockSizeVertical * 1.75
-                          ),),
-                          margin: EdgeInsets.only(
-                              bottom: SizeConfig.blockSizeVertical * 2
-                          ),
-                        ),
-                        Icon(Icons.add,color: Colors.green,)
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                );
+              }
+
             ),
           ],
         ),
       ),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

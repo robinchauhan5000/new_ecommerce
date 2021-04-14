@@ -5,16 +5,18 @@ import '../api/ApiEndPoint.dart';
 import '../api/ApiHitter.dart';
 import 'package:flutter_ecommerce/models/LoginEntity.dart';
 
-class UpdatePasswordRepo extends BaseRepository{
+class AddedCartItemsRepo extends BaseRepository{
 
-  Future<LoginEntity> updatePassword(String password,
-      BuildContext context,String mobile,
+  Future<LoginEntity> cartItems(List itemListId,
+      String userId,
+      BuildContext context,
       {String userToken}) async {
-    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.updatePassword,
+    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.login,
         context: context,
+        headers: {'content-type':'application/json'},
         data: {
-         "user_registration_mobile_number" : mobile,
-          "user_registration_password" : password,
+          "itemListId" : itemListId,
+          "userId" : userId,
         });
     try {
       if (apiResponse.status) {

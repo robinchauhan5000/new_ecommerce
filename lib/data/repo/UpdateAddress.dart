@@ -21,7 +21,7 @@ class UpdateAddress extends BaseRepository{
         "user_state":userState,
         "user_country":userCountry,
         "user_zip_code":userZipCode,
-          "id":id
+        "id":id
         });
     try {
       if (apiResponse.status) {
