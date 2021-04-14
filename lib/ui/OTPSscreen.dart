@@ -10,6 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 import 'package:flutter_ecommerce/data/repo/VerifyOtp.dart';
+import 'package:flutter_ecommerce/ui/MainLists.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
+import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 
 class OTPScreen extends StatefulWidget
 {
@@ -37,7 +41,7 @@ class _OTPScreenState extends State<OTPScreen> {
       isdetail = false,
       isinterest = false,
       isloading = false;
-
+  var userrepo = new GetLoginUser();
   StreamController<ErrorAnimationType> errorController;
   @override
   void initState() {
@@ -195,7 +199,33 @@ class _OTPScreenState extends State<OTPScreen> {
                        });
                        if(value.status==1)
                          {
-                           showAlertDialog(context,value.message,"otp");
+                           userrepo.getUser(email:value.userRegistrationEmail).then((profile) {
+                             setState(()
+                             {
+                               isloading = false;
+                             });
+                             if(profile.status==1)
+                             {
+                               setState(()
+                               {
+                                 SharedPreferencesTest()
+                                     .saveuserdata("set", userdata: profile);
+                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                                 {
+                                   return MainListPage();
+                                 }));
+                               });
+                             }
+                             else
+                             {
+                               showAlertDialog(context,value.message,"");
+                             }
+                           }).catchError((onError)
+                           {
+                             setState(() {
+                               isloading = false;
+                             });
+                           });
                          }
                        else
                          {

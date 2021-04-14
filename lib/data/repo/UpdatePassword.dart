@@ -10,10 +10,11 @@ class UpdatePasswordRepo extends BaseRepository{
   Future<LoginEntity> updatePassword(String password,
       BuildContext context,String mobile,
       {String userToken}) async {
-    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.updatePassword,
+    print(ApiEndpoint.updatePassword+"$mobile");
+
+    ApiResponse apiResponse = await apiHitter.getPutApiResponse(ApiEndpoint.updatePassword+"$mobile",
         context: context,
         data: {
-         "user_registration_mobile_number" : mobile,
           "user_registration_password" : password,
         });
     try {

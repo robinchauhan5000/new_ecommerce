@@ -313,7 +313,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 CountryCodePicker(
                                   onChanged: _onCountryChange,
                                   // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                                  initialSelection: 'US',showFlagMain: true,
+                                  initialSelection: '+91',showFlagMain: true,
                                   // optional. Shows only country name and flag
                                   showCountryOnly: false,hideMainText: false,
                                   padding: EdgeInsets.only(right: 4.0),
@@ -423,6 +423,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               keyboardType: TextInputType.emailAddress,
                               validator: (s) {
                                 if (s.trim().isEmpty) return "Confirm Password is required";
+                                if(cpassword.text.trim().toString()!=password.text.trim().toString()) return "Passwords should be same";
                                 return null;
                               },
                               onFieldSubmitted: (s) =>

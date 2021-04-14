@@ -8,7 +8,12 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/data/repo/UpdatePassword.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
 class ResetPassword extends StatefulWidget
 {
@@ -18,16 +23,18 @@ class ResetPassword extends StatefulWidget
 
 class _ResetPasswordState extends State<ResetPassword> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final TextEditingController emailCont = new TextEditingController();
+  final TextEditingController passwordcont = new TextEditingController();
+  final TextEditingController cpasscont = new TextEditingController();
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
   bool autoValidate = false;
   String currentpin = "";
-  var passCont = TextEditingController();
   bool isRegisterd = false;
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
   var applogo = "";
+  var updatepassword = new UpdatePasswordRepo();
+  GetLoginUserEntity entity = new GetLoginUserEntity();
   bool hasError = false,
       iscode = false,
       isdetail = false,
@@ -38,7 +45,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    SharedPreferencesTest().saveuserdata("get").then((value) {
+      setState(() {
+        Map userupdateddata = json.decode(value);
+        entity = GetLoginUserEntity.fromJson(userupdateddata);
+      });
+    });
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
 
@@ -46,7 +58,9 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     // TODO: implement build
     SizeConfig().init(context);
-    return SafeArea(
+    SizeConfig().init(context);
+    List<Widget> widgetList = new List<Widget>();
+    var child =  SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
@@ -150,7 +164,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 left: SizeConfig.blockSizeHorizontal*8,right:
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
-                              controller: emailCont,
+                              controller: passwordcont,
                               cursorColor:logincolor,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
@@ -163,7 +177,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: (s) {
-                                if (s.trim().isEmpty) return "Password is required";
+                                if (passwordcont.text.trim().isEmpty) return "Password is required";
+                                if (passwordcont.text.trim().length<8) return "Password should be atleast 8 digits";
+                                if (cpasscont.text.trim().toString()!=passwordcont.text.trim().toString()) return "Passwords should be same";
                                 return null;
                               },
                               onFieldSubmitted: (s) =>
@@ -184,7 +200,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 left: SizeConfig.blockSizeHorizontal*8,right:
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
-                              controller: emailCont,
+                              controller: cpasscont,
                               cursorColor:logincolor,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
@@ -198,11 +214,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                               keyboardType: TextInputType.emailAddress,
                               validator: (s) {
                                 if (s.trim().isEmpty) return "Confirm Password is required";
+                                if (cpasscont.text.trim().toString()!=passwordcont.text.trim().toString())
+                                  {
+                                    return "Passwords should be same";
+                                  }
                                 return null;
                               },
                               onFieldSubmitted: (s) =>
                                   FocusScope.of(context).requestFocus(passFocus),
-                              textInputAction: TextInputAction.next,
+                              textInputAction: TextInputAction.done,
                             ),
                           ),
 
@@ -214,7 +234,27 @@ class _ResetPasswordState extends State<ResetPassword> {
                               if (formKey.currentState.validate())
                               {
                                 formKey.currentState.save();
-                                Fluttertoast.showToast(msg: "Success!");
+                                setState(() {
+                                  isloading = true;
+                                });
+                                var coun = entity.docs.elementAt(0).userCountry.split("+");
+                                updatepassword.updatePassword(passwordcont.text.trim(), context, entity.docs.elementAt(0).userMobile).then((value) {
+                                  setState(() {
+                                    isloading = false;
+                                  });
+                                  if(value.status==1)
+                                    {
+                                      showAlertDialog(context,value.message,"Reset");
+                                    }
+                                  else
+                                    {
+                                      showAlertDialog(context,value.message,"");
+                                    }
+                                }).catchError((onError){
+                                  setState(() {
+                                    isloading = false;
+                                  });
+                                });
                               } else {
                                 autoValidate = true;
                               }
@@ -264,5 +304,28 @@ class _ResetPasswordState extends State<ResetPassword> {
             ),
           ),),),),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(appColorPrimary),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

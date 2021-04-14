@@ -9,7 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'dart:io';
 import 'package:flutter_ecommerce/ui/EditProfile.dart';
-
+import 'dart:convert';
+import 'package:flutter_ecommerce/models/LoginEntity.dart';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_ecommerce/data/repo/UpdateAddress.dart';
 
 class EditProfile2 extends StatefulWidget {
   @override
@@ -31,30 +39,45 @@ class _EditProfile2State extends State<EditProfile2> {
   bool autoValidate = false;
   String currentpin = "";
   bool isRegisterd = false;
-
+  var updateaddress = new UpdateAddress();
   var applogo = "";
   bool hasError = false,
       iscode = false,
       isdetail = false,
       isinterest = false,
       isloading = false;
+  var userrepo = new GetLoginUser();
+  GetLoginUserEntity entity = new GetLoginUserEntity();
   StreamController<ErrorAnimationType> errorController;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    isloading = false;
+    SharedPreferencesTest().saveuserdata("get").then((value) {
+      setState(() {
+        Map userupdateddata = json.decode(value);
+        entity = GetLoginUserEntity.fromJson(userupdateddata);
+        address.text = entity.docs.elementAt(0).userAddress!=null? entity.docs.elementAt(0).userAddress:"";
+        state.text = entity.docs.elementAt(0).userState!=null? entity.docs.elementAt(0).userState:"";
+        country.text = entity.docs.elementAt(0).userCountry!=null? entity.docs.elementAt(0).userCountry:"";
+        zipCode.text = entity.docs.elementAt(0).userZipCode!=null? entity.docs.elementAt(0).userZipCode:"";
 
+      });
+    });
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SafeArea(
+    List<Widget> widgetList = new List<Widget>();
+    var child =  SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: Column(
+          child: entity!=null? Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
@@ -99,7 +122,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             shape: BoxShape.circle,color: appmaincolor,
 
                             image: DecorationImage(image:
-                            FileImage(File(""))),
+                            CachedNetworkImageProvider("")),
                           ),
                         ),
                         Container(
@@ -107,7 +130,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text("User Name",
+                            child: Text(entity.docs.elementAt(0).userName,
                                 style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*2.25,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
@@ -117,7 +140,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text("username@mail.com",
+                            child: Text(entity.docs.elementAt(0).userEmail,
                                 style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*1.5,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
@@ -125,7 +148,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text("8798546521320",style: GoogleFonts.poppins(textStyle:
+                            child: Text(entity.docs.elementAt(0).userMobile,style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*1.5,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
                         InkWell(
@@ -151,7 +174,7 @@ class _EditProfile2State extends State<EditProfile2> {
                               SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
                         ),
                       ],),],)),
-              
+
               Container(
                 margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
                 child: Form(
@@ -164,21 +187,20 @@ class _EditProfile2State extends State<EditProfile2> {
                        ),
                       Container(
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/tile.png'),
-                            fit: BoxFit.fitWidth
-                          )
+                            image: DecorationImage(
+                                image: AssetImage('assets/tile2.png'),
+                                fit: BoxFit.fitWidth
+                            )
                         ),
                         child: TextFormField(
                           focusNode: addressFocus,
                           controller: address,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
-                          maxLines: 5,
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                            border: InputBorder.none
+                            border: InputBorder.none,contentPadding: EdgeInsets.all(8.0)
                           ),
                           onFieldSubmitted: (term){
                             addressFocus.unfocus();
@@ -192,10 +214,11 @@ class _EditProfile2State extends State<EditProfile2> {
                           },
                         ),
                       ),
-                      Container(child: Text("State",style: TextStyle(color: Colors.black),),
+                      Container(
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*1.5),
+                        child: Text("State",style: TextStyle(color: Colors.black,fontSize: SizeConfig.blockSizeVertical*2,fontWeight: FontWeight.w600),),
                       ),
                       Container(
-                        height: SizeConfig.screenHeight * 0.08,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/tile2.png'),
@@ -210,7 +233,7 @@ class _EditProfile2State extends State<EditProfile2> {
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                              border: InputBorder.none
+                              border: InputBorder.none,contentPadding: EdgeInsets.all(8.0)
                           ),
                           onFieldSubmitted: (term){
                             stateFocus.unfocus();
@@ -224,10 +247,11 @@ class _EditProfile2State extends State<EditProfile2> {
                           },
                         ),
                       ),
-                      Container(child: Text("Country",style: TextStyle(color: Colors.black),),
+                      Container(
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*1.5),
+                        child: Text("Country",style: TextStyle(color: Colors.black,fontSize: SizeConfig.blockSizeVertical*2,fontWeight: FontWeight.w600),),
                       ),
                       Container(
-                        height: SizeConfig.screenHeight * 0.08,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/tile2.png'),
@@ -239,11 +263,10 @@ class _EditProfile2State extends State<EditProfile2> {
                           controller: country,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
-                          maxLines: 8,
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                              border: InputBorder.none
+                              border: InputBorder.none,contentPadding: EdgeInsets.all(8.0)
                           ),
                           onFieldSubmitted: (term){
                             countryFocus.unfocus();
@@ -257,10 +280,11 @@ class _EditProfile2State extends State<EditProfile2> {
                           },
                         ),
                       ),
-                      Container(child: Text("Zipcode",style: TextStyle(color: Colors.black),),
+                      Container(
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*1.5),
+                        child: Text("Zipcode",style: TextStyle(color: Colors.black,fontSize: SizeConfig.blockSizeVertical*2,fontWeight: FontWeight.w600),),
                       ),
                       Container(
-                        height: SizeConfig.screenHeight * 0.08,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/tile2.png'),
@@ -272,11 +296,10 @@ class _EditProfile2State extends State<EditProfile2> {
                           controller: zipCode,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.done,
-                          maxLines: 8,
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
-                              border: InputBorder.none
+                              border: InputBorder.none,contentPadding: EdgeInsets.all(8.0)
                           ),
                           onFieldSubmitted: (term){
                             zipFocus.unfocus();
@@ -289,23 +312,62 @@ class _EditProfile2State extends State<EditProfile2> {
                           },
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                            alignment: Alignment.center,
-                            width: SizeConfig.blockSizeHorizontal*22.5,
-                            margin: EdgeInsets.only(
-                                top: SizeConfig.blockSizeVertical*0.1,
-                                bottom: SizeConfig.blockSizeVertical*0.1),
-                            padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                            ),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/save button.png'),
-                                )
-                            ),
-                            child:Text("Save",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                            SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                      InkWell(
+                        onTap: ()
+                        {
+                          if (formKey.currentState.validate())
+                          {
+                            formKey.currentState.save();
+                            setState(() {
+                              isloading = true;
+                            });
+                            updateaddress.updateAddress(address.text.trim().toString(), state.text.trim().toString(),
+                                country.text.trim().toString(), zipCode.text.toString(), entity.docs.elementAt(0).sId, context).then((value) {
+                              setState(() {
+                                isloading = false;
+                              });
+                              if(value.status==1)
+                                {
+                                  entity.docs.elementAt(0).userAddress = value.docs.userAddress;
+                                  entity.docs.elementAt(0).userState = value.docs.userState;
+                                  entity.docs.elementAt(0).userCountry = value.docs.userCountry;
+                                  entity.docs.elementAt(0).userZipCode = value.docs.userZipCode;
+                                  SharedPreferencesTest()
+                                      .saveuserdata("set", userdata: entity);
+                                  showAlertDialog(context,value.message,"UpdateProfile");
+                                }
+                              else
+                                {
+                                  showAlertDialog(context,value.message,"");
+                                }
+                            }).catchError((onError){
+                              setState(() {
+                                isloading = false;
+                              });
+                            });
+                          } else {
+                            autoValidate = true;
+                          }
+
+                        },
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                              alignment: Alignment.center,
+                              width: SizeConfig.blockSizeHorizontal*22.5,
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical*3,
+                                  bottom: SizeConfig.blockSizeVertical*0.1),
+                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                              ),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/save button.png'),
+                                  )
+                              ),
+                              child:Text("Save",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
+                              SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                        ),
                       ),
                     ],
                   ),
@@ -313,9 +375,32 @@ class _EditProfile2State extends State<EditProfile2> {
                 ),
               ),
             ],
-          ),
+          ):SizedBox(),
         ),
         ),
       );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(appColorPrimary),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

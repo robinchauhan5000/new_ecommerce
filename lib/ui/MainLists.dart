@@ -4,6 +4,10 @@ import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -11,6 +15,18 @@ class MainListPage extends StatefulWidget {
 }
 
 class _MainListPageState extends State<MainListPage> {
+  GetLoginUserEntity entity = new GetLoginUserEntity();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SharedPreferencesTest().saveuserdata("get").then((value) {
+      setState(() {
+        Map userupdateddata = json.decode(value);
+        entity = GetLoginUserEntity.fromJson(userupdateddata);
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -55,7 +71,7 @@ class _MainListPageState extends State<MainListPage> {
                         margin: EdgeInsets.only(
                             top: SizeConfig.blockSizeVertical * 1.25
                         ),
-                        child: Text("User Name",style: TextStyle(
+                        child: Text(entity.docs.elementAt(0).userName,style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
                             fontSize: SizeConfig.blockSizeVertical * 2.25
                         ),),
@@ -64,7 +80,7 @@ class _MainListPageState extends State<MainListPage> {
                         margin: EdgeInsets.only(
                             top: SizeConfig.blockSizeVertical * 0.08
                         ),
-                        child: Text("Username@mail.com",style: TextStyle(
+                        child: Text(entity.docs.elementAt(0).userEmail,style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
                             fontSize: SizeConfig.blockSizeVertical *1.5
                         ),),

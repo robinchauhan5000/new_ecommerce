@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_ecommerce/models/LoginEntity.dart';
-
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 
 class SharedPreferencesTest {
   final String login = "login";
@@ -52,7 +52,7 @@ class SharedPreferencesTest {
   }
 
 
-  Future<String> saveuserdata(String type, {LoginEntity userdata}) async {
+  Future<String> saveuserdata(String type, {GetLoginUserEntity userdata}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (type == "set") {
       prefs.setString('userdata', json.encode(userdata.toJson()));

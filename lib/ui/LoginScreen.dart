@@ -21,6 +21,7 @@ import 'package:flutter_ecommerce/ui/CheckoutScreen.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 import 'package:flutter_ecommerce/ui/MainLists.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 class LoginScreen extends StatefulWidget
 {
@@ -40,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
   var applogo = "";
+  var userrepo = new GetLoginUser();
   var loginRepo = LoginUserRepo();
   var fbrepo = FbUserRepo();
   var googlerepo = GoogleUserRepo();
@@ -281,19 +283,43 @@ class _LoginScreenState extends State<LoginScreen> {
                                         isloading =true;
                                       });
                                       loginRepo.loginUser(emailCont.text.trim().toString(), passCont.text.trim().toString(), context).then((value) {
-                                        setState(() {
-                                          isloading = false;
-                                        });
+
                                         if(value.status==1)
                                         {
-                                          SharedPreferencesTest()
-                                              .saveuserdata("set", userdata: value);
-                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                            return MainListPage();
-                                          }));
+                                          userrepo.getUser(email:value.userRegistrationEmail).then((profile) {
+                                            setState(()
+                                            {
+                                              isloading = false;
+                                            });
+                                            if(profile.status==1)
+                                            {
+                                              setState(()
+                                              {
+                                                SharedPreferencesTest()
+                                                    .saveuserdata("set", userdata: profile);
+                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                                                {
+                                                  return MainListPage();
+                                                }));
+                                              });
+                                            }
+                                            else
+                                            {
+                                              showAlertDialog(context,value.message,"");
+                                            }
+                                          }).catchError((onError)
+                                          {
+                                            setState(() {
+                                              isloading = false;
+                                            });
+                                          });
+
                                         }
                                         else
                                         {
+                                          setState(() {
+                                            isloading = false;
+                                          });
                                           showAlertDialog(context,value.message,"");
                                         }
                                       }).catchError((onError){

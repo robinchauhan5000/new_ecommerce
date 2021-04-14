@@ -14,14 +14,14 @@ class UpdateAddress extends BaseRepository{
       String userZipCode, String id,
       BuildContext context,
       {String userToken}) async {
-    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.updateAddress,
+    print(id);
+    ApiResponse apiResponse = await apiHitter.getPutApiResponse("https://shoppinglist.sellatomy.com:3000/userProfile/updateAdddress/"+"$id",
         context: context,
         data: {
         "user_address":userAddress,
         "user_state":userState,
         "user_country":userCountry,
         "user_zip_code":userZipCode,
-        "id":id
         });
     try {
       if (apiResponse.status) {

@@ -102,11 +102,16 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
                         }));*/
-                      }else if(type == "login"){
+                      }else if(type == "Reset"){
+                        Navigator.of(context).pop();
                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
                         }));*/
                       }
+                      else if(type=="UpdateProfile")
+                        {
+                          Navigator.of(context).pop();
+                        }
                     },
                     /*   onTap: () async {
                       try {

@@ -14,7 +14,7 @@ class UpdateProfileRepo extends BaseRepository{
       String profileImage, String id,
       BuildContext context,
       {String userToken}) async {
-    ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.updateProfile,
+    ApiResponse apiResponse = await apiHitter.getPutApiResponse(ApiEndpoint.updateProfile,
         context: context,
         data: {
         "user_name":userName,

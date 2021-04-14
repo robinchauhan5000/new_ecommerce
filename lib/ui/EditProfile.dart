@@ -15,6 +15,7 @@ import 'package:flutter_ecommerce/models/LoginEntity.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 
 class EditProfile extends StatefulWidget
 {
@@ -29,7 +30,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController mobilenumber = new TextEditingController();
   var namefocus = FocusNode();
   var emailfocus = FocusNode();
-  LoginEntity entity = new LoginEntity();
+  GetLoginUserEntity entity = new GetLoginUserEntity();
   var mobfocus = FocusNode();
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
@@ -54,8 +55,8 @@ class _EditProfileState extends State<EditProfile> {
     SharedPreferencesTest().saveuserdata("get").then((value) {
       setState(() {
         Map userupdateddata = json.decode(value);
-        entity = LoginEntity.fromJson(userupdateddata);
-        userrepo.getUser(email:entity.userRegistrationEmail).then((value) {
+        entity = GetLoginUserEntity.fromJson(userupdateddata);
+        userrepo.getUser(email:entity.docs.elementAt(0).userEmail).then((value) {
           setState(() {
             isloading = false;
           });
