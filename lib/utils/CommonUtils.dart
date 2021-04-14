@@ -97,13 +97,15 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                     onTap: () {
                       Navigator.of(context).pop();
                       if(type == "otp"){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                       /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
-                        }));
+                        }));*/
                       }else if(type == "login"){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                       /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
-                        }));
+                        }));*/
                       }
                     },
                     /*   onTap: () async {

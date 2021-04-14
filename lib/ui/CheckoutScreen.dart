@@ -26,7 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/drawer/Rectangle 55.jpg'),
+                    image: AssetImage('assets/Rectangle 55.jpg'),
                     fit: BoxFit.cover
                 )
             ),
@@ -62,7 +62,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                   ),
                 ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 1.jpg'))),
+                Container(child: Image(image: AssetImage('assets/Line 1.jpg'))),
                 Container(
                   margin: EdgeInsets.only(
                       top: SizeConfig.blockSizeVertical * 4.5,
@@ -99,7 +99,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.4,
                 ),
-                Container(child: Image(image: AssetImage('assets/drawer/Line 2.jpg'))),
+                Container(child: Image(image: AssetImage('assets/Line 2.jpg'))),
                 Container(
                   margin: EdgeInsets.only(
                       top: SizeConfig.blockSizeVertical * 4.5,
@@ -127,7 +127,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/homepage/Ellipse 1.png'),
+                        image: AssetImage('assets/Ellipse 1.png'),
                         fit: BoxFit.fill
                     )
                 ),
@@ -166,7 +166,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/my list/Rectangle 55.png'),
+                      image: AssetImage('assets/Rectangle 55.png'),
                       fit: BoxFit.fill
                   )
               ),
@@ -177,7 +177,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     height: SizeConfig.screenHeight * 0.16,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/my list/Rectangle 32.png',),
+                            image: AssetImage('assets/Rectangle 32.png',),
                             fit: BoxFit.fill
                         )
                     ),
@@ -205,7 +205,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 width:SizeConfig.screenWidth * 0.8,
                                 decoration: BoxDecoration(
                                     image:  DecorationImage(
-                                        image: AssetImage('assets/my list/tile.png'),
+                                        image: AssetImage('assets/tile.png'),
                                         fit: BoxFit.fitWidth
                                     )),
                                 child: TextFormField(
@@ -332,7 +332,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -376,7 +376,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -391,7 +391,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -435,7 +435,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -450,7 +450,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -494,7 +494,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -509,7 +509,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -553,7 +553,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -568,7 +568,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -612,7 +612,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -627,7 +627,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -671,7 +671,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -686,7 +686,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],
@@ -730,7 +730,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     color: Colors.red,
                                   )
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
+                              child: ImageIcon(AssetImage('assets/minus.png'),
                                 color: Colors.red,),
                             ),
                             Container(child: Text("1"),
@@ -745,7 +745,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   border: Border.all(
                                     color: Colors.green,
                                   )                            ),
-                              child: ImageIcon(AssetImage('assets/add item to list/plus.png'),
+                              child: ImageIcon(AssetImage('assets/plus.png'),
                                 color: Colors.green,),
                             ),
                           ],

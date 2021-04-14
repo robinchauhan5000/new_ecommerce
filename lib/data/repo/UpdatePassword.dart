@@ -8,11 +8,12 @@ import 'package:flutter_ecommerce/models/LoginEntity.dart';
 class UpdatePasswordRepo extends BaseRepository{
 
   Future<LoginEntity> updatePassword(String password,
-      BuildContext context,
+      BuildContext context,String mobile,
       {String userToken}) async {
     ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.updatePassword,
         context: context,
         data: {
+         "user_registration_mobile_number" : mobile,
           "user_registration_password" : password,
         });
     try {

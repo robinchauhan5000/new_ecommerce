@@ -67,6 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
       //or set color with: Color(0xFF0000FF)
     ));
+    countrycode = "+91";
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
 

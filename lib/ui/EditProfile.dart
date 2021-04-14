@@ -7,8 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_ecommerce/ui/EditProfile2.dart';
-
+import 'package:flutter_ecommerce/ui/ResetPassword.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:flutter_ecommerce/models/LoginEntity.dart';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
 class EditProfile extends StatefulWidget
 {
@@ -23,6 +29,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController mobilenumber = new TextEditingController();
   var namefocus = FocusNode();
   var emailfocus = FocusNode();
+  LoginEntity entity = new LoginEntity();
   var mobfocus = FocusNode();
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
@@ -30,7 +37,8 @@ class _EditProfileState extends State<EditProfile> {
   String currentpin = "";
   bool isRegisterd = false;
   final GlobalKey<State> loginloader = new GlobalKey<State>();
-
+  GetLoginUserEntity userdata = new GetLoginUserEntity();
+  var userrepo = new GetLoginUser();
   var applogo = "";
   bool hasError = false,
       iscode = false,
@@ -42,10 +50,36 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
+    isloading = true;
+    SharedPreferencesTest().saveuserdata("get").then((value) {
+      setState(() {
+        Map userupdateddata = json.decode(value);
+        entity = LoginEntity.fromJson(userupdateddata);
+        userrepo.getUser(email:entity.userRegistrationEmail).then((value) {
+          setState(() {
+            isloading = false;
+          });
+          if(value.status==1)
+            {
+              setState(() {
+                username.text = value.docs.elementAt(0).userName;
+                emailCont.text = value.docs.elementAt(0).userEmail;
+                mobilenumber.text = value.docs.elementAt(0).userMobile;
+              });
+
+            }
+          else
+            {
+              showAlertDialog(context,value.message,"");
+            }
+        }).catchError((onError)
+        {
+          setState(() {
+            isloading = false;
+          });
+        });
+      });
+    });
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
 
@@ -53,7 +87,8 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     // TODO: implement build
     SizeConfig().init(context);
-    return SafeArea(
+    List<Widget> widgetList = new List<Widget>();
+    var child = SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
@@ -61,7 +96,7 @@ class _EditProfileState extends State<EditProfile> {
           width: SizeConfig.blockSizeHorizontal*100,
           height: SizeConfig.blockSizeVertical*100,
           decoration: new BoxDecoration(image: DecorationImage(image:
-          AssetImage('assets/editprofile.png'),fit: BoxFit.fitWidth)),
+          AssetImage('assets/editprofile.png'),fit: BoxFit.fill)),
           child: SingleChildScrollView(child: Container(child:
               Form(
                 key: formKey,
@@ -70,18 +105,24 @@ class _EditProfileState extends State<EditProfile> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
-                            left: SizeConfig.blockSizeHorizontal*4),
-                        child: Icon(Icons.sort,size:
-                        SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
-                      Container(
+                      InkWell(
+                        onTap: ()
+                        {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
+                              left: SizeConfig.blockSizeHorizontal*4),
+                          child: Icon(Icons.arrow_back,size:
+                          SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
+                      ),
+                     /* Container(
                         alignment: Alignment.centerRight,
                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2,
                            right: SizeConfig.blockSizeHorizontal*4),
                         child: Icon(Icons.notifications_on_outlined,size:
-                      SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),
+                      SizeConfig.blockSizeVertical*5.5,color: Colors.white,),),*/
                     ],
                   ),
                   InkWell(
@@ -135,7 +176,7 @@ class _EditProfileState extends State<EditProfile> {
                       style: TextStyle(fontSize: 16.0 ),showCursor: true,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(8),
-                          hintText: "Password",hintStyle:
+                          hintText: "Username",hintStyle:
                       GoogleFonts.poppins(textStyle:
                       TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
                           fontWeight: FontWeight.w400)),
@@ -233,14 +274,22 @@ class _EditProfileState extends State<EditProfile> {
                       textInputAction: TextInputAction.done,
                     ),
                   ),
-                  Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2),
-                      width:SizeConfig.blockSizeHorizontal*100,
-                      height: SizeConfig.blockSizeVertical*5,
-                      child: Text("Reset Password",style: GoogleFonts.poppins(textStyle:
-                      TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.white,
-                          fontWeight: FontWeight.w600)))),
+                  InkWell(
+                    onTap: ()
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ResetPassword();
+                      }));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2),
+                        width:SizeConfig.blockSizeHorizontal*100,
+                        height: SizeConfig.blockSizeVertical*5,
+                        child: Text("Reset Password",style: GoogleFonts.poppins(textStyle:
+                        TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.white,
+                            fontWeight: FontWeight.w600)))),
+                  ),
                   InkWell(
                     onTap: ()
                     {
@@ -281,5 +330,28 @@ class _EditProfileState extends State<EditProfile> {
          ),),),
       ),
     );
+    widgetList.add(child);
+    if (isloading) {
+      final modal = new Stack(
+        children: [
+          new Opacity(
+            opacity: 0.5,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          new Center(
+            child: new CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(appColorPrimary),
+            ),
+          ),
+        ],
+      );
+      widgetList.add(modal);
+    }
+
+    return
+      /* WillPopScope(
+            onWillPop: ,
+            child:*/
+      Stack(children: widgetList);
   }
 }

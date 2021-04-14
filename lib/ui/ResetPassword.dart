@@ -38,10 +38,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
+
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
 

@@ -19,7 +19,9 @@ import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
 import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
 import 'package:flutter_ecommerce/ui/CheckoutScreen.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
-
+import 'package:flutter_ecommerce/ui/MainLists.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
 class LoginScreen extends StatefulWidget
 {
   @override
@@ -46,10 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
   }
 
   @override
@@ -235,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ItemListGrid()),
+                            MaterialPageRoute(builder: (context) => ForgotPassword()),
                           );
                       },
                       child: Container(
@@ -288,7 +286,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                         if(value.status==1)
                                         {
-                                          showAlertDialog(context,value.message,"login");
+                                          SharedPreferencesTest()
+                                              .saveuserdata("set", userdata: value);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                                            return MainListPage();
+                                          }));
                                         }
                                         else
                                         {

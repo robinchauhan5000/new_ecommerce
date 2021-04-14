@@ -7,8 +7,8 @@ import 'package:flutter_ecommerce/models/ProductListingEntity.dart';
 
 class GetLoginUser extends BaseRepository {
   Future<GetLoginUserEntity> getUser(
-      {String token, String userId, String friendId}) async {
-    final uri = '${ApiEndpoint.BaseUrl}userProfile/:user_email';
+      {String email}) async {
+    final uri = '${ApiEndpoint.BaseUrl}userProfile/$email';
     var response = await Dio().get(uri,
         options: Options(
           /*  headers: {'Authorization': 'Bearer ${token}'},*/
