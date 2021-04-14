@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_ecommerce/ui/EditProfile2.dart';
-
 import 'dart:io';
 
 class EditProfile extends StatefulWidget
