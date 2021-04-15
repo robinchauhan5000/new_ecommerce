@@ -9,7 +9,7 @@ class ApiEndpoint
   static String resendOtp = "userRegister/resendotp";
   static String google = "userRegister/google";
   static String facebook = "userRegister/facebook";
-  static String updateProfile = "userProfile/updateProfile/:id";
+  static String updateProfile = "userProfile/updateProfile/";
   static String updateAddress = "userProfile/updateAdddress/";
   static String forgetPassword = "userRegister/forgotPassword";
   static String updatePassword = "userRegister/updatePassword/";

@@ -5,9 +5,9 @@ import '../../models/ForgotPasswordEntity.dart';
 import '../api/ApiEndPoint.dart';
 import '../api/ApiHitter.dart';
 
-class ForgotPasswordRepo extends BaseRepository{
+class ResendOtpRepo extends BaseRepository{
 
-  Future<ForgotPasswordEntity> forgotPassword(
+  Future<ForgotPasswordEntity> resendotp(
       String mobile, BuildContext context
       ) async {
     ApiResponse apiResponse = await apiHitter.getPostApiResponse(ApiEndpoint.resendOtp,

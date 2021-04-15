@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController emailCont = new TextEditingController();
   var formKey = GlobalKey<FormState>();
-  bool obscureText = true;
+  bool obscureText = false;
   bool autoValidate = false;
   var passCont = TextEditingController();
   bool isRegisterd = false;
@@ -210,10 +210,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizeConfig.blockSizeHorizontal*8),
                       child: TextFormField(
                         controller: passCont,
-                        cursorColor:logincolor,focusNode: passFocus,
+                        cursorColor:logincolor,focusNode: passFocus,obscureText: obscureText,
                         style: TextStyle(fontSize: 16.0 ),showCursor: true,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(8),
+                            contentPadding: EdgeInsets.all(8), suffixIcon: InkWell(
+                            onTap: ()
+                          {
+                            obscureText = !obscureText;
+                            setState(() {});
+                          },
+                              child: Icon(!obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,color: Colors.black,),
+                            ),
                             hintText: "Password",hintStyle:
                         GoogleFonts.poppins(textStyle:
                         TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,

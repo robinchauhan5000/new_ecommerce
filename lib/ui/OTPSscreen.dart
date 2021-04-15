@@ -14,11 +14,14 @@ import 'package:flutter_ecommerce/ui/MainLists.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
-
+import 'package:flutter_ecommerce/ui/ResetPassword.dart';
+import 'package:flutter_ecommerce/data/repo/ResendOtp.dart';
 class OTPScreen extends StatefulWidget
 {
   String mobilenumber;
-  OTPScreen(this.mobilenumber);
+  String email;
+  String coming;
+  OTPScreen(this.coming,this.mobilenumber,{this.email});
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -32,6 +35,7 @@ class _OTPScreenState extends State<OTPScreen> {
   String currentpin = "";
   var passCont = TextEditingController();
   bool isRegisterd = false;
+  var resend = new ResendOtpRepo();
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
   var otprepo = VerifyOtpRepo();
@@ -179,10 +183,32 @@ class _OTPScreenState extends State<OTPScreen> {
                     },
                   ),
                 ),
-
                 InkWell(
                   onTap: ()
                   {
+                    setState(() {
+                      isloading = true;
+                    });
+                    resend.resendotp(widget.mobilenumber, context).then((value) {
+                      setState(() {
+                        isloading = false;
+                      });
+                      showAlertDialog(context,value.message,"");
+                    }).catchError((onError){
+                      setState(() {
+                        isloading = false;
+                      });
+                    });
+                  },
+                  child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*1.25),
+                      child: Text("Resend OTP",style: GoogleFonts.poppins(textStyle:
+                      TextStyle(fontSize: SizeConfig.blockSizeVertical*2.5,color: Colors.blue,
+                          fontWeight: FontWeight.w600)))),
+                ),
+                InkWell(
+                  onTap: () {
                     if (currentpin.length < 6) {
                       errorController.add(ErrorAnimationType
                           .shake); // Triggering error shake animation
@@ -190,52 +216,74 @@ class _OTPScreenState extends State<OTPScreen> {
                         hasError = true;
                       });
                     } else {
-                     setState(() {
-                       isloading = true;
-                     });
-                     otprepo.loginUser( widget.mobilenumber, currentpin, context).then((value) {
-                       setState(() {
-                         isloading = false;
-                       });
-                       if(value.status==1)
-                         {
-                           userrepo.getUser(email:value.userRegistrationEmail).then((profile) {
-                             setState(()
-                             {
-                               isloading = false;
-                             });
-                             if(profile.status==1)
-                             {
-                               setState(()
-                               {
-                                 SharedPreferencesTest()
-                                     .saveuserdata("set", userdata: profile);
-                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
-                                 {
-                                   return MainListPage();
-                                 }));
-                               });
-                             }
-                             else
-                             {
-                               showAlertDialog(context,value.message,"");
-                             }
-                           }).catchError((onError)
-                           {
-                             setState(() {
-                               isloading = false;
-                             });
-                           });
-                         }
-                       else
-                         {
-                           showAlertDialog(context,value.message,"");
-                         }
-                     }).catchError((onError){
-                       setState(() {
-                         isloading = false;
-                       });
-                     });
+                      if (widget.coming == "Register") {
+                        setState(() {
+                          isloading = true;
+                        });
+                        otprepo.loginUser(
+                            widget.mobilenumber, currentpin, context).then((
+                            value) {
+                          setState(() {
+                            isloading = false;
+                          });
+                          if (value.status == 1) {
+                            userrepo.getUser(email: widget.email).then((
+                                profile) {
+                              setState(() {
+                                isloading = false;
+                              });
+                              if (profile.status == 1) {
+                                setState(() {
+                                  SharedPreferencesTest()
+                                      .saveuserdata("set", userdata: profile);
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return MainListPage();
+                                      }));
+                                });
+                              }
+                              else {
+                                showAlertDialog(context, value.message, "");
+                              }
+                            }).catchError((onError) {
+                              setState(() {
+                                isloading = false;
+                              });
+                            });
+                          }
+                          else {
+                            showAlertDialog(context, value.message, "");
+                          }
+                        }).catchError((onError) {
+                          setState(() {
+                            isloading = false;
+                          });
+                        });
+                      }
+                      else {
+                        setState(() {
+                          isloading = true;
+                        });
+                        otprepo.loginUser(
+                            widget.mobilenumber, currentpin, context).then((
+                            value) {
+                          setState(() {
+                            isloading = false;
+                          });
+                          if (value.status == 1) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return ResetPassword("Forgot",mobnum: widget.mobilenumber,);
+                            }));
+                          }
+                          else {
+                            showAlertDialog(context, value.message, "");
+                          }
+                        }).catchError((onError) {
+                          setState(() {
+                            isloading = false;
+                          });
+                        });
+                      }
                     }
                   },
                   child: Align(

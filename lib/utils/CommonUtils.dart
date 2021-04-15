@@ -108,8 +108,14 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                           return MainListPage();
                         }));*/
                       }
-                      else if(type=="UpdateProfile")
+                      else if(type=="UpdateProfile" || type=="Updated")
                         {
+                          Navigator.of(context).pop();
+                        }
+                      else if(type=="ResetPassword")
+                        {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                           Navigator.of(context).pop();
                         }
                     },

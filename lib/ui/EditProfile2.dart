@@ -82,7 +82,7 @@ class _EditProfile2State extends State<EditProfile2> {
             children: [
               Container(
                 width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight * 0.45,
+                height: SizeConfig.screenHeight * 0.46,
                 decoration: BoxDecoration(
                   image: DecorationImage(image:
                   AssetImage('assets/editprofiletile.png'),fit: BoxFit.fill)),
@@ -147,9 +147,9 @@ class _EditProfile2State extends State<EditProfile2> {
                         Container(
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
-                            height: SizeConfig.blockSizeVertical*3,
+                            height: SizeConfig.blockSizeVertical*3.5,
                             child: Text(entity.docs.elementAt(0).userMobile,style: GoogleFonts.poppins(textStyle:
-                            TextStyle(fontSize: SizeConfig.blockSizeVertical*1.5,color: Colors.white,
+                            TextStyle(fontSize: SizeConfig.blockSizeVertical*1.6,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
                         InkWell(
                           onTap: (){
@@ -163,7 +163,7 @@ class _EditProfile2State extends State<EditProfile2> {
                               margin: EdgeInsets.only(
                                   top: SizeConfig.blockSizeVertical*0.1,
                                   bottom: SizeConfig.blockSizeVertical*0.1),
-                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
+                              padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.6,
                               ),
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -171,7 +171,7 @@ class _EditProfile2State extends State<EditProfile2> {
                                 )
                               ),
                               child:Text("Edit",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                              SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
+                              SizeConfig.blockSizeVertical*2.2,color: Colors.white,fontWeight: FontWeight.w600)),)),
                         ),
                       ],),],)),
 

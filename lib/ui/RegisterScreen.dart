@@ -36,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   CountryCode country;
   String countrycode;
   bool obscureText = true;
+  bool cobscureText = true;
   bool autoValidate = false;
   String currentpin = "";
   var passCont = TextEditingController();
@@ -63,10 +64,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white,statusBarIconBrightness: Brightness.dark
-      //or set color with: Color(0xFF0000FF)
-    ));
     countrycode = "+91";
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
@@ -377,10 +374,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
                               controller: password,focusNode: passFocus,
-                              cursorColor:logincolor,
+                              cursorColor:logincolor,obscureText: obscureText,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
+                                onTap: ()
+                                {
+                                  obscureText = !obscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(!obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,color: Colors.black,),
+                              ),
                                   hintText: "Password",hintStyle:
                               GoogleFonts.poppins(textStyle:
                               TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
@@ -410,10 +416,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
                               controller: cpassword,focusNode: cpassFocus,
-                              cursorColor:logincolor,
+                              cursorColor:logincolor,obscureText: cobscureText,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
+                                onTap: ()
+                                {
+                                  cobscureText = !cobscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(!obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,color: Colors.black,),
+                              ),
                                   hintText: "Confirm Passowrd",hintStyle:
                               GoogleFonts.poppins(textStyle:
                               TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
@@ -489,7 +504,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => OTPScreen(countrycode.toString()+mobile.text.trim().toString())),
+                                          MaterialPageRoute(builder: (context) => OTPScreen("Register",countrycode.toString()+mobile.text.trim().toString(),email: emailCont.text.trim().toString(),)),
                                         );
                                       }
                                     else

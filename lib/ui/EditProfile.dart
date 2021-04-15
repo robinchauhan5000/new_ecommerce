@@ -11,11 +11,23 @@ import 'package:flutter_ecommerce/ui/ResetPassword.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_ecommerce/models/LoginEntity.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:flutter_ecommerce/utils/CWActionSheetScreen.dart';
+import 'package:images_picker/images_picker.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:flutter_ecommerce/data/repo/UpdateProfile.dart';
 
 class EditProfile extends StatefulWidget
 {
@@ -37,15 +49,19 @@ class _EditProfileState extends State<EditProfile> {
   bool autoValidate = false;
   String currentpin = "";
   bool isRegisterd = false;
+  String id;
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   GetLoginUserEntity userdata = new GetLoginUserEntity();
   var userrepo = new GetLoginUser();
+  var updateprofile = new UpdateProfileRepo();
   var applogo = "";
   bool hasError = false,
       iscode = false,
       isdetail = false,
       isinterest = false,
       isloading = false;
+  File _image;
+  String imagepath;
   StreamController<ErrorAnimationType> errorController;
   @override
   void initState() {
@@ -66,6 +82,8 @@ class _EditProfileState extends State<EditProfile> {
                 username.text = value.docs.elementAt(0).userName;
                 emailCont.text = value.docs.elementAt(0).userEmail;
                 mobilenumber.text = value.docs.elementAt(0).userMobile;
+                imagepath = value.docs.elementAt(0).userProfileImage;
+                id = value.docs.elementAt(0).sId;
               });
 
             }
@@ -131,7 +149,7 @@ class _EditProfileState extends State<EditProfile> {
                     {
 
                     },
-                    child:Container(
+                    child:/*Container(
                       width: SizeConfig.blockSizeHorizontal * 33,
                       height: SizeConfig.blockSizeHorizontal * 33,
                       margin: EdgeInsets.only(
@@ -142,16 +160,65 @@ class _EditProfileState extends State<EditProfile> {
                         image: DecorationImage(image:
                          FileImage(File(""))),
                         ),
-                      ),
+                      ),*/
+                    imagepath != null &&
+                        imagepath != ""
+                        ? CircleAvatar(
+                        radius: SizeConfig.blockSizeHorizontal * 14,
+                        backgroundColor: appmaincolor,
+                        backgroundImage: CachedNetworkImageProvider(
+                            imagepath!=null?imagepath:""))
+                        : CircleAvatar(
+                        radius: SizeConfig.blockSizeHorizontal * 14,
+                        backgroundColor: appmaincolor,
+                        backgroundImage: FileImage(
+                            File(_image != null ? _image.path : "")))
                     ),
-                  Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3.5),
-                      width:SizeConfig.blockSizeHorizontal*70,
-                      height: SizeConfig.blockSizeVertical*5,
-                      child: Text("Change Profile Picture",style: GoogleFonts.poppins(textStyle:
-                      TextStyle(fontSize: SizeConfig.blockSizeVertical*2.5,color: Colors.white,
-                          fontWeight: FontWeight.w500)))),
+                  InkWell(
+                    onTap: ()
+                    {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              ActionSheet().actionSheet(context, onCamera: () {
+                                FocusScope.of(context).unfocus();
+                                chooseCameraFile().then((File file) {
+                                  if (file != null) {
+                                    setState(() {
+                                      //   loading = true;
+                                    });
+                                  }
+                                }).catchError((onError) {});
+                              }, onGallery: () {
+                                FocusScope.of(context).unfocus();
+                                if(Platform.isAndroid)
+                                {
+                                  androidchooseImageFile().then((value) {
+                                    setState(() {
+                                      //  loading = true;
+                                    });
+                                  }).catchError((onError) {});
+                                } else {
+                                  chooseImageFile().then((File file)
+                                  {
+                                    if (file != null) {
+                                      setState(() {
+                                        //  loading = true;
+                                      });
+                                    }
+                                  }).catchError((onError) {});
+                                }
+                              }));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3.5),
+                        width:SizeConfig.blockSizeHorizontal*70,
+                        height: SizeConfig.blockSizeVertical*5,
+                        child: Text("Change Profile Picture",style: GoogleFonts.poppins(textStyle:
+                        TextStyle(fontSize: SizeConfig.blockSizeVertical*2.5,color: Colors.white,
+                            fontWeight: FontWeight.w500)))),
+                  ),
                   Container(
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4.25),
@@ -229,9 +296,8 @@ class _EditProfileState extends State<EditProfile> {
                         if (s.trim().isEmpty) return "Email is required";
                         return null;
                       },
-                      onFieldSubmitted: (s) =>
-                          FocusScope.of(context).requestFocus(mobfocus),
-                      textInputAction: TextInputAction.next,
+
+                      textInputAction: TextInputAction.done,
                     ),
                   ),
                   Container(
@@ -255,7 +321,7 @@ class _EditProfileState extends State<EditProfile> {
                         SizeConfig.blockSizeHorizontal*5),
                     child: TextFormField(
                       controller: mobilenumber,
-                      cursorColor:logincolor,focusNode: mobfocus,
+                      cursorColor:logincolor,focusNode: mobfocus,enabled: false,
                       style: TextStyle(fontSize: 16.0 ),showCursor: true,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(8),
@@ -279,7 +345,7 @@ class _EditProfileState extends State<EditProfile> {
                     onTap: ()
                     {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return ResetPassword();
+                        return ResetPassword("Profile");
                       }));
                     },
                     child: Container(
@@ -298,11 +364,28 @@ class _EditProfileState extends State<EditProfile> {
                       if (formKey.currentState.validate())
                       {
                         formKey.currentState.save();
-                        Fluttertoast.showToast(msg: "Success!");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditProfile2()),
-                        );
+                        setState(() {
+                          isloading = true;
+                        });
+                          updateprofile.updateProfile(username.text.trim().toString(), imagepath, emailCont.text.trim().toString(), _image, id, context).then((value) {
+                            setState(() {
+                              isloading = false;
+                            });
+                            if(value.status==1)
+                              {
+                                showAlertDialog(context,value.message,"Updated");
+                              }
+                            else
+                              {
+                                showAlertDialog(context,value.message,"");
+                              }
+
+                          }).catchError((onError){
+                            setState(() {
+                              isloading = false;
+                            });
+                          });
+
                       } else {
                         autoValidate = true;
                       }
@@ -354,5 +437,71 @@ class _EditProfileState extends State<EditProfile> {
             onWillPop: ,
             child:*/
       Stack(children: widgetList);
+  }
+  Future<File> chooseCameraFile() async {
+    /*await ImagePicker().getImage(source: ImageSource.camera).then((image) {
+      setState(() {
+        _image = image;
+      });
+    });*/
+    await ImagesPicker.openCamera(pickType: PickType.image, maxTime: 30)
+        .then((value) {
+      setState(() {
+        FocusScope.of(context).unfocus();
+        _image = new File(value.elementAt(0).path);
+        imagepath = "";
+
+      });
+    }).catchError((error) {
+      print(error.toString());
+    });
+    return _image;
+  }
+
+  Future<File> chooseImageFile() async {
+    await ImagesPicker.pick(count: 1, pickType: PickType.image).then((value) {
+      setState(() {
+        FocusScope.of(context).unfocus();
+        _image = new File(value.elementAt(0).path);
+        imagepath= "";
+
+      });
+    }).catchError((error) {
+      print(error.toString());
+    });
+    return _image;
+  }
+
+
+  Future<void> androidchooseImageFile() async {
+    await await MultiImagePicker.pickImages(
+      maxImages: 1,
+      enableCamera: false,
+      cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+      materialOptions: MaterialOptions(
+        actionBarColor: "#0A79DF",
+        actionBarTitle: "Smart Trucker",
+        allViewTitle: "All Photos",
+        useDetailsView: false,
+        selectionLimitReachedText: "Please select 1 images at a time",
+        selectCircleStrokeColor: "#0A79DF",
+      ),
+    ).then((value) {
+      setState(() async {
+        FocusScope.of(context).unfocus();
+
+        for (int i = 0; i < value.length; i++) {
+          var path = await FlutterAbsolutePath.getAbsolutePath(
+              value.elementAt(i).identifier);
+          _image = new File(path);
+        }
+        if(imagepath!=null) {
+         imagepath = "";
+        }
+
+      });
+    }).catchError((error) {
+      print(error.toString());
+    });
   }
 }

@@ -17,6 +17,9 @@ import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
 class ResetPassword extends StatefulWidget
 {
+  String come;
+  String mobnum;
+  ResetPassword(this.come,{this.mobnum});
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
 }
@@ -45,12 +48,14 @@ class _ResetPasswordState extends State<ResetPassword> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SharedPreferencesTest().saveuserdata("get").then((value) {
-      setState(() {
-        Map userupdateddata = json.decode(value);
-        entity = GetLoginUserEntity.fromJson(userupdateddata);
+    if(widget.come!="Forgot") {
+      SharedPreferencesTest().saveuserdata("get").then((value) {
+        setState(() {
+          Map userupdateddata = json.decode(value);
+          entity = GetLoginUserEntity.fromJson(userupdateddata);
+        });
       });
-    });
+    }
     errorController = StreamController<ErrorAnimationType>.broadcast();
   }
 
@@ -237,24 +242,48 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 setState(() {
                                   isloading = true;
                                 });
-                                var coun = entity.docs.elementAt(0).userCountry.split("+");
-                                updatepassword.updatePassword(passwordcont.text.trim(), context, entity.docs.elementAt(0).userMobile).then((value) {
-                                  setState(() {
-                                    isloading = false;
-                                  });
-                                  if(value.status==1)
-                                    {
-                                      showAlertDialog(context,value.message,"Reset");
-                                    }
-                                  else
-                                    {
-                                      showAlertDialog(context,value.message,"");
-                                    }
-                                }).catchError((onError){
-                                  setState(() {
-                                    isloading = false;
-                                  });
-                                });
+                                if(widget.come!="Forgot")
+                                  {
+                                    updatepassword.updatePassword(passwordcont.text.trim(), context, entity.docs.elementAt(0).userMobile).then((value) {
+                                      setState(()
+                                      {
+                                        isloading = false;
+                                      });
+                                      if(value.status==1)
+                                      {
+                                        showAlertDialog(context,value.message,"Reset");
+                                      }
+                                      else
+                                      {
+                                        showAlertDialog(context,value.message,"");
+                                      }
+                                    }).catchError((onError){
+                                      setState(() {
+                                        isloading = false;
+                                      });
+                                    });
+                                  }
+                               else
+                                 {
+                                   updatepassword.updatePassword(passwordcont.text.trim(), context, widget.mobnum).then((value) {
+                                     setState(()
+                                     {
+                                       isloading = false;
+                                     });
+                                     if(value.status==1)
+                                     {
+                                       showAlertDialog(context,value.message,"ResetPassword");
+                                     }
+                                     else
+                                     {
+                                       showAlertDialog(context,value.message,"");
+                                     }
+                                   }).catchError((onError){
+                                     setState(() {
+                                       isloading = false;
+                                     });
+                                   });
+                                 }
                               } else {
                                 autoValidate = true;
                               }
