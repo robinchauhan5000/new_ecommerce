@@ -5,24 +5,16 @@ import 'package:flutter_ecommerce/constant/AppColors.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ResetPassword.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_ecommerce/models/LoginEntity.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
-import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_ecommerce/utils/CWActionSheetScreen.dart';
 import 'package:images_picker/images_picker.dart';
@@ -109,8 +101,9 @@ class _EditProfileState extends State<EditProfile> {
     List<Widget> widgetList = new List<Widget>();
     var child = SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0XFFEFF2FF),
+
         key: _scaffoldKey,
-        //   drawer: Container(child:new Drawer()),
         body: Container(
           width: SizeConfig.blockSizeHorizontal*100,
           height: SizeConfig.blockSizeVertical*100,

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_ecommerce/base/BaseRepository.dart';
 import 'package:flutter_ecommerce/data/api/ApiEndPoint.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
-import 'package:flutter_ecommerce/models/ProductListingEntity.dart';
 
 
 class GetLoginUser extends BaseRepository {
