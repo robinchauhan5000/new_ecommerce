@@ -216,7 +216,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         hasError = true;
                       });
                     } else {
-                      if (widget.coming == "Register") {
+                      if (widget.coming == "Register" || widget.coming == "Forgot1") {
                         setState(() {
                           isloading = true;
                         });
@@ -284,6 +284,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           });
                         });
                       }
+
                     }
                   },
                   child: Align(

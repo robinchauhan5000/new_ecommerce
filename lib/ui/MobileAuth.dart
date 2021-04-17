@@ -15,6 +15,8 @@ import 'package:flutter_ecommerce/data/repo/ForgetPasswordRepo.dart';
 
 class MobileScreen extends StatefulWidget
 {
+  String email;
+  MobileScreen(this.email);
   @override
   _MobileScreenState createState() => _MobileScreenState();
 }
@@ -111,7 +113,7 @@ class _MobileScreenState extends State<MobileScreen> {
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
                         // width:SizeConfig.blockSizeHorizontal*70,
                         height: SizeConfig.blockSizeVertical*7,
-                        child: Text("Forgot Password",style: GoogleFonts.poppins(textStyle:
+                        child: Text("Register",style: GoogleFonts.poppins(textStyle:
                         TextStyle(fontSize: SizeConfig.blockSizeVertical*3.65,color: Colors.white,
                             fontWeight: FontWeight.w500)))),
 
@@ -310,7 +312,7 @@ class _MobileScreenState extends State<MobileScreen> {
                               {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => OTPScreen("Forgot",countrycode.toString()+mobile.text.trim().toString(),email: emailCont.text.trim().toString(),)),
+                                  MaterialPageRoute(builder: (context) => OTPScreen("Forgot1",countrycode.toString()+mobile.text.trim().toString(),email: widget.email,)),
                                 );
                               }
                               else
