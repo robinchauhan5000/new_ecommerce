@@ -461,9 +461,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 {
                   isloading = false;
                 });
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                Navigator.push(context, MaterialPageRoute(builder: (context)
                 {
-                  return MobileScreen();
+                  return MobileScreen(value.profile['email']!=null?value.profile['email']:"");
                 }));
               /*  userrepo.getUser(email:value.profile['email']).then((profile) {
                   setState(()
@@ -505,7 +505,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 isloading = false;
               });
             });
-
           } else {
             setState(() {
               isloading = false;
@@ -545,9 +544,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 {
                   isloading = false;
                 });
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                Navigator.push(context, MaterialPageRoute(builder: (context)
                 {
-                  return MobileScreen();
+                  return MobileScreen(value.googleProfile.email);
                 }));
     /*            userrepo.getUser(email:value.googleProfile.email).then((profile) {
                   setState(()
