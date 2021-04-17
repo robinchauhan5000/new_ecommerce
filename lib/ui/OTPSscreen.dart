@@ -236,6 +236,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                 setState(() {
                                   SharedPreferencesTest()
                                       .saveuserdata("set", userdata: profile);
+                                  Navigator.of(context).popUntil((route) => route.isFirst);
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
                                         return MainListPage();
