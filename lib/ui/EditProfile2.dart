@@ -74,6 +74,8 @@ class _EditProfile2State extends State<EditProfile2> {
     List<Widget> widgetList = new List<Widget>();
     var child =  SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0XFFEFF2FF),
+
         key: _scaffoldKey,
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -114,15 +116,13 @@ class _EditProfile2State extends State<EditProfile2> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          width: SizeConfig.blockSizeHorizontal * 33,
-                          height: SizeConfig.blockSizeHorizontal * 33,
-                          margin: EdgeInsets.only(
-                              top: SizeConfig.blockSizeVertical * 3),
+                          width: SizeConfig.blockSizeHorizontal * 31,
+                          height: SizeConfig.blockSizeHorizontal * 31,
+
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,color: appmaincolor,
-
                             image: DecorationImage(image:
-                            CachedNetworkImageProvider("")),
+                            CachedNetworkImageProvider(entity.docs != "" ? entity.docs.elementAt(0).userProfileImage : "")),
                           ),
                         ),
                         Container(
@@ -189,7 +189,7 @@ class _EditProfile2State extends State<EditProfile2> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/tile2.png'),
-                                fit: BoxFit.fitWidth
+                                fit: BoxFit.fitWidth,
                             )
                         ),
                         child: TextFormField(

@@ -5,7 +5,6 @@ import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
@@ -94,7 +93,7 @@ class _MainListPageState extends State<MainListPage> {
                         margin: EdgeInsets.only(
                             top: SizeConfig.blockSizeVertical * 1.25
                         ),
-                        child: Text(entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"",style: TextStyle(
+                        child: Text(entity.docs != null && entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"",style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
                             fontSize: SizeConfig.blockSizeVertical * 2.25
                         ),),
