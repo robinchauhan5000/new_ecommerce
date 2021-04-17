@@ -19,6 +19,7 @@ import 'dart:io';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'package:flutter_ecommerce/ui/MainLists.dart';
+import 'package:flutter_ecommerce/ui/MobileAuth.dart';
 
 class RegisterScreen extends StatefulWidget
 {
@@ -641,7 +642,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               });
               if(fbdata.status==1)
               {
-                userrepo.getUser(email:value.profile['email']).then((profile) {
+                setState(()
+                {
+                  isloading = false;
+                });
+                Navigator.push(context, MaterialPageRoute(builder: (context)
+                {
+                  return MobileScreen(value.profile['email']!=null?value.profile['email']:"");
+                }));
+                /*  userrepo.getUser(email:value.profile['email']).then((profile) {
                   setState(()
                   {
                     isloading = false;
@@ -667,10 +676,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   setState(() {
                     isloading = false;
                   });
-                });
+                });*/
               }
               else
               {
+                setState(() {
+                  isloading = false;
+                });
                 showAlertDialog(context,fbdata.message,"");
               }
             }).catchError((error){
@@ -678,8 +690,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 isloading = false;
               });
             });
-
           } else {
+            setState(() {
+              isloading = false;
+            });
             //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
             showAlertDialog(context,"No Data", "Login");
           }
@@ -711,7 +725,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               });
               if(googdata.status==1)
               {
-                userrepo.getUser(email:value.googleProfile.email).then((profile) {
+                setState(()
+                {
+                  isloading = false;
+                });
+                Navigator.push(context, MaterialPageRoute(builder: (context)
+                {
+                  return MobileScreen(value.googleProfile.email);
+                }));
+                /*            userrepo.getUser(email:value.googleProfile.email).then((profile) {
                   setState(()
                   {
                     isloading = false;
@@ -737,10 +759,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   setState(() {
                     isloading = false;
                   });
-                });
+                });*/
               }
               else
               {
+                setState(() {
+                  isloading = false;
+                });
                 showAlertDialog(context,googdata.message,"");
               }
             }).catchError((error){

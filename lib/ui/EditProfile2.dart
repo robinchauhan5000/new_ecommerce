@@ -122,7 +122,7 @@ class _EditProfile2State extends State<EditProfile2> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,color: appmaincolor,
                             image: DecorationImage(image:
-                            CachedNetworkImageProvider(entity.docs != "" ? entity.docs.elementAt(0).userProfileImage : "")),
+                            CachedNetworkImageProvider(entity.docs != null ? entity.docs.elementAt(0).userProfileImage!=null?entity.docs.elementAt(0).userProfileImage:"" : "")),
                           ),
                         ),
                         Container(
@@ -130,7 +130,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text(entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"",
+                            child: Text(entity.docs!=null?entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"":"",
                                 style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*2.25,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
@@ -140,7 +140,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text(entity.docs.elementAt(0).userEmail,
+                            child: Text(entity.docs!=null?entity.docs.elementAt(0).userEmail:"",
                                 style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*1.5,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
@@ -148,7 +148,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3.5,
-                            child: Text(entity.docs.elementAt(0).userMobile,style: GoogleFonts.poppins(textStyle:
+                            child: Text(entity.docs!=null?entity.docs.elementAt(0).userMobile:"",style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*1.6,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),
                         InkWell(

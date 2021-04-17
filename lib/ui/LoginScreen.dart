@@ -293,10 +293,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         isloading =true;
                                       });
                                       loginRepo.loginUser(emailCont.text.trim().toString(), passCont.text.trim().toString(), context).then((value) {
-
                                         if(value.status==1)
                                         {
-                                          userrepo.getUser(email:value.userRegistrationEmail).then((profile) {
+                                          userrepo.getUser(email:emailCont.text.trim().toString()).then((profile) {
                                             setState(()
                                             {
                                               isloading = false;
@@ -305,6 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             {
                                               setState(()
                                               {
+                                                SharedPreferencesTest().checkIsLogin("0");
                                                 SharedPreferencesTest()
                                                     .saveuserdata("set", userdata: profile);
                                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)

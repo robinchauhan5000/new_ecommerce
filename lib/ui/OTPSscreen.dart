@@ -234,6 +234,7 @@ class _OTPScreenState extends State<OTPScreen> {
                               });
                               if (profile.status == 1) {
                                 setState(() {
+                                  SharedPreferencesTest().checkIsLogin("0");
                                   SharedPreferencesTest()
                                       .saveuserdata("set", userdata: profile);
                                   Navigator.of(context).popUntil((route) => route.isFirst);

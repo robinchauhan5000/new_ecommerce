@@ -102,7 +102,7 @@ class _MainListPageState extends State<MainListPage> {
                         margin: EdgeInsets.only(
                             top: SizeConfig.blockSizeVertical * 0.08
                         ),
-                        child: Text(entity.docs.elementAt(0).userEmail,style: TextStyle(
+                        child: Text(entity.docs!=null?entity.docs.elementAt(0).userEmail:"",style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
                             fontSize: SizeConfig.blockSizeVertical *1.5
                         ),),
@@ -235,21 +235,30 @@ class _MainListPageState extends State<MainListPage> {
                           border: InputBorder.none),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: SizeConfig.screenWidth * 0.7,
-                    height: SizeConfig.screenHeight * 0.07,
-                    child: Text(
-                      "Create New List",
-                      style: TextStyle(color: Colors.white,
-                          fontSize: SizeConfig.blockSizeVertical * 2.5,
-                          fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: ()
+                    {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ItemListGrid()),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: SizeConfig.screenWidth * 0.7,
+                      height: SizeConfig.screenHeight * 0.07,
+                      child: Text(
+                        "Create New List",
+                        style: TextStyle(color: Colors.white,
+                            fontSize: SizeConfig.blockSizeVertical * 2.5,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/Rectangle 26.png'),
+                              fit: BoxFit.fill
+                          )),
                     ),
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/Rectangle 26.png'),
-                            fit: BoxFit.fill
-                        )),
                   )
                 ],
               ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/ui/SplashScreen.dart';
 import 'dart:async';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
-
+import 'package:flutter_ecommerce/ui/MainLists.dart';
 
 class MyHttpOverrides extends HttpOverrides{
   @override
@@ -60,7 +60,7 @@ class MyAppState extends State<MyApp>
       return MaterialApp(
           debugShowCheckedModeBanner: false,
           supportedLocales: [Locale('en', '')],
-          home: SplashScreen(),
+          home: MainListPage(),
       );
     } else
     {
