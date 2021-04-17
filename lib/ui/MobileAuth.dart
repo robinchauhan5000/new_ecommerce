@@ -13,13 +13,13 @@ import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter_ecommerce/data/repo/ForgetPasswordRepo.dart';
 
-class ForgotPassword extends StatefulWidget
+class MobileScreen extends StatefulWidget
 {
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  _MobileScreenState createState() => _MobileScreenState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _MobileScreenState extends State<MobileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController emailCont = new TextEditingController();
   var formKey = GlobalKey<FormState>();
@@ -109,7 +109,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                       // width:SizeConfig.blockSizeHorizontal*70,
+                        // width:SizeConfig.blockSizeHorizontal*70,
                         height: SizeConfig.blockSizeVertical*7,
                         child: Text("Forgot Password",style: GoogleFonts.poppins(textStyle:
                         TextStyle(fontSize: SizeConfig.blockSizeVertical*3.65,color: Colors.white,
@@ -307,23 +307,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 isloading = false;
                               });
                               if(value.status==1)
-                                {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => OTPScreen("Forgot",countrycode.toString()+mobile.text.trim().toString(),email: emailCont.text.trim().toString(),)),
-                                  );
-                                }
+                              {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OTPScreen("Forgot",countrycode.toString()+mobile.text.trim().toString(),email: emailCont.text.trim().toString(),)),
+                                );
+                              }
                               else
-                                {
-                                  showAlertDialog(context,value.message,"");
-                                }
+                              {
+                                showAlertDialog(context,value.message,"");
+                              }
                             }).catchError((onError)
-                             {
+                            {
                               setState(() {
                                 isloading = false;
                               });
                             });
-                           /* setState(() {
+                            /* setState(() {
                               if (currentpin.length < 6) {
                                 errorController.add(ErrorAnimationType
                                     .shake); // Triggering error shake animation
@@ -334,6 +334,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 Fluttertoast.showToast(msg: "Success!");
                               }
                             });*/
+
                           } else {
                             autoValidate = true;
                           }

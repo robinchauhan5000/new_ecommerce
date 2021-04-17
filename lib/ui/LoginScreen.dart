@@ -23,6 +23,7 @@ import 'package:flutter_ecommerce/ui/MainLists.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
 import 'package:flutter_ecommerce/ui/ForgotPassword.dart';
+import 'package:flutter_ecommerce/ui/MobileAuth.dart';
 class LoginScreen extends StatefulWidget
 {
   @override
@@ -450,17 +451,54 @@ class _LoginScreenState extends State<LoginScreen> {
             setState(() {
               isloading = true;
             });
-            fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((value) {
+            fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((fbdata) {
               setState(() {
                 isloading = false;
               });
-              if(value.status==1)
+              if(fbdata.status==1)
               {
-                showAlertDialog(context,value.message,"");
+                setState(()
+                {
+                  isloading = false;
+                });
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                {
+                  return MobileScreen();
+                }));
+              /*  userrepo.getUser(email:value.profile['email']).then((profile) {
+                  setState(()
+                  {
+                    isloading = false;
+                  });
+                  if(profile.status==1)
+                  {
+                    setState(()
+                    {
+                      SharedPreferencesTest()
+                          .saveuserdata("set", userdata: profile);
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                      {
+                        return MainListPage();
+                      }));
+                    });
+                  }
+                  else
+                  {
+                    showAlertDialog(context,fbdata.message,"");
+                  }
+                }).catchError((onError)
+                {
+                  setState(() {
+                    isloading = false;
+                  });
+                });*/
               }
               else
               {
-                showAlertDialog(context,value.message,"");
+                setState(() {
+                  isloading = false;
+                });
+                showAlertDialog(context,fbdata.message,"");
               }
             }).catchError((error){
               setState(() {
@@ -469,6 +507,9 @@ class _LoginScreenState extends State<LoginScreen> {
             });
 
           } else {
+            setState(() {
+              isloading = false;
+            });
             //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
             showAlertDialog(context,"No Data", "Login");
           }
@@ -494,17 +535,54 @@ class _LoginScreenState extends State<LoginScreen> {
             setState(() {
               isloading = true;
             });
-            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((value) {
+            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((googdata) {
               setState(() {
                 isloading = false;
               });
-              if(value.status==1)
+              if(googdata.status==1)
               {
-                showAlertDialog(context,value.message,"");
+                setState(()
+                {
+                  isloading = false;
+                });
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                {
+                  return MobileScreen();
+                }));
+    /*            userrepo.getUser(email:value.googleProfile.email).then((profile) {
+                  setState(()
+                  {
+                    isloading = false;
+                  });
+                  if(profile.status==1)
+                  {
+                    setState(()
+                    {
+                      SharedPreferencesTest()
+                          .saveuserdata("set", userdata: profile);
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+                      {
+                        return MainListPage();
+                      }));
+                    });
+                  }
+                  else
+                  {
+                    showAlertDialog(context,googdata.message,"");
+                  }
+                }).catchError((onError)
+                {
+                  setState(() {
+                    isloading = false;
+                  });
+                });*/
               }
               else
               {
-                showAlertDialog(context,value.message,"");
+                setState(() {
+                  isloading = false;
+                });
+                showAlertDialog(context,googdata.message,"");
               }
             }).catchError((error){
               setState(() {

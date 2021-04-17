@@ -30,6 +30,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController cpasscont = new TextEditingController();
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
+  bool isobscureText = true;
   bool autoValidate = false;
   String currentpin = "";
   bool isRegisterd = false;
@@ -170,10 +171,19 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
                               controller: passwordcont,
-                              cursorColor:logincolor,
+                              cursorColor:logincolor,obscureText: obscureText,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
+                                onTap: ()
+                                {
+                                  obscureText = !obscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(!obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,color: Colors.black,),
+                              ),
                                   hintText: "New Password",hintStyle:
                               GoogleFonts.poppins(textStyle:
                               TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
@@ -206,10 +216,19 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 SizeConfig.blockSizeHorizontal*8),
                             child: TextFormField(
                               controller: cpasscont,
-                              cursorColor:logincolor,
+                              cursorColor:logincolor,obscureText: isobscureText,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
                               decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
+                                onTap: ()
+                                {
+                                  isobscureText = !isobscureText;
+                                  setState(() {});
+                                },
+                                child: Icon(!isobscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,color: Colors.black,),
+                              ),
                                   hintText: "Confirm Password",hintStyle:
                               GoogleFonts.poppins(textStyle:
                               TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,

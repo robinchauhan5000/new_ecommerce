@@ -130,7 +130,7 @@ class _EditProfile2State extends State<EditProfile2> {
                             alignment: Alignment.center,
                             width:SizeConfig.blockSizeHorizontal*70,
                             height: SizeConfig.blockSizeVertical*3,
-                            child: Text(entity.docs.elementAt(0).userName,
+                            child: Text(entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"",
                                 style: GoogleFonts.poppins(textStyle:
                             TextStyle(fontSize: SizeConfig.blockSizeVertical*2.25,color: Colors.white,
                                 fontWeight: FontWeight.w500)))),

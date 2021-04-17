@@ -94,7 +94,7 @@ class _MainListPageState extends State<MainListPage> {
                         margin: EdgeInsets.only(
                             top: SizeConfig.blockSizeVertical * 1.25
                         ),
-                        child: Text(entity.docs.elementAt(0).userName,style: TextStyle(
+                        child: Text(entity.docs.elementAt(0).userName!=null?entity.docs.elementAt(0).userName:"",style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold,
                             fontSize: SizeConfig.blockSizeVertical * 2.25
                         ),),

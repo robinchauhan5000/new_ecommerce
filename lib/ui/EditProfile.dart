@@ -332,10 +332,6 @@ class _EditProfileState extends State<EditProfile> {
                           border: InputBorder.none
                       ),
                       keyboardType: TextInputType.phone,
-                      validator: (s) {
-                        if (s.trim().isEmpty) return "Mobile is required";
-                        return null;
-                      },
                       onFieldSubmitted: (s) =>
                           FocusScope.of(context).unfocus(),
                       textInputAction: TextInputAction.done,
