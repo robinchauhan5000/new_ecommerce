@@ -4,10 +4,11 @@ import 'package:flutter_ecommerce/data/api/ApiEndPoint.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 
-class CartListRepo extends BaseRepository {
+class CartListRepo extends BaseRepository
+{
   Future<CartListEntity> cartListing(
       {String listId}) async {
-    final uri = '${ApiEndpoint.BaseUrl}list/byId/${listId}';
+    final uri = '${ApiEndpoint.BaseUrl}list/byUserId/${listId}';
     var response = await Dio().get(uri,
         options: Options(
           followRedirects: false,

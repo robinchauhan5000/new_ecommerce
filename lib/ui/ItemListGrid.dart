@@ -5,26 +5,29 @@ import 'package:flutter_ecommerce/Widgets/ItemGrid.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:flutter_ecommerce/data/repo/ProductListing.dart';
+import 'package:flutter_ecommerce/models/ProductListingEntity.dart';
 class ItemListGrid extends StatefulWidget {
   @override
   _ItemListGridState createState() => _ItemListGridState();
 }
 
 class _ItemListGridState extends State<ItemListGrid> {
-  var getItemsList = CartListRepo();
+  var getItemsList = ProductListingRepo();
   bool isloading = false;
-  var getListItemsModel = CartListEntity();
+  var getListItemsModel = ProductListingEntity();
+
 
   @override
   void initState() {
     super.initState();
     isloading = true;
-    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+    getItemsList.listing().then((value) {
       setState(() {
         isloading = false;
       });
-      if(value.status == 1){
+      if(value!=null)
+      {
         setState(() {
           getListItemsModel = value;
         });
@@ -129,7 +132,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                       ],
                     ),
                   ),
-                  Container(
+                 /* Container(
                     margin: EdgeInsets.only(
                         top: SizeConfig.blockSizeVertical * 2.5
                     ),
@@ -171,7 +174,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -185,7 +188,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                 style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.25, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
+            /*Container(
               margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
               child: GridView.builder(
                 itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0) != null && getListItemsModel.docs.elementAt(0).productDetails.length > 0? getListItemsModel.docs.elementAt(0).productDetails.length:0,
@@ -243,33 +246,54 @@ class _ItemListGridState extends State<ItemListGrid> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.red,
-                                            )
-                                        ),
-                                        child: Icon(Icons.remove,color: Colors.red,size: SizeConfig.blockSizeVertical * 1.5,)
+                                    InkWell(
+                                      onTap:()
+                  {
+                    if(getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count>0)
+                      {
+                        getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count = getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count-1;
+                      }
+                    setState(() {
+
+                    });
+                  },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.red,
+                                              )
+                                          ),
+                                          child: Icon(Icons.remove,color: Colors.red,size: SizeConfig.blockSizeVertical * 1.5,)
+                                      ),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(
                                           left: SizeConfig.blockSizeHorizontal * 1.5,
                                           right: SizeConfig.blockSizeHorizontal * 1.5
                                       ),
-                                      child: Text("1",style: TextStyle(
+                                      child: Text(getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count.toString(),style: TextStyle(
                                       ),),
                                     ),
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.green,
-                                            )
-                                        ),
-                                        child: Icon(Icons.add,color: Colors.green,size: SizeConfig.blockSizeVertical * 1.5,)
+                                    InkWell(
+                                      onTap:()
+                                    {
+                                      getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count=getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count+1;
+                                      setState(() {
+
+                                      });
+                                    },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.green,
+                                              )
+                                          ),
+                                          child: Icon(Icons.add,color: Colors.green,size: SizeConfig.blockSizeVertical * 1.5,)
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -289,7 +313,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                 ),
 
               ),
-            )
+            )*/
           ],
 
         ),

@@ -7,7 +7,7 @@ import 'package:flutter_ecommerce/models/ProductListingEntity.dart';
 class ProductListingRepo extends BaseRepository {
   Future<ProductListingEntity> listing(
       {String token, String userId, String friendId}) async {
-    final uri = '${ApiEndpoint.BaseUrl}/product';
+    final uri = '${ApiEndpoint.BaseUrl}product';
     var response = await Dio().get(uri,
         options: Options(
         /*  headers: {'Authorization': 'Bearer ${token}'},*/

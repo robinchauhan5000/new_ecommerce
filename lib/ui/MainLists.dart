@@ -30,7 +30,7 @@ class _MainListPageState extends State<MainListPage> {
       setState(() {
         Map userupdateddata = json.decode(value);
         entity = GetLoginUserEntity.fromJson(userupdateddata);
-    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+    getItemsList.cartListing(listId: entity.docs.elementAt(0).sId).then((value) {
       setState(() {
         isloading = false;
       });
@@ -276,7 +276,8 @@ class _MainListPageState extends State<MainListPage> {
             ),
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length:0,
+              shrinkWrap: true,itemCount: getListItemsModel != null && getListItemsModel.docs!=null &&
+                getListItemsModel.docs.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length:0,
               itemBuilder: (context,index) {
                 return Container(
                   margin: EdgeInsets.only(

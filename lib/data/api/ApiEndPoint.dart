@@ -13,4 +13,8 @@ class ApiEndpoint
   static String updateAddress = "userProfile/updateAdddress/";
   static String forgetPassword = "userRegister/forgotPassword";
   static String updatePassword = "userRegister/updatePassword/";
+  static String list = "list";
+  static String product = "product";
+
+
 }

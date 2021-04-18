@@ -145,6 +145,7 @@ class ProductDetails {
   String currentTime;
   String productDate;
   bool deleteFlag;
+  int count =0;
   String vendor;
   int iV;
 
@@ -160,7 +161,7 @@ class ProductDetails {
         this.currentTime,
         this.productDate,
         this.deleteFlag,
-        this.vendor,
+        this.vendor,this.count=0,
         this.iV});
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
@@ -175,6 +176,7 @@ class ProductDetails {
     currentTime = json['current_time'];
     productDate = json['product_date'];
     deleteFlag = json['delete_flag'];
+    count = json['count']!=null? json['count']:0;
     vendor = json['vendor'];
     iV = json['__v'];
   }
