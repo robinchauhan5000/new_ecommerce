@@ -34,7 +34,8 @@ class _MainListPageState extends State<MainListPage> {
       setState(() {
         isloading = false;
       });
-    if(value.status == 1){
+    if(value.status == 1)
+    {
      setState(() {
        getListItemsModel = value;
      });
