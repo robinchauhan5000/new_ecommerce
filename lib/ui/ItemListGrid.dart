@@ -13,23 +13,23 @@ class ItemListGrid extends StatefulWidget {
 }
 
 class _ItemListGridState extends State<ItemListGrid> {
-  var getItemsList = ProductListingRepo();
+  var productListingRepo = ProductListingRepo();
   bool isloading = false;
-  var getListItemsModel = ProductListingEntity();
-
+  List<ProductListingEntity> productList = [];
 
   @override
   void initState() {
     super.initState();
     isloading = true;
-    getItemsList.listing().then((value) {
+    productListingRepo.listing().then((value) {
       setState(() {
         isloading = false;
       });
       if(value!=null)
       {
         setState(() {
-          getListItemsModel = value;
+          productList = value;
+          print(productList.length);
         });
       }
     }).catchError((onError)
