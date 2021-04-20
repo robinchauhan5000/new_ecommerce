@@ -78,6 +78,4 @@ class MyAppState extends State<MyApp>
       return login;
     }
   }
-
-
 }
