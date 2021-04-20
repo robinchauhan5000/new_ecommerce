@@ -295,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       loginRepo.loginUser(emailCont.text.trim().toString(), passCont.text.trim().toString(), context).then((value) {
                                         if(value.status==1)
                                         {
-                                          userrepo.getUser(email:emailCont.text.trim().toString()).then((profile) {
+                                          userrepo.getUser(email:value.userRegistrationEmail.toString()).then((profile) {
                                             setState(()
                                             {
                                               isloading = false;
