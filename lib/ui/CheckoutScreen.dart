@@ -33,30 +33,31 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/Ellipse 1.png'),
-                        fit: BoxFit.fill
-                    )
-                ),
+                        fit: BoxFit.fill)),
                 child: Icon(Icons.subdirectory_arrow_right_outlined),
-              )
-          ),
+              )),
           Container(
             width: SizeConfig.screenWidth * 0.4,
-            child: FloatingActionButton(shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    SizeConfig.blockSizeVertical * 5
-                )
-            ) ,
+            child: FloatingActionButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(SizeConfig.blockSizeVertical * 5)),
               backgroundColor: Color(0xffE33B3B),
               onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Checkout",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.blockSizeVertical * 2
-                  ),),
-                  Icon(Icons.arrow_forward_ios_sharp,color: Colors.white,)
+                  Text(
+                    "Checkout",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizeConfig.blockSizeVertical * 2),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_sharp,
+                    color: Colors.white,
+                  )
                 ],
               ),
             ),
@@ -72,9 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/Rectangle 55.png'),
-                      fit: BoxFit.fill
-                  )
-              ),
+                      fit: BoxFit.fill)),
               height: SizeConfig.screenHeight * 0.25,
               child: Column(
                 children: [
@@ -82,16 +81,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     height: SizeConfig.screenHeight * 0.16,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/Rectangle 32.png',),
-                            fit: BoxFit.fill
-                        )
-                    ),
+                            image: AssetImage(
+                              'assets/Rectangle 32.png',
+                            ),
+                            fit: BoxFit.fill)),
                     child: Column(
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                              top: SizeConfig.screenHeight * 0.05
-                          ),
+                              top: SizeConfig.screenHeight * 0.05),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -105,17 +103,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                               Container(
                                 padding: EdgeInsets.only(
-                                    left: SizeConfig.blockSizeHorizontal*2.25
-                                ),
-                                width:SizeConfig.screenWidth * 0.8,
+                                    left:
+                                        SizeConfig.blockSizeHorizontal * 2.25),
+                                width: SizeConfig.screenWidth * 0.8,
                                 decoration: BoxDecoration(
-                                    image:  DecorationImage(
+                                    image: DecorationImage(
                                         image: AssetImage('assets/tile.png'),
-                                        fit: BoxFit.fitWidth
-                                    )),
+                                        fit: BoxFit.fitWidth)),
                                 child: TextFormField(
                                   decoration: InputDecoration(
-                                      suffixIcon:Icon(Icons.search) ,
+                                      suffixIcon: Icon(Icons.search),
                                       hintText: "Search",
                                       border: InputBorder.none),
                                 ),
@@ -128,42 +125,68 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                        top: SizeConfig.blockSizeVertical * 2.5
-                    ),
+                        top: SizeConfig.blockSizeVertical * 2.5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(
                           children: [
-                            Text("Monthly",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Current List",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              "Monthly",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Current List",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
-                            Text("12",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Total Items",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              "12",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Total Items",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
-                            Text("1200",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Total Cost",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              "1200",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Total Cost",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                       ],
@@ -179,7 +202,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               child: Text(
                 "Item Lists",
-                style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.25, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: SizeConfig.blockSizeVertical * 2.25,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             ListView(
@@ -190,22 +215,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Dove Soap',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Dove Soap',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -220,51 +244,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/add item to list/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/add item to list/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Parachute Oil',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Parachute Oil',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -279,51 +306,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Colgate Toothpaste',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Colgate Toothpaste',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -338,51 +368,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Neem Facewash',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Neem Facewash',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -397,51 +430,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Sunscreen',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -456,51 +492,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Sunscreen',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -515,51 +554,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Sunscreen',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -574,51 +616,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(
                       bottom: SizeConfig.screenHeight * 0.02,
                       left: SizeConfig.screenWidth * 0.03,
-                      right: SizeConfig.screenWidth * 0.03
-                  ),
+                      right: SizeConfig.screenWidth * 0.03),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0)
-                  ),
+                      borderRadius: BorderRadius.circular(5.0)),
                   child: ListTile(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       title: Container(
                         margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2
+                            bottom: SizeConfig.blockSizeVertical * 2),
+                        child: Text(
+                          'Sunscreen',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Text('Sunscreen',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
                       ),
                       subtitle: Text('Qty: 1 Pc  |  Price: \$15'),
                       leading: Image(image: AssetImage('assets/dove.jpg')),
@@ -633,33 +678,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.red,
-                                  )
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/minus.png'),
+                                color: Colors.red,
                               ),
-                              child: ImageIcon(AssetImage('assets/minus.png'),
-                                color: Colors.red,),
                             ),
-                            Container(child: Text("1"),
+                            Container(
+                              child: Text("1"),
                               margin: EdgeInsets.only(
                                 left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right:  SizeConfig.blockSizeHorizontal * 1.5,
-                              ),),
+                                right: SizeConfig.blockSizeHorizontal * 1.5,
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
-                                  )                            ),
-                              child: ImageIcon(AssetImage('assets/plus.png'),
-                                color: Colors.green,),
+                                  )),
+                              child: ImageIcon(
+                                AssetImage('assets/plus.png'),
+                                color: Colors.green,
+                              ),
                             ),
                           ],
                         ),
-                      )
-                  ),
+                      )),
                 ),
-
-
               ],
             )
           ],

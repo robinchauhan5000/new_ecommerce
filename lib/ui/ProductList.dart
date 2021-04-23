@@ -26,6 +26,7 @@ class _ProductListState extends State<ProductList> {
       if (value.status == 1) {
         setState(() {
           getListItemsModel = value;
+          print('printing length ${getListItemsModel.docs.length}');
         });
       }
     }).catchError((onError) {
@@ -51,23 +52,17 @@ class _ProductListState extends State<ProductList> {
         ],
       ),
       //    backgroundColor: Color(0XFFEFF2FF),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            backgroundColor: Color(0xffE33B3B),
-            onPressed: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/Ellipse 2.png'),
-                      fit: BoxFit.fill)),
-              child: Icon(
-                Icons.shopping_cart,
-              ),
-            ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xffE33B3B),
+        onPressed: () {},
+        child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/Ellipse 2.png'), fit: BoxFit.fill)),
+          child: Icon(
+            Icons.shopping_cart,
           ),
-        ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -209,17 +204,10 @@ class _ProductListState extends State<ProductList> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          ListView.builder(
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.only(
-                    bottom: SizeConfig.screenHeight * 0.02,
-                    left: SizeConfig.screenWidth * 0.03,
-                    right: SizeConfig.screenWidth * 0.03),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0)),
-                child: ListTile(
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
                     onTap: () {},
                     title: Container(
                       margin: EdgeInsets.only(
@@ -285,9 +273,9 @@ class _ProductListState extends State<ProductList> {
                           ),
                         ],
                       ),
-                    )),
-              );
-            },
+                    ));
+              },
+            ),
           )
         ],
       ),

@@ -55,6 +55,7 @@ class _MainListPageState extends State<MainListPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(entity.docs.elementAt(0).sId);
     SizeConfig().init(context);
     List<Widget> widgetList = new List<Widget>();
     return Scaffold(
