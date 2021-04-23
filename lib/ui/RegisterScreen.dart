@@ -1,28 +1,24 @@
 import 'dart:async';
+import 'dart:io';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
+import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
+import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
+import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
+import 'package:flutter_ecommerce/data/repo/SignUpUser.dart';
+import 'package:flutter_ecommerce/ui/MobileAuth.dart';
+import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_ecommerce/utils/SocialLoginMethods.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 
-import 'package:flutter_ecommerce/data/repo/SignUpUser.dart';
-import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
-import 'package:flutter_ecommerce/utils/SocialLoginMethods.dart';
-import 'package:flutter_ecommerce/data/repo/FbLogin.dart';
-import 'package:flutter_ecommerce/data/repo/GoogleLoginRepo.dart';
-import 'dart:io';
-import 'package:flutter_ecommerce/data/repo/GetLoginUser.dart';
-import 'package:flutter_ecommerce/utils/SharedPref.dart';
-import 'package:flutter_ecommerce/ui/MainLists.dart';
-import 'package:flutter_ecommerce/ui/MobileAuth.dart';
-
-class RegisterScreen extends StatefulWidget
-{
+class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -78,220 +74,304 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // TODO: implement build
     SizeConfig().init(context);
     List<Widget> widgetList = new List<Widget>();
-    var child =  SafeArea(
+    var child = SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         //   drawer: Container(child:new Drawer()),
         body: Container(
           color: appmaincolor,
-          width: SizeConfig.blockSizeHorizontal*100,
-          height: SizeConfig.blockSizeVertical*100,
-          child:Container(child:
-          Form(
-            key: formKey,
-            autovalidate: autoValidate,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  height: SizeConfig.blockSizeVertical*100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: SizeConfig.blockSizeHorizontal*30,
-                            height: SizeConfig.blockSizeVertical*20,
-                            decoration: BoxDecoration(image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image:
-                                AssetImage('assets/register_upper_left.png'))),),
-                          Container(
-                            alignment: Alignment.topCenter,
-                            width: SizeConfig.blockSizeHorizontal*7,
-                            height: SizeConfig.blockSizeVertical*6.5,
-                            decoration: BoxDecoration(image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image:
-                                AssetImage('assets/register_upper_right.png'))),),
-
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: SizeConfig.blockSizeHorizontal*2),
-                            width: SizeConfig.blockSizeHorizontal*22,
-                            height: SizeConfig.blockSizeVertical*16,
-                            decoration: BoxDecoration(image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/register_bottom_right.png'))),),
-                          Container(
-                            margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical*0.5),
-                            alignment: Alignment.bottomCenter,
-                            width: SizeConfig.blockSizeHorizontal*24,
-                            height: SizeConfig.blockSizeVertical*26,
-                            decoration: BoxDecoration(image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image:
-                                AssetImage('assets/bottom_left.png'))),),
-
-                        ],
-                      ),
-                    ],
+          width: SizeConfig.blockSizeHorizontal * 100,
+          height: SizeConfig.blockSizeVertical * 100,
+          child: Container(
+            child: Form(
+              key: formKey,
+              autovalidate: autoValidate,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    height: SizeConfig.blockSizeVertical * 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: SizeConfig.blockSizeHorizontal * 30,
+                              height: SizeConfig.blockSizeVertical * 20,
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(
+                                          'assets/register_upper_left.png'))),
+                            ),
+                            Container(
+                              alignment: Alignment.topCenter,
+                              width: SizeConfig.blockSizeHorizontal * 7,
+                              height: SizeConfig.blockSizeVertical * 6.5,
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(
+                                          'assets/register_upper_right.png'))),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: SizeConfig.blockSizeHorizontal * 2),
+                              width: SizeConfig.blockSizeHorizontal * 22,
+                              height: SizeConfig.blockSizeVertical * 16,
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(
+                                          'assets/register_bottom_right.png'))),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: SizeConfig.blockSizeVertical * 0.5),
+                              alignment: Alignment.bottomCenter,
+                              width: SizeConfig.blockSizeHorizontal * 24,
+                              height: SizeConfig.blockSizeVertical * 26,
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(
+                                          'assets/bottom_left.png'))),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical*3),
-                  child: SingleChildScrollView(
-                    child: Container(
-
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*6,left: SizeConfig.blockSizeHorizontal*8),
-                            width:SizeConfig.blockSizeHorizontal*70,
-                            height: SizeConfig.blockSizeVertical*6.75,
-                            child: Image.asset("assets/applogo.png"),),
-
-                          Container(
+                  Container(
+                    margin: EdgeInsets.only(
+                        bottom: SizeConfig.blockSizeVertical * 3),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
                               alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                              // width:SizeConfig.blockSizeHorizontal*70,
-                              height: SizeConfig.blockSizeVertical*7,
-                              child: Text("REGISTER",style: GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*3.65,color: Colors.black,
-                                  fontWeight: FontWeight.w500)))),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                onTap: ()
-                                {
-                                  fbLogin(context: context);
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.blockSizeHorizontal*34,
-                                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
-                                    padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                                    ),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                                    ),
-                                        color: appmainthemecolor
-                                    ),
-                                    child:Text("Facebook",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                    SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight:
-                                    FontWeight.w600)),)),
-                              ),
-                              InkWell(
-                                onTap: ()
-                                {
-                                  googleLogin(context:context);
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.blockSizeHorizontal*34,
-                                    margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3),
-                                    padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.4,
-                                    ),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                                    ),
-                                        color: appredcolor
-                                    ),
-                                    child:Text("Google",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                    SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),)),
-                              )
-                            ],),
-
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 6,
+                                  left: SizeConfig.blockSizeHorizontal * 8),
+                              width: SizeConfig.blockSizeHorizontal * 70,
+                              height: SizeConfig.blockSizeVertical * 6.75,
+                              child: Image.asset("assets/applogo.png"),
                             ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: username,
-                              cursorColor:logincolor,focusNode: usernamefocus,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
-                                  hintText: "Username",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Email is required";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(emailFocus),
-                              textInputAction: TextInputAction.next,
+                            Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: SizeConfig.blockSizeVertical * 4),
+                                // width:SizeConfig.blockSizeHorizontal*70,
+                                height: SizeConfig.blockSizeVertical * 7,
+                                child: Text("REGISTER",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    3.65,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500)))),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    fbLogin(context: context);
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 34,
+                                      margin: EdgeInsets.only(
+                                          top:
+                                              SizeConfig.blockSizeVertical * 3),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            SizeConfig.blockSizeVertical * 1.4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                              6.0,
+                                            ),
+                                          ),
+                                          color: appmainthemecolor),
+                                      child: Text(
+                                        "Facebook",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    2.1,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600)),
+                                      )),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    googleLogin(context: context);
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      width:
+                                          SizeConfig.blockSizeHorizontal * 34,
+                                      margin: EdgeInsets.only(
+                                          top:
+                                              SizeConfig.blockSizeVertical * 3),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            SizeConfig.blockSizeVertical * 1.4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                              6.0,
+                                            ),
+                                          ),
+                                          color: appredcolor),
+                                      child: Text(
+                                        "Google",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    2.1,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600)),
+                                      )),
+                                )
+                              ],
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: emailCont,
-                              cursorColor:logincolor,focusNode: emailFocus,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
-                                  hintText: "Email",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Email is required";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(mobFocus),
-                              textInputAction: TextInputAction.next,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: SizeConfig.screenWidth * 0.25,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                    color: Colors.white,
-                                    boxShadow: [BoxShadow(
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      6.0,
+                                    ),
+                                  ),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
                                       color: Colors.grey,
                                       blurRadius: 1.5,
-                                    ),]
-                                ),
-                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                    left: SizeConfig.blockSizeHorizontal*8,
-                                right: SizeConfig.blockSizeHorizontal * 4),
-                                child: /*TextFormField(
+                                    ),
+                                  ]),
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 4,
+                                  left: SizeConfig.blockSizeHorizontal * 8,
+                                  right: SizeConfig.blockSizeHorizontal * 8),
+                              child: TextFormField(
+                                controller: username,
+                                cursorColor: logincolor,
+                                focusNode: usernamefocus,
+                                style: TextStyle(fontSize: 16.0),
+                                showCursor: true,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    hintText: "Username",
+                                    hintStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400)),
+                                    border: InputBorder.none),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (s) {
+                                  if (s.trim().isEmpty)
+                                    return "Email is required";
+                                  return null;
+                                },
+                                onFieldSubmitted: (s) => FocusScope.of(context)
+                                    .requestFocus(emailFocus),
+                                textInputAction: TextInputAction.next,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      6.0,
+                                    ),
+                                  ),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 1.5,
+                                    ),
+                                  ]),
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 3,
+                                  left: SizeConfig.blockSizeHorizontal * 8,
+                                  right: SizeConfig.blockSizeHorizontal * 8),
+                              child: TextFormField(
+                                controller: emailCont,
+                                cursorColor: logincolor,
+                                focusNode: emailFocus,
+                                style: TextStyle(fontSize: 16.0),
+                                showCursor: true,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    hintText: "Email",
+                                    hintStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400)),
+                                    border: InputBorder.none),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (s) {
+                                  if (s.trim().isEmpty) {
+                                    return "Email is required";
+                                  } else if (!s.contains('@')) {
+                                    return 'Please enter a valid email';
+                                  }
+
+                                  return null;
+                                },
+                                onFieldSubmitted: (s) => FocusScope.of(context)
+                                    .requestFocus(mobFocus),
+                                textInputAction: TextInputAction.next,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: SizeConfig.screenWidth * 0.25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          6.0,
+                                        ),
+                                      ),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 1.5,
+                                        ),
+                                      ]),
+                                  margin: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeVertical * 3,
+                                      left: SizeConfig.blockSizeHorizontal * 8,
+                                      right:
+                                          SizeConfig.blockSizeHorizontal * 4),
+                                  child:
+                                      /*TextFormField(
                               controller: emailCont,
                               cursorColor:logincolor,
                               style: TextStyle(fontSize: 16.0 ),showCursor: true,
@@ -312,281 +392,399 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   FocusScope.of(context).requestFocus(passFocus),
                               textInputAction: TextInputAction.next,
                             ),*/
-                                CountryCodePicker(
-                                  onChanged: _onCountryChange,
-                                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                                  initialSelection: '+91',showFlagMain: true,
-                                  // optional. Shows only country name and flag
-                                  showCountryOnly: false,hideMainText: false,
-                                  padding: EdgeInsets.only(right: 4.0),
-                                  textStyle: GoogleFonts.poppins(textStyle:
-                                  TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black,
-                                      fontWeight: FontWeight.w400)),
-                                  showFlag: true,
-                                  // optional. Shows only country name and flag when popup is closed.
-                                  showOnlyCountryWhenClosed: false,
-                                  // optional. aligns the flag and the Text left
-                                  alignLeft: true,
+                                      CountryCodePicker(
+                                    onChanged: _onCountryChange,
+                                    // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                    initialSelection: '+91', showFlagMain: true,
+                                    // optional. Shows only country name and flag
+                                    showCountryOnly: false, hideMainText: false,
+                                    padding: EdgeInsets.only(right: 4.0),
+                                    textStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400)),
+                                    showFlag: true,
+                                    // optional. Shows only country name and flag when popup is closed.
+                                    showOnlyCountryWhenClosed: false,
+                                    // optional. aligns the flag and the Text left
+                                    alignLeft: true,
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                width: SizeConfig.screenWidth * 0.5,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                    color: Colors.white,
-                                    boxShadow: [BoxShadow(
+                                Container(
+                                  width: SizeConfig.screenWidth * 0.5,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          6.0,
+                                        ),
+                                      ),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 1.5,
+                                        ),
+                                      ]),
+                                  margin: EdgeInsets.only(
+                                      top: SizeConfig.blockSizeVertical * 3,
+                                      right: SizeConfig.blockSizeHorizontal * 8,
+                                      left: SizeConfig.blockSizeHorizontal * 4),
+                                  child: TextFormField(
+                                    controller: mobile,
+                                    focusNode: mobFocus,
+                                    cursorColor: logincolor,
+                                    style: TextStyle(fontSize: 16.0),
+                                    showCursor: true,
+                                    decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.all(8),
+                                        hintText: "Mobile",
+                                        hintStyle: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    2.15,
+                                                color: Colors.black38,
+                                                fontWeight: FontWeight.w400)),
+                                        border: InputBorder.none),
+                                    keyboardType: TextInputType.number,
+                                    validator: (s) {
+                                      if (s.trim().isEmpty)
+                                        return "Mobile is required";
+                                      return null;
+                                    },
+                                    onFieldSubmitted: (s) =>
+                                        FocusScope.of(context)
+                                            .requestFocus(passFocus),
+                                    textInputAction: TextInputAction.next,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      6.0,
+                                    ),
+                                  ),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
                                       color: Colors.grey,
                                       blurRadius: 1.5,
-                                    ),]
-                                ),
-                                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                    right: SizeConfig.blockSizeHorizontal*8,
-                                left: SizeConfig.blockSizeHorizontal * 4),
-                                child: TextFormField(
-                                  controller: mobile,
-                                  focusNode: mobFocus,
-                                  cursorColor:logincolor,
-                                  style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(8),
-                                      hintText: "Mobile",hintStyle:
-                                  GoogleFonts.poppins(textStyle:
-                                  TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                      fontWeight: FontWeight.w400)),
-                                      border: InputBorder.none
+                                    ),
+                                  ]),
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 3,
+                                  left: SizeConfig.blockSizeHorizontal * 8,
+                                  right: SizeConfig.blockSizeHorizontal * 8),
+                              child: TextFormField(
+                                controller: password,
+                                focusNode: passFocus,
+                                cursorColor: logincolor,
+                                obscureText: obscureText,
+                                style: TextStyle(fontSize: 16.0),
+                                showCursor: true,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    suffixIcon: InkWell(
+                                      onTap: () {
+                                        obscureText = !obscureText;
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        !obscureText
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    hintText: "Password",
+                                    hintStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400)),
+                                    border: InputBorder.none),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (s) {
+                                  if (s.trim().isEmpty)
+                                    return "Password is required";
+                                  return null;
+                                },
+                                onFieldSubmitted: (s) => FocusScope.of(context)
+                                    .requestFocus(cpassFocus),
+                                textInputAction: TextInputAction.next,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      6.0,
+                                    ),
                                   ),
-                                  keyboardType: TextInputType.number,
-                                  validator: (s) {
-                                    if (s.trim().isEmpty) return "Mobile is required";
-                                    return null;
-                                  },
-                                  onFieldSubmitted: (s) =>
-                                      FocusScope.of(context).requestFocus(passFocus),
-                                  textInputAction: TextInputAction.next,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: password,focusNode: passFocus,
-                              cursorColor:logincolor,obscureText: obscureText,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
-                                onTap: ()
-                                {
-                                  obscureText = !obscureText;
-                                  setState(() {});
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 1.5,
+                                    ),
+                                  ]),
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 3,
+                                  left: SizeConfig.blockSizeHorizontal * 8,
+                                  right: SizeConfig.blockSizeHorizontal * 8),
+                              child: TextFormField(
+                                controller: cpassword,
+                                focusNode: cpassFocus,
+                                cursorColor: logincolor,
+                                obscureText: cobscureText,
+                                style: TextStyle(fontSize: 16.0),
+                                showCursor: true,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    suffixIcon: InkWell(
+                                      onTap: () {
+                                        cobscureText = !cobscureText;
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        !obscureText
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    hintText: "Confirm Passowrd",
+                                    hintStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400)),
+                                    border: InputBorder.none),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (s) {
+                                  if (s.trim().isEmpty)
+                                    return "Confirm Password is required";
+                                  if (cpassword.text.trim().toString() !=
+                                      password.text.trim().toString())
+                                    return "Passwords should be same";
+                                  return null;
                                 },
-                                child: Icon(!obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,color: Colors.black,),
+                                onFieldSubmitted: (s) => FocusScope.of(context)
+                                    .requestFocus(zipFocus),
+                                textInputAction: TextInputAction.next,
                               ),
-                                  hintText: "Password",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Password is required";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(cpassFocus),
-                              textInputAction: TextInputAction.next,
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: cpassword,focusNode: cpassFocus,
-                              cursorColor:logincolor,obscureText: cobscureText,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),suffixIcon: InkWell(
-                                onTap: ()
-                                {
-                                  cobscureText = !cobscureText;
-                                  setState(() {});
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      6.0,
+                                    ),
+                                  ),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 1.5,
+                                    ),
+                                  ]),
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 3,
+                                  left: SizeConfig.blockSizeHorizontal * 8,
+                                  right: SizeConfig.blockSizeHorizontal * 8),
+                              child: TextFormField(
+                                controller: zipcode,
+                                focusNode: zipFocus,
+                                cursorColor: logincolor,
+                                style: TextStyle(fontSize: 16.0),
+                                showCursor: true,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    hintText: "Zip Code",
+                                    hintStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400)),
+                                    border: InputBorder.none),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (s) {
+                                  if (s.trim().isEmpty)
+                                    return "Zipcode is required";
+                                  return null;
                                 },
-                                child: Icon(!obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,color: Colors.black,),
+                                onFieldSubmitted: (s) => FocusScope.of(context)
+                                    .requestFocus(passFocus),
+                                textInputAction: TextInputAction.next,
                               ),
-                                  hintText: "Confirm Passowrd",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Confirm Password is required";
-                                if(cpassword.text.trim().toString()!=password.text.trim().toString()) return "Passwords should be same";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(zipFocus),
-                              textInputAction: TextInputAction.next,
                             ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
-                                color: Colors.white,
-                                boxShadow: [BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 1.5,
-                                ),]
-                            ),
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*3,
-                                left: SizeConfig.blockSizeHorizontal*8,right:
-                                SizeConfig.blockSizeHorizontal*8),
-                            child: TextFormField(
-                              controller: zipcode,focusNode: zipFocus,
-                              cursorColor:logincolor,
-                              style: TextStyle(fontSize: 16.0 ),showCursor: true,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
-                                  hintText: "Zip Code",hintStyle:
-                              GoogleFonts.poppins(textStyle:
-                              TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
-                                  fontWeight: FontWeight.w400)),
-                                  border: InputBorder.none
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (s) {
-                                if (s.trim().isEmpty) return "Zipcode is required";
-                                return null;
-                              },
-                              onFieldSubmitted: (s) =>
-                                  FocusScope.of(context).requestFocus(passFocus),
-                              textInputAction: TextInputAction.next,
-                            ),
-                          ),
-
-
-                          InkWell(
-                            onTap: ()
-                            {
-                              FocusScope.of(context).unfocus();
-                              if (formKey.currentState.validate())
-                              {
-                                formKey.currentState.save();
-                                setState(() {
-                                  isloading = true;
-                                });
-                                registerrepo.signUpUser(context, emailCont.text.trim().toString(),
-                                    username.text.trim().toString(),
-                                    password.text.trim().toString(),
-                                    countrycode.toString()+mobile.text.trim().toString(),
-                                    zipcode.text.trim().toString(),
-                                    "India", "manual").then((value) {
+                            InkWell(
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                if (formKey.currentState.validate()) {
+                                  formKey.currentState.save();
+                                  setState(() {
+                                    isloading = true;
+                                  });
+                                  registerrepo
+                                      .signUpUser(
+                                          context,
+                                          emailCont.text.trim().toString(),
+                                          username.text.trim().toString(),
+                                          password.text.trim().toString(),
+                                          countrycode.toString() +
+                                              mobile.text.trim().toString(),
+                                          zipcode.text.trim().toString(),
+                                          "India",
+                                          "manual")
+                                      .then((value) {
                                     setState(() {
                                       isloading = false;
                                     });
-                                    if(value.status==1)
-                                      {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => OTPScreen("Register",countrycode.toString()+mobile.text.trim().toString(),email: emailCont.text.trim().toString(),)),
-                                        );
-                                      }
-                                    else
-                                      {
-                                        showAlertDialog(context,value.message,"");
-                                      }
-                                }).catchError((onError){
-                                  setState(() {
-                                    isloading = false;
+                                    if (value.status == 1) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => OTPScreen(
+                                                  "Register",
+                                                  countrycode.toString() +
+                                                      mobile.text
+                                                          .trim()
+                                                          .toString(),
+                                                  email: emailCont.text
+                                                      .trim()
+                                                      .toString(),
+                                                )),
+                                      );
+                                    } else {
+                                      showAlertDialog(
+                                          context, value.message, "");
+                                    }
+                                  }).catchError((onError) {
+                                    setState(() {
+                                      isloading = false;
+                                    });
                                   });
-                                });
-                              } else {
-                                autoValidate = true;
-                              }
-                              setState(() {});
-                            },
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.blockSizeHorizontal*31,
-                                  margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5.5
-                                      ,right: SizeConfig.blockSizeHorizontal*8),
-                                  padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*1.25,
-                                  ),
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),
-                                  ),
-                                      color: appredcolor,
-                                      boxShadow: [BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 2.75,
-                                      ),]
-                                  ),
-                                  child:Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      SizedBox(width: SizeConfig.blockSizeHorizontal*2.75,),
-                                      Text("Register",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                      SizeConfig.blockSizeVertical*2.1,color: Colors.white,fontWeight: FontWeight.w600)),),
-                                      Icon(Icons.arrow_forward_ios,color: Colors.white,size: SizeConfig.blockSizeVertical*2.75,)
-
-
-                                    ],
-                                  )),
+                                } else {
+                                  autoValidate = true;
+                                }
+                                setState(() {});
+                              },
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    width: SizeConfig.blockSizeHorizontal * 31,
+                                    margin: EdgeInsets.only(
+                                        top: SizeConfig.blockSizeVertical * 5.5,
+                                        right:
+                                            SizeConfig.blockSizeHorizontal * 8),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          SizeConfig.blockSizeVertical * 1.25,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                            6.0,
+                                          ),
+                                        ),
+                                        color: appredcolor,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 2.75,
+                                          ),
+                                        ]),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  2.75,
+                                        ),
+                                        Text(
+                                          "Register",
+                                          style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  fontSize: SizeConfig
+                                                          .blockSizeVertical *
+                                                      2.1,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.white,
+                                          size: SizeConfig.blockSizeVertical *
+                                              2.75,
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
-                          ),
-
-                          Container(
-                            margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*5,bottom: SizeConfig.blockSizeVertical*5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(child:  Text("New Here ? ",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                SizeConfig.blockSizeVertical*2.15,color: Colors.black,fontWeight:
-                                FontWeight.w500)),)),
-                                InkWell(
-                                  onTap: ()
-                                  {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Container(child:  Text("Login",style: GoogleFonts.poppins(textStyle: TextStyle(fontSize:
-                                  SizeConfig.blockSizeVertical*2.15,color:appredcolor ,fontWeight: FontWeight.w500)),)),
-                                )
-
-
-                              ],),)
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: SizeConfig.blockSizeVertical * 5,
+                                  bottom: SizeConfig.blockSizeVertical * 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      child: Text(
+                                    "New Here ? ",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize:
+                                                SizeConfig.blockSizeVertical *
+                                                    2.15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500)),
+                                  )),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                        child: Text(
+                                      "Login",
+                                      style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize:
+                                                  SizeConfig.blockSizeVertical *
+                                                      2.15,
+                                              color: appredcolor,
+                                              fontWeight: FontWeight.w500)),
+                                    )),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-
-
-
-              ],
+                ],
+              ),
             ),
-          ),),),),
+          ),
+        ),
+      ),
     );
 
     widgetList.add(child);
@@ -599,8 +797,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           new Center(
             child: new CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                  Colors.pink),
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
             ),
           ),
         ],
@@ -609,46 +806,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     return
-      /* WillPopScope(
+        /* WillPopScope(
             onWillPop: ,
             child:*/
-      Stack(
-          children: widgetList
-      );
-      
+        Stack(children: widgetList);
   }
 
-  void _onCountryChange(CountryCode countryCodeq)
-  {
+  void _onCountryChange(CountryCode countryCodeq) {
     setState(() {
       country = countryCodeq;
       countrycode = country.dialCode;
     });
   }
+
   Future fbLogin({BuildContext context}) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         SocialLogin().fbLogin(context: context).then((value) async {
           // Dialogs.showLoadingDialog(context, loginloader);
-          if (value != null &&
-              value != "") {
+          if (value != null && value != "") {
             setState(() {
               isloading = true;
             });
-            fbrepo.loginUser(value.profile['email']!=null?value.profile['email']:"", value.profile['picture']['data']['url'], context).then((fbdata) {
+            fbrepo
+                .loginUser(
+                    value.profile['email'] != null
+                        ? value.profile['email']
+                        : "",
+                    value.profile['picture']['data']['url'],
+                    context)
+                .then((fbdata) {
               setState(() {
                 isloading = false;
               });
-              if(fbdata.status==1)
-              {
-                setState(()
-                {
+              if (fbdata.status == 1) {
+                setState(() {
                   isloading = false;
                 });
-                Navigator.push(context, MaterialPageRoute(builder: (context)
-                {
-                  return MobileScreen(value.profile['email']!=null?value.profile['email']:"");
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return MobileScreen(value.profile['email'] != null
+                      ? value.profile['email']
+                      : "");
                 }));
                 /*  userrepo.getUser(email:value.profile['email']).then((profile) {
                   setState(()
@@ -677,15 +876,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     isloading = false;
                   });
                 });*/
-              }
-              else
-              {
+              } else {
                 setState(() {
                   isloading = false;
                 });
-                showAlertDialog(context,fbdata.message,"");
+                showAlertDialog(context, fbdata.message, "");
               }
-            }).catchError((error){
+            }).catchError((error) {
               setState(() {
                 isloading = false;
               });
@@ -695,13 +892,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               isloading = false;
             });
             //  Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
-            showAlertDialog(context,"No Data", "Login");
+            showAlertDialog(context, "No Data", "Login");
           }
         });
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
 
   Future googleLogin({
@@ -719,18 +914,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             setState(() {
               isloading = true;
             });
-            googlerepo.googlelogin(value.googleProfile.email, value.googleProfile.photoUrl, context).then((googdata) {
+            googlerepo
+                .googlelogin(value.googleProfile.email,
+                    value.googleProfile.photoUrl, context)
+                .then((googdata) {
               setState(() {
                 isloading = false;
               });
-              if(googdata.status==1)
-              {
-                setState(()
-                {
+              if (googdata.status == 1) {
+                setState(() {
                   isloading = false;
                 });
-                Navigator.push(context, MaterialPageRoute(builder: (context)
-                {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return MobileScreen(value.googleProfile.email);
                 }));
                 /*            userrepo.getUser(email:value.googleProfile.email).then((profile) {
@@ -760,28 +955,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     isloading = false;
                   });
                 });*/
-              }
-              else
-              {
+              } else {
                 setState(() {
                   isloading = false;
                 });
-                showAlertDialog(context,googdata.message,"");
+                showAlertDialog(context, googdata.message, "");
               }
-            }).catchError((error){
+            }).catchError((error) {
               setState(() {
                 isloading = false;
               });
             });
-
           } else {
             Navigator.of(loginloader.currentContext, rootNavigator: true).pop();
             showAlertDialog(context, "No Data", "Login");
           }
         });
       }
-    } on SocketException catch (_) {
-
-    }
+    } on SocketException catch (_) {}
   }
 }

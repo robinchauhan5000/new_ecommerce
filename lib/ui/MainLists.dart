@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/ui/ProductList.dart';
-import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import 'package:flutter_ecommerce/Widgets/Notification.dart';
-import 'package:flutter_ecommerce/ui/EditProfile2.dart';
-import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
-import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'dart:convert';
-import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/ui/EditProfile2.dart';
+import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 import 'package:flutter_ecommerce/ui/LoginScreen.dart';
+import 'package:flutter_ecommerce/ui/ProductList.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:flutter_ecommerce/utils/SizeConfig.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -32,23 +33,23 @@ class _MainListPageState extends State<MainListPage> {
       setState(() {
         Map userupdateddata = json.decode(value);
         entity = GetLoginUserEntity.fromJson(userupdateddata);
-          getItemsList
-              .cartListing(listId: entity.docs.elementAt(0).sId)
-              .then((value) {
+        getItemsList
+            .cartListing(listId: entity.docs.elementAt(0).sId)
+            .then((value) {
+          setState(() {
+            isloading = false;
+          });
+          if (value.status == 1) {
             setState(() {
-              isloading = false;
+              getListItemsModel = value;
             });
-            if (value.status == 1) {
-              setState(() {
-                getListItemsModel = value;
-              });
-            }
-          }).catchError((onError) {
-            setState(() {
-              isloading = false;
-            });
+          }
+        }).catchError((onError) {
+          setState(() {
+            isloading = false;
           });
         });
+      });
     });
   }
 
@@ -56,7 +57,7 @@ class _MainListPageState extends State<MainListPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     List<Widget> widgetList = new List<Widget>();
-    var child = Scaffold(
+    return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffE33B3B),
         onPressed: () {},
@@ -97,7 +98,8 @@ class _MainListPageState extends State<MainListPage> {
                     margin: EdgeInsets.only(
                         top: SizeConfig.blockSizeVertical * 1.25),
                     child: Text(
-                      entity.docs!=null && entity.docs.elementAt(0).userName != null
+                      entity.docs != null &&
+                              entity.docs.elementAt(0).userName != null
                           ? entity.docs.elementAt(0).userName
                           : "",
                       style: TextStyle(
@@ -146,9 +148,7 @@ class _MainListPageState extends State<MainListPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ItemListGrid()),
-                ).then((value) {
-
-                });
+                ).then((value) {});
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -188,13 +188,12 @@ class _MainListPageState extends State<MainListPage> {
             ),
             Container(child: Image(image: AssetImage('assets/Line 2.jpg'))),
             InkWell(
-              onTap: ()
-              {
-              SharedPreferencesTest().checkIsLogin("2");
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
-              {
-              return LoginScreen();
-              }));
+              onTap: () {
+                SharedPreferencesTest().checkIsLogin("2");
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                  return LoginScreen();
+                }));
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -212,140 +211,136 @@ class _MainListPageState extends State<MainListPage> {
           ],
         ),
       )),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/Rectangle 25.png'),
-                    fit: BoxFit.fill),
-              ),
-              height: SizeConfig.screenHeight * 0.48,
-              width: SizeConfig.screenWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(
-                        top: SizeConfig.screenHeight * 0.05,
-                        bottom: SizeConfig.screenHeight * 0.05,
-                      ),
-                      child: Image(
-                        image: AssetImage('assets/applogo.png'),
-                        height: SizeConfig.blockSizeVertical * 8,
-                        width: SizeConfig.screenWidth * 0.8,
-                      )),
-                  Container(
-                    padding: EdgeInsets.only(
-                        left: SizeConfig.blockSizeHorizontal * 2.25),
+      body: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/Rectangle 25.png'),
+                  fit: BoxFit.fill),
+            ),
+            height: SizeConfig.screenHeight * 0.48,
+            width: SizeConfig.screenWidth,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
                     margin: EdgeInsets.only(
-                        top: SizeConfig.screenHeight * 0.07,
-                        bottom: SizeConfig.screenHeight * 0.06),
-                    width: SizeConfig.screenWidth * 0.8,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/tile.png'),
-                            fit: BoxFit.fitWidth)),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.search),
-                          hintText: "Search",
-                          border: InputBorder.none),
+                      top: SizeConfig.screenHeight * 0.05,
+                      bottom: SizeConfig.screenHeight * 0.05,
                     ),
+                    child: Image(
+                      image: AssetImage('assets/applogo.png'),
+                      height: SizeConfig.blockSizeVertical * 8,
+                      width: SizeConfig.screenWidth * 0.8,
+                    )),
+                Container(
+                  padding: EdgeInsets.only(
+                      left: SizeConfig.blockSizeHorizontal * 2.25),
+                  margin: EdgeInsets.only(
+                      top: SizeConfig.screenHeight * 0.07,
+                      bottom: SizeConfig.screenHeight * 0.06),
+                  width: SizeConfig.screenWidth * 0.8,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/tile.png'),
+                          fit: BoxFit.fitWidth)),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.search),
+                        hintText: "Search",
+                        border: InputBorder.none),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ItemListGrid()),
-                      ).then((value) {
-                        getItemsList
-                            .cartListing(listId: entity.docs.elementAt(0).sId)
-                            .then((value) {
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ItemListGrid()),
+                    ).then((value) {
+                      getItemsList
+                          .cartListing(listId: entity.docs.elementAt(0).sId)
+                          .then((value) {
+                        setState(() {
+                          isloading = false;
+                        });
+                        if (value.status == 1) {
                           setState(() {
-                            isloading = false;
+                            getListItemsModel = value;
                           });
-                          if (value.status == 1)
-                          {
-                            setState(() {
-                              getListItemsModel = value;
-                            });
-                          }
-                        }).catchError((onError) {
-                          setState(() {
-                            isloading = false;
-                          });
+                        }
+                      }).catchError((onError) {
+                        setState(() {
+                          isloading = false;
                         });
                       });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: SizeConfig.screenWidth * 0.7,
-                      height: SizeConfig.screenHeight * 0.07,
-                      child: Text(
-                        "Create New List",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: SizeConfig.blockSizeVertical * 2.5,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/Rectangle 26.png'),
-                              fit: BoxFit.fill)),
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: SizeConfig.screenWidth * 0.7,
+                    height: SizeConfig.screenHeight * 0.07,
+                    child: Text(
+                      "Create New List",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: SizeConfig.blockSizeVertical * 2.5,
+                          fontWeight: FontWeight.bold),
                     ),
-                  )
-                ],
-              ),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/Rectangle 26.png'),
+                            fit: BoxFit.fill)),
+                  ),
+                )
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(
-                  top: SizeConfig.screenHeight * 0.03,
-                  bottom: SizeConfig.screenHeight * 0.03),
-              child: Text(
-                "Previous Lists",
-                style: TextStyle(
-                    fontSize: 16.0,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.bold),
-              ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+                top: SizeConfig.screenHeight * 0.03,
+                bottom: SizeConfig.screenHeight * 0.03),
+            child: Text(
+              "Previous Lists",
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.bold),
             ),
-            ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount:getListItemsModel.docs!=null? getListItemsModel.docs.length>0?getListItemsModel.docs.length:0:0,
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: getListItemsModel.docs != null
+                    ? getListItemsModel.docs.length > 0
+                        ? getListItemsModel.docs.length
+                        : 0
+                    : 0,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: ()
-                    {
-
+                    onTap: () {
+                      debugPrint('List button pressed');
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProductList(getListItemsModel.docs.elementAt(index).sId)),
+                            builder: (context) => ProductList(
+                                listId: getListItemsModel.docs
+                                    .elementAt(index)
+                                    .sId)),
                       );
                     },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          bottom: SizeConfig.screenHeight * 0.05,
-                          left: SizeConfig.screenWidth * 0.03,
-                          right: SizeConfig.screenWidth * 0.03),
-                      padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.0)),
+                    child: Card(
                       child: Column(
                         children: [
-                          InkWell(
-                            child: Row(
-                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                              children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               Container(
                                 margin: EdgeInsets.only(
                                     bottom: SizeConfig.blockSizeVertical * 2),
                                 child: Text(
-                                  getListItemsModel.docs.elementAt(index).shoppingLstName,
+                                  getListItemsModel.docs
+                                      .elementAt(index)
+                                      .shoppingLstName,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -354,77 +349,77 @@ class _MainListPageState extends State<MainListPage> {
                               Container(
                                 child: Text(
                                   getListItemsModel != null &&
-                                      getListItemsModel.docs.length > 0 &&
-                                      getListItemsModel.docs
-                                          .elementAt(0)
-                                          .productDetails
-                                          .length >
-                                          0
+                                          getListItemsModel.docs.length > 0 &&
+                                          getListItemsModel.docs
+                                                  .elementAt(0)
+                                                  .productDetails
+                                                  .length >
+                                              0
                                       ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
                                       : "",
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize:
-                                      SizeConfig.blockSizeVertical * 1.75),
+                                          SizeConfig.blockSizeVertical * 1.75),
                                 ),
                                 margin: EdgeInsets.only(
                                     bottom: SizeConfig.blockSizeVertical * 1),
                               ),
-                            ],),
+                            ],
                           ),
                           Row(
-                            mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                            Text(getListItemsModel != null &&
-                                getListItemsModel.docs.length > 0 &&
-                                getListItemsModel.docs
-                                    .elementAt(0)
-                                    .productDetails
-                                    .length >
-                                    0
-                                ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
-                                : ""),
-                            Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.green, width: 1.0)),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.green,
-                                ))
-
-                          ],),
+                              Text(getListItemsModel != null &&
+                                      getListItemsModel.docs.length > 0 &&
+                                      getListItemsModel.docs
+                                              .elementAt(0)
+                                              .productDetails
+                                              .length >
+                                          0
+                                  ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
+                                  : ""),
+                              Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.green, width: 1.0)),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.green,
+                                  ))
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   );
                 }),
-          ],
-        ),
-      ),
-    );
-    widgetList.add(child);
-    if (isloading) {
-      final modal = new Stack(
-        children: [
-          new Opacity(
-            opacity: 0.5,
-            child: ModalBarrier(dismissible: false, color: Colors.grey),
-          ),
-          new Center(
-            child: new CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-            ),
           ),
         ],
-      );
-      widgetList.add(modal);
-    }
-    return
-        /* WillPopScope(
-            onWillPop: ,
-            child:*/
-        Stack(children: widgetList);
+      ),
+    );
+    // widgetList.add(child);
+    // if (isloading) {
+    //   final modal = new Stack(
+    //     children: [
+    //       new Opacity(
+    //         opacity: 0.5,
+    //         child: ModalBarrier(dismissible: false, color: Colors.grey),
+    //       ),
+    //       new Center(
+    //         child: new CircularProgressIndicator(
+    //           valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+    //         ),
+    //       ),
+    //     ],
+    //   );
+    //   widgetList.add(modal);
+    // }
+    // return
+    //     /* WillPopScope(
+    //         onWillPop: ,
+    //         child:*/
+    //     Stack(children: widgetList);
   }
 }
