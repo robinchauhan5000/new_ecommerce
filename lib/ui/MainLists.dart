@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
+import 'package:flutter_ecommerce/ui/LoginScreen.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _MainListPageState extends State<MainListPage> {
     super.initState();
     SharedPreferencesTest().saveuserdata("get").then((value) {
       print(value);
-    /*  setState(() {
+      setState(() {
         Map userupdateddata = json.decode(value);
         entity = GetLoginUserEntity.fromJson(userupdateddata);
           getItemsList
@@ -47,7 +48,7 @@ class _MainListPageState extends State<MainListPage> {
               isloading = false;
             });
           });
-        });*/
+        });
     });
   }
 
@@ -96,7 +97,7 @@ class _MainListPageState extends State<MainListPage> {
                     margin: EdgeInsets.only(
                         top: SizeConfig.blockSizeVertical * 1.25),
                     child: Text(
-                      entity.docs.isNotEmpty && entity.docs.elementAt(0).userName != null
+                      entity.docs!=null && entity.docs.elementAt(0).userName != null
                           ? entity.docs.elementAt(0).userName
                           : "",
                       style: TextStyle(
@@ -145,7 +146,9 @@ class _MainListPageState extends State<MainListPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ItemListGrid()),
-                );
+                ).then((value) {
+
+                });
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -184,16 +187,26 @@ class _MainListPageState extends State<MainListPage> {
               height: SizeConfig.screenHeight * 0.4,
             ),
             Container(child: Image(image: AssetImage('assets/Line 2.jpg'))),
-            Container(
-              margin: EdgeInsets.only(
-                  top: SizeConfig.blockSizeVertical * 4.5,
-                  left: SizeConfig.blockSizeVertical * 4.5),
-              child: Text(
-                "Logout",
-                style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.blockSizeVertical * 2.25),
+            InkWell(
+              onTap: ()
+              {
+              SharedPreferencesTest().checkIsLogin("2");
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)
+              {
+              return LoginScreen();
+              }));
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    top: SizeConfig.blockSizeVertical * 4.5,
+                    left: SizeConfig.blockSizeVertical * 4.5),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.blockSizeVertical * 2.25),
+                ),
               ),
             ),
           ],
@@ -246,7 +259,25 @@ class _MainListPageState extends State<MainListPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ItemListGrid()),
-                      );
+                      ).then((value) {
+                        getItemsList
+                            .cartListing(listId: entity.docs.elementAt(0).sId)
+                            .then((value) {
+                          setState(() {
+                            isloading = false;
+                          });
+                          if (value.status == 1)
+                          {
+                            setState(() {
+                              getListItemsModel = value;
+                            });
+                          }
+                        }).catchError((onError) {
+                          setState(() {
+                            isloading = false;
+                          });
+                        });
+                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -283,79 +314,87 @@ class _MainListPageState extends State<MainListPage> {
             ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: getListItemsModel != null &&
-                        getListItemsModel.docs != null &&
-                        getListItemsModel.docs.length > 0
-                    ? getListItemsModel.docs.elementAt(0).productDetails.length
-                    : 0,
+                itemCount:getListItemsModel.docs!=null? getListItemsModel.docs.length>0?getListItemsModel.docs.length:0:0,
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(
-                        bottom: SizeConfig.screenHeight * 0.05,
-                        left: SizeConfig.screenWidth * 0.03,
-                        right: SizeConfig.screenWidth * 0.03),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0)),
-                    child: ListTile(
-                      onTap: () {
-                        print("xbjcbj");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductList()),
-                        );
-                      },
-                      title: Container(
-                        margin: EdgeInsets.only(
-                            bottom: SizeConfig.blockSizeVertical * 2),
-                        child: Text(
-                          'Monthly List',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      subtitle: Text(getListItemsModel != null &&
-                              getListItemsModel.docs.length > 0 &&
-                              getListItemsModel.docs
-                                      .elementAt(0)
-                                      .productDetails
-                                      .length >
-                                  0
-                          ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice}'
-                          : ""),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                  return InkWell(
+                    onTap: ()
+                    {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductList(getListItemsModel.docs.elementAt(index).sId)),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: SizeConfig.screenHeight * 0.05,
+                          left: SizeConfig.screenWidth * 0.03,
+                          right: SizeConfig.screenWidth * 0.03),
+                      padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5.0)),
+                      child: Column(
                         children: [
-                          Container(
-                            child: Text(
-                              getListItemsModel != null &&
+                          InkWell(
+                            child: Row(
+                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                              children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                    bottom: SizeConfig.blockSizeVertical * 2),
+                                child: Text(
+                                  getListItemsModel.docs.elementAt(index).shoppingLstName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  getListItemsModel != null &&
                                       getListItemsModel.docs.length > 0 &&
                                       getListItemsModel.docs
-                                              .elementAt(0)
-                                              .productDetails
-                                              .length >
+                                          .elementAt(0)
+                                          .productDetails
+                                          .length >
                                           0
-                                  ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity}'
-                                  : "",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize:
+                                      ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
+                                      : "",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize:
                                       SizeConfig.blockSizeVertical * 1.75),
-                            ),
-                            margin: EdgeInsets.only(
-                                bottom: SizeConfig.blockSizeVertical * 1),
+                                ),
+                                margin: EdgeInsets.only(
+                                    bottom: SizeConfig.blockSizeVertical * 1),
+                              ),
+                            ],),
                           ),
-                          Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.green, width: 1.0)),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.green,
-                              ))
+                          Row(
+                            mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                            children: [
+                            Text(getListItemsModel != null &&
+                                getListItemsModel.docs.length > 0 &&
+                                getListItemsModel.docs
+                                    .elementAt(0)
+                                    .productDetails
+                                    .length >
+                                    0
+                                ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
+                                : ""),
+                            Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.green, width: 1.0)),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.green,
+                                ))
+
+                          ],),
                         ],
                       ),
                     ),

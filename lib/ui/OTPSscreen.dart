@@ -247,7 +247,8 @@ class _OTPScreenState extends State<OTPScreen> {
                               else {
                                 showAlertDialog(context, value.message, "");
                               }
-                            }).catchError((onError) {
+                            }).catchError((onError)
+                            {
                               setState(() {
                                 isloading = false;
                               });

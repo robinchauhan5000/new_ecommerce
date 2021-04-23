@@ -4,22 +4,24 @@ import'package:sizer/sizer.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
-
-
+import 'package:flutter_ecommerce/models/ListDetail.dart';
+import 'package:flutter_ecommerce/data/repo/ListDetailRepo.dart';
 class ProductList extends StatefulWidget {
+  String listId;
+  ProductList(this.listId);
   @override
   _ProductListState createState() => _ProductListState();
 }
 
 class _ProductListState extends State<ProductList> {
-  var getItemsList = CartListRepo();
+  var getItemsList = ListDetailRepo();
   bool isloading = false;
-  var getListItemsModel = CartListEntity();
+  var getListItemsModel = ListDetail();
   @override
   void initState() {
     super.initState();
     isloading = true;
-    getItemsList.cartListing(listId: "607403e966e9d3293fba2fae").then((value) {
+    getItemsList.getlistdetail(listId:widget.listId).then((value) {
       setState(() {
         isloading = false;
       });

@@ -1,11 +1,11 @@
-class CartListEntity {
+class ListDetail {
   String message;
   List<Docs> docs;
   int status;
 
-  CartListEntity({this.message, this.docs, this.status});
+  ListDetail({this.message, this.docs, this.status});
 
-  CartListEntity.fromJson(Map<String, dynamic> json) {
+  ListDetail.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['docs'] != null) {
       docs = new List<Docs>();
@@ -37,6 +37,7 @@ class Docs {
   bool deleteFlag;
   String currentTime;
   int iV;
+  List<UserDetails> userDetails;
   List<ProductDetails> productDetails;
 
   Docs(
@@ -49,6 +50,7 @@ class Docs {
         this.deleteFlag,
         this.currentTime,
         this.iV,
+        this.userDetails,
         this.productDetails});
 
   Docs.fromJson(Map<String, dynamic> json) {
@@ -66,12 +68,12 @@ class Docs {
     deleteFlag = json['delete_flag'];
     currentTime = json['current_time'];
     iV = json['__v'];
-    // if (json['userDetails'] != null) {
-    //   userDetails = new List<Null>();
-    //   json['userDetails'].forEach((v) {
-    //     userDetails.add(new Null.fromJson(v));
-    //   });
-    // }
+    if (json['userDetails'] != null) {
+      userDetails = new List<UserDetails>();
+      json['userDetails'].forEach((v) {
+        userDetails.add(new UserDetails.fromJson(v));
+      });
+    }
     if (json['ProductDetails'] != null) {
       productDetails = new List<ProductDetails>();
       json['ProductDetails'].forEach((v) {
@@ -94,9 +96,9 @@ class Docs {
     data['delete_flag'] = this.deleteFlag;
     data['current_time'] = this.currentTime;
     data['__v'] = this.iV;
-    /*if (this.userDetails != null) {
+    if (this.userDetails != null) {
       data['userDetails'] = this.userDetails.map((v) => v.toJson()).toList();
-    }*/
+    }
     if (this.productDetails != null) {
       data['ProductDetails'] =
           this.productDetails.map((v) => v.toJson()).toList();
@@ -131,6 +133,59 @@ class AddedProducts {
   }
 }
 
+class UserDetails {
+  String sId;
+  String userName;
+  String userEmail;
+  String userMobile;
+  String userZipCode;
+  String userCountry;
+  String currentTime;
+  int iV;
+  String userAddress;
+  String userState;
+
+  UserDetails(
+      {this.sId,
+        this.userName,
+        this.userEmail,
+        this.userMobile,
+        this.userZipCode,
+        this.userCountry,
+        this.currentTime,
+        this.iV,
+        this.userAddress,
+        this.userState});
+
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    userName = json['user_name'];
+    userEmail = json['user_email'];
+    userMobile = json['user_mobile'];
+    userZipCode = json['user_zip_code'];
+    userCountry = json['user_country'];
+    currentTime = json['current_time'];
+    iV = json['__v'];
+    userAddress = json['user_address'];
+    userState = json['user_state'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['user_name'] = this.userName;
+    data['user_email'] = this.userEmail;
+    data['user_mobile'] = this.userMobile;
+    data['user_zip_code'] = this.userZipCode;
+    data['user_country'] = this.userCountry;
+    data['current_time'] = this.currentTime;
+    data['__v'] = this.iV;
+    data['user_address'] = this.userAddress;
+    data['user_state'] = this.userState;
+    return data;
+  }
+}
+
 class ProductDetails {
   String sId;
   List<String> productImage;
@@ -143,24 +198,22 @@ class ProductDetails {
   String currentTime;
   String productDate;
   bool deleteFlag;
-  int count =0;
   String vendor;
   int iV;
 
-  ProductDetails(
-      {this.sId,
-        this.productImage,
-        this.productName,
-        this.productQuantity,
-        this.productDescription,
-        this.productPrice,
-        this.productCategory,
-        this.productStatus,
-        this.currentTime,
-        this.productDate,
-        this.deleteFlag,
-        this.vendor,this.count=0,
-        this.iV});
+  ProductDetails({this.sId,
+    this.productImage,
+    this.productName,
+    this.productQuantity,
+    this.productDescription,
+    this.productPrice,
+    this.productCategory,
+    this.productStatus,
+    this.currentTime,
+    this.productDate,
+    this.deleteFlag,
+    this.vendor,
+    this.iV});
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -174,7 +227,6 @@ class ProductDetails {
     currentTime = json['current_time'];
     productDate = json['product_date'];
     deleteFlag = json['delete_flag'];
-    count = json['count']!=null? json['count']:0;
     vendor = json['vendor'];
     iV = json['__v'];
   }

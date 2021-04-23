@@ -102,7 +102,7 @@ showAlertDialog(BuildContext context, String message, String type,{double rate,b
                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();
                         }));*/
-                      }else if(type == "Reset"){
+                      }else if(type == "Reset" || type=="Cart"){
                         Navigator.of(context).pop();
                        /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                           return MainListPage();

@@ -7,6 +7,18 @@ import 'package:flutter_ecommerce/models/CartListEntity.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_ecommerce/data/repo/ProductListing.dart';
 import 'package:flutter_ecommerce/models/ProductListingEntity.dart';
+import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'package:flutter_ecommerce/models/AddedItems.dart';
+import 'package:flutter_ecommerce/data/repo/CreateListRepo.dart';
+import 'dart:convert';
+import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
+import 'package:flutter_ecommerce/utils/SharedPref.dart';
+import 'package:flutter_ecommerce/data/repo/AddedCartItemsRepo.dart';
+import 'package:flutter_ecommerce/constant/AppColors.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 class ItemListGrid extends StatefulWidget {
   @override
   _ItemListGridState createState() => _ItemListGridState();
@@ -14,36 +26,52 @@ class ItemListGrid extends StatefulWidget {
 
 class _ItemListGridState extends State<ItemListGrid> {
   var productListingRepo = ProductListingRepo();
+  GetLoginUserEntity entity = new GetLoginUserEntity();
+
   bool isloading = false;
   List<ProductListingEntity> productList = [];
-
+  var totalamt =0.0;
+  var repo = CreateListRepo();
+  final TextEditingController listname = new TextEditingController();
+  var cartrepo = AddedCartItemsRepo();
   @override
   void initState() {
     super.initState();
     isloading = true;
-    productListingRepo.listing().then((value) {
+    SharedPreferencesTest().saveuserdata("get").then((value) {
+      print(value);
       setState(() {
-        isloading = false;
-      });
-      if(value!=null)
-      {
-        setState(() {
-          productList = value;
-          print(productList.length);
+        Map userupdateddata = json.decode(value);
+        entity = GetLoginUserEntity.fromJson(userupdateddata);
+        productListingRepo.listing().then((value) {
+          setState(() {
+            isloading = false;
+          });
+          if (value != null) {
+            setState(() {
+              productList = value;
+              for (int i=0;i<productList.length;i++)
+              {
+                totalamt = totalamt+double.parse(productList.elementAt(i).productPrice);
+              }
+              print(productList.length);
+            });
+          }
+        }).catchError((onError) {
+          setState(() {
+            isloading = false;
+          });
         });
-      }
-    }).catchError((onError)
-    {
-      setState(() {
-        isloading = false;
       });
     });
+
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     List<Widget> widgetList = new List<Widget>();
-    var child =  Scaffold(
+    var child = Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff0D72A0),
         elevation: 0,
@@ -55,19 +83,91 @@ class _ItemListGridState extends State<ItemListGrid> {
       ),
       backgroundColor: Color(0XFFEFF2FF),
       floatingActionButton: Container(
-        child: FloatingActionButton(onPressed: (){},
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              var isall = false;
+              for (int i=0;i<productList.length;i++)
+                {
+                  if(productList.elementAt(i).count>0)
+                    {
+                      isall = true;
+                      break;
+                    }
+                }
+              if(listname.text.trim()==null || listname.text.trim()=="")
+                {
+                  showAlertDialog(context,"Please Enter Listname","");
+                }
+              else if(isall)
+                {
+                  setState(() {
+                    isloading = true;
+                  });
+                  List<Additems> items =new List();
+                  for (int i=0;i<productList.length;i++)
+                  {
+                     if(productList.elementAt(i).count >0)
+                       {
+                         productList.elementAt(i).productPrice = (double.parse(productList.elementAt(i).productPrice)*productList.elementAt(i).count).toString();
+                         items.add(new Additems(productList.elementAt(i).sId,productList.elementAt(i).productPrice,productList.elementAt(i).count.toString()));
+                       }
+                  }
+                  repo.addlist(totalamt.toString(), items, entity.docs.elementAt(0).sId, productList.length.toString(),listname.text.trim().toString(), context).then((value) {
+                    if(value.status==1)
+                      {
+                        var idlist = new List<String>();
+                        idlist.add(value.docs.sId);
+                        cartrepo.cartItems(idlist, entity.docs.elementAt(0).sId, context).then((cart) {
+                          setState(() {
+                            isloading = false;
+                          });
+                          if(cart.status==1)
+                            {
+                              showAlertDialog(context,value.message,"Cart");
+                            }
+                          else
+                            {
+
+                              showAlertDialog(context,value.message,"");
+                            }
+                        }).catchError((onError)
+                        {
+                          setState(() {
+                            isloading = false;
+                          });
+                        });
+                      }
+                    else
+                      {
+                        setState(() {
+                          isloading = false;
+                        });
+                        showAlertDialog(context,value.message,"");
+                      }
+                  }).catchError((error){
+                    setState(() {
+                      isloading = false;
+                    });
+                  });
+                }
+              else
+                {
+                  showAlertDialog(context,"No Item Selected","");
+                }
+            });
+          },
           backgroundColor: Color(0xffE33B3B),
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/Ellipse 2.png'),
-                    fit: BoxFit.fill
-                )
-            ),
+                    fit: BoxFit.fill)),
             child: Icon(
               Icons.shopping_cart,
             ),
-          ),),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -78,9 +178,7 @@ class _ItemListGridState extends State<ItemListGrid> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/Rectangle 55 mylist.png'),
-                      fit: BoxFit.fill
-                  )
-              ),
+                      fit: BoxFit.fill)),
               height: SizeConfig.screenHeight * 0.25,
               child: Column(
                 children: [
@@ -88,16 +186,15 @@ class _ItemListGridState extends State<ItemListGrid> {
                     height: SizeConfig.screenHeight * 0.16,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/Rectangle 32 mylist.png',),
-                            fit: BoxFit.fill
-                        )
-                    ),
+                            image: AssetImage(
+                              'assets/Rectangle 32 mylist.png',
+                            ),
+                            fit: BoxFit.fill)),
                     child: Column(
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                              top: SizeConfig.screenHeight * 0.05
-                          ),
+                              top: SizeConfig.screenHeight * 0.05),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -111,17 +208,17 @@ class _ItemListGridState extends State<ItemListGrid> {
                               ),
                               Container(
                                 padding: EdgeInsets.only(
-                                    left: SizeConfig.blockSizeHorizontal*2.25
-                                ),
-                                width:SizeConfig.screenWidth * 0.8,
+                                    left:
+                                        SizeConfig.blockSizeHorizontal * 2.25),
+                                width: SizeConfig.screenWidth * 0.8,
                                 decoration: BoxDecoration(
-                                    image:  DecorationImage(
-                                        image: AssetImage('assets/tile mylist.png'),
-                                        fit: BoxFit.fitWidth
-                                    )),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/tile mylist.png'),
+                                        fit: BoxFit.fitWidth)),
                                 child: TextFormField(
                                   decoration: InputDecoration(
-                                      suffixIcon:Icon(Icons.search) ,
+                                      suffixIcon: Icon(Icons.search),
                                       hintText: "Search",
                                       border: InputBorder.none),
                                 ),
@@ -132,50 +229,107 @@ class _ItemListGridState extends State<ItemListGrid> {
                       ],
                     ),
                   ),
-                 /* Container(
+                  Container(
                     margin: EdgeInsets.only(
-                        top: SizeConfig.blockSizeVertical * 2.5
-                    ),
+                        top: SizeConfig.blockSizeVertical * 2.5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(
                           children: [
-                            Text("Monthly",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Current List",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              "Monthly",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Current List",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
-                            Text("${getListItemsModel !=null && getListItemsModel.docs!= null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.length.toString():""}",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Total Items",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              productList.length.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Total Items",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                         Column(
                           children: [
-                            Text("${getListItemsModel !=null && getListItemsModel.docs!= null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).totalCost:""}",style: TextStyle(color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 2.25,
-                                fontWeight: FontWeight.bold),),
-                            SizedBox(height: SizeConfig.blockSizeVertical * 0.5,),
-                            Text("Total Cost",style: TextStyle(
-                                color: Colors.white,
-                                fontSize: SizeConfig.blockSizeVertical * 1.5),),
+                            Text(
+                              totalamt.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 2.25,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.blockSizeVertical * 0.5,
+                            ),
+                            Text(
+                              "Total Cost",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: SizeConfig.blockSizeVertical * 1.5),
+                            ),
                           ],
                         ),
                       ],
                     ),
-                  ),*/
+                  ),
                 ],
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(6.0,),),
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 1.5,
+                  ),]
+              ),
+              margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4,
+                  left: SizeConfig.blockSizeHorizontal*8,right:
+                  SizeConfig.blockSizeHorizontal*8),
+              child: TextFormField(
+                controller: listname,
+                cursorColor:logincolor,
+                style: TextStyle(fontSize: 16.0 ),showCursor: true,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    hintText: "Listname",hintStyle:
+                GoogleFonts.poppins(textStyle:
+                TextStyle(fontSize: SizeConfig.blockSizeVertical*2.15,color: Colors.black38,
+                    fontWeight: FontWeight.w400)),
+                    border: InputBorder.none
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (s) {
+                  if (s.trim().isEmpty) return "Email is required";
+                  return null;
+                },
+                textInputAction: TextInputAction.done,
               ),
             ),
             Container(
@@ -185,52 +339,70 @@ class _ItemListGridState extends State<ItemListGrid> {
               ),
               child: Text(
                 "Item Lists",
-                style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.25, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: SizeConfig.blockSizeVertical * 2.25,
+                    fontWeight: FontWeight.bold),
               ),
             ),
-            /*Container(
+            Container(
               margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
               child: GridView.builder(
-                itemCount: getListItemsModel != null && getListItemsModel.docs!=null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0) != null && getListItemsModel.docs.elementAt(0).productDetails.length > 0? getListItemsModel.docs.elementAt(0).productDetails.length:0,
-                itemBuilder: (context, index){
+                itemCount: productList.length,
+                itemBuilder: (context, index) {
                   return Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical * 3)
-                    ),
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeVertical * 3)),
                     elevation: 2.0,
                     color: Colors.white,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CachedNetworkImage(imageUrl:getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productImage.elementAt(0),
+                        CachedNetworkImage(
+                          imageUrl: productList
+                              .elementAt(index)
+                              .productImage
+                              .elementAt(0),
                           width: SizeConfig.screenWidth * 0.25,
                           height: SizeConfig.screenHeight * 0.1,
                         ),
                         Divider(),
-                        Container(child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productName,style: TextStyle(
-                                color: Colors.black,fontSize: SizeConfig.blockSizeVertical * 1.75,
-                                fontWeight: FontWeight.bold
-                            ),),
-                            Text("Price \$${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice}",style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: SizeConfig.blockSizeVertical * 1
-                            ),)
-                          ],),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                productList.elementAt(index).productName,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        SizeConfig.blockSizeVertical * 1.75,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Price \$${productList.elementAt(index).productPrice}",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: SizeConfig.blockSizeVertical * 1),
+                              )
+                            ],
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.only(
-                              top: SizeConfig.blockSizeVertical * 0.5
-                          ),
+                              top: SizeConfig.blockSizeVertical * 0.5),
                           height: SizeConfig.blockSizeVertical * 2.8,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("Qty : ${getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice}",style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: SizeConfig.blockSizeVertical * 1.5,
-                                  fontWeight: FontWeight.bold
-                              ),),
+                              Text(
+                                "Qty : ${productList.elementAt(index).productPrice}",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize:
+                                        SizeConfig.blockSizeVertical * 1.5,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               Container(
                                 width: SizeConfig.blockSizeHorizontal * 15,
                                 height: SizeConfig.blockSizeVertical * 3,
@@ -239,83 +411,95 @@ class _ItemListGridState extends State<ItemListGrid> {
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(8.0),
                                     border: Border.all(
-                                        color: Colors.grey,
-                                        width: 1.0
-                                    )
-                                ),
+                                        color: Colors.grey, width: 1.0)),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     InkWell(
-                                      onTap:()
-                  {
-                    if(getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count>0)
-                      {
-                        getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count = getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count-1;
-                      }
-                    setState(() {
+                                      onTap: () {
+                                        if (productList.elementAt(index).count >
+                                            0) {
+                                          productList.elementAt(index).count =
+                                              productList
+                                                      .elementAt(index)
+                                                      .count -
+                                                  1;
+                                        }
+                                        setState(() {
 
-                    });
-                  },
+                                        });
+                                      },
                                       child: Container(
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 color: Colors.red,
-                                              )
-                                          ),
-                                          child: Icon(Icons.remove,color: Colors.red,size: SizeConfig.blockSizeVertical * 1.5,)
-                                      ),
+                                              )),
+                                          child: Icon(
+                                            Icons.remove,
+                                            color: Colors.red,
+                                            size: SizeConfig.blockSizeVertical *
+                                                1.5,
+                                          )),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(
-                                          left: SizeConfig.blockSizeHorizontal * 1.5,
-                                          right: SizeConfig.blockSizeHorizontal * 1.5
+                                          left: SizeConfig.blockSizeHorizontal *
+                                              1.5,
+                                          right:
+                                              SizeConfig.blockSizeHorizontal *
+                                                  1.5),
+                                      child: Text(
+                                        productList
+                                            .elementAt(index)
+                                            .count
+                                            .toString(),
+                                        style: TextStyle(),
                                       ),
-                                      child: Text(getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count.toString(),style: TextStyle(
-                                      ),),
                                     ),
                                     InkWell(
-                                      onTap:()
-                                    {
-                                      getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count=getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).count+1;
-                                      setState(() {
-
-                                      });
-                                    },
+                                      onTap: () {
+                                        productList.elementAt(index).count =
+                                            productList.elementAt(index).count +
+                                                1;
+                                        setState(() {});
+                                      },
                                       child: Container(
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               shape: BoxShape.circle,
                                               border: Border.all(
                                                 color: Colors.green,
-                                              )
-                                          ),
-                                          child: Icon(Icons.add,color: Colors.green,size: SizeConfig.blockSizeVertical * 1.5,)
-                                      ),
+                                              )),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.green,
+                                            size: SizeConfig.blockSizeVertical *
+                                                1.5,
+                                          )),
                                     ),
                                   ],
                                 ),
                               )
-                            ],),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  );                },
+                  );
+                },
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 4/4,
+                  childAspectRatio: 4 / 4,
                   crossAxisSpacing: SizeConfig.blockSizeHorizontal * 3,
                   mainAxisSpacing: SizeConfig.blockSizeVertical * 2,
                   crossAxisCount: 2,
                 ),
-
               ),
-            )*/
+            )
           ],
-
         ),
       ),
     );
@@ -338,10 +522,9 @@ class _ItemListGridState extends State<ItemListGrid> {
       widgetList.add(modal);
     }
     return
-      /* WillPopScope(
+        /* WillPopScope(
             onWillPop: ,
             child:*/
-      Stack(children: widgetList);
-
+        Stack(children: widgetList);
   }
 }

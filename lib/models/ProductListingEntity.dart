@@ -12,6 +12,7 @@ class ProductListingEntity {
   bool deleteFlag;
   String vendor;
   int iV;
+  int count = 0;
 
   ProductListingEntity(
       {this.productImage,
@@ -26,7 +27,7 @@ class ProductListingEntity {
         this.productDate,
         this.deleteFlag,
         this.vendor,
-        this.iV});
+        this.iV,this.count=0});
 
   ProductListingEntity.fromJson(Map<String, dynamic> json) {
     productImage = json['product_image'].cast<String>();
@@ -42,6 +43,7 @@ class ProductListingEntity {
     deleteFlag = json['delete_flag'];
     vendor = json['vendor'];
     iV = json['__v'];
+    count = json['count']!=null?json['count']:0;
   }
 
   Map<String, dynamic> toJson() {
