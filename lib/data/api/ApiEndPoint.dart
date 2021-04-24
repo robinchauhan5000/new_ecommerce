@@ -16,6 +16,7 @@ class ApiEndpoint
   static String list = "list";
   static String productFilter = "product/filter";
   static String addTocart = "addTocart";
+  static String updatemobile = "userRegister/updateMobile/";
 
 
 

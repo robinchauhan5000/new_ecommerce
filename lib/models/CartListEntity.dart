@@ -1,6 +1,6 @@
 class CartListEntity {
   String message;
-  List<Docs> docs;
+  List<Docs1> docs;
   int status;
 
   CartListEntity({this.message, this.docs, this.status});
@@ -8,9 +8,9 @@ class CartListEntity {
   CartListEntity.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['docs'] != null) {
-      docs = new List<Docs>();
+      docs = new List<Docs1>();
       json['docs'].forEach((v) {
-        docs.add(new Docs.fromJson(v));
+        docs.add(new Docs1.fromJson(v));
       });
     }
     status = json['status'];
@@ -27,7 +27,7 @@ class CartListEntity {
   }
 }
 
-class Docs {
+class Docs1 {
   String sId;
   String shoppingLstName;
   String totalItems;
@@ -39,7 +39,7 @@ class Docs {
   int iV;
   List<ProductDetails> productDetails;
 
-  Docs(
+  Docs1(
       {this.sId,
         this.shoppingLstName,
         this.totalItems,
@@ -51,7 +51,7 @@ class Docs {
         this.iV,
         this.productDetails});
 
-  Docs.fromJson(Map<String, dynamic> json) {
+  Docs1.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     shoppingLstName = json['shoppingLstName'];
     totalItems = json['totalItems'];

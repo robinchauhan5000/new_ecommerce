@@ -19,6 +19,7 @@ import 'package:flutter_ecommerce/data/repo/AddedCartItemsRepo.dart';
 import 'package:flutter_ecommerce/constant/AppColors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class ItemListGrid extends StatefulWidget {
   @override
   _ItemListGridState createState() => _ItemListGridState();
@@ -27,9 +28,10 @@ class ItemListGrid extends StatefulWidget {
 class _ItemListGridState extends State<ItemListGrid> {
   var productListingRepo = ProductListingRepo();
   GetLoginUserEntity entity = new GetLoginUserEntity();
-
+  final textsearch = new TextEditingController();
   bool isloading = false;
   List<ProductListingEntity> productList = [];
+  List<ProductListingEntity> templist = [];
   var totalamt =0.0;
   var repo = CreateListRepo();
   final TextEditingController listname = new TextEditingController();
@@ -113,12 +115,17 @@ class _ItemListGridState extends State<ItemListGrid> {
                          items.add(new Additems(productList.elementAt(i).sId,productList.elementAt(i).productPrice,productList.elementAt(i).count.toString()));
                        }
                   }
-                  repo.addlist(totalamt.toString(), items, entity.docs.elementAt(0).sId, productList.length.toString(),listname.text.trim().toString(), context).then((value) {
+                  repo.addlist(totalamt.toString(), items, entity.docs.elementAt(0).sId, productList.length.toString(),listname.text.trim().toString(),
+                      context).then((value) {
                     if(value.status==1)
                       {
                         var idlist = new List<String>();
                         idlist.add(value.docs.sId);
-                        cartrepo.cartItems(idlist, entity.docs.elementAt(0).sId, context).then((cart) {
+                        setState(() {
+                          isloading = false;
+                        });
+                        showAlertDialog(context,value.message,"Cart");
+             /*           cartrepo.cartItems(idlist, entity.docs.elementAt(0).sId, context).then((cart) {
                           setState(() {
                             isloading = false;
                           });
@@ -136,7 +143,7 @@ class _ItemListGridState extends State<ItemListGrid> {
                           setState(() {
                             isloading = false;
                           });
-                        });
+                        });*/
                       }
                     else
                       {
@@ -217,6 +224,27 @@ class _ItemListGridState extends State<ItemListGrid> {
                                             'assets/tile mylist.png'),
                                         fit: BoxFit.fitWidth)),
                                 child: TextFormField(
+                                  controller: textsearch,
+                                  onChanged: (s) {
+                                    templist.clear();
+                                    if (textsearch.text.trim() != null &&
+                                        textsearch.text.trim() != "") {
+
+                                      for (int i = 0;
+                                      i < productList.length;
+                                      i++) {
+                                        if (productList
+                                            .elementAt(i)
+                                            .productName.toString().toLowerCase()
+                                            .contains(textsearch.text.toString().toLowerCase())) {
+                                          templist.add(productList.elementAt(i));
+                                        }
+                                      }
+                                    }
+                                    setState(() {
+
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.search),
                                       hintText: "Search",
@@ -344,6 +372,162 @@ class _ItemListGridState extends State<ItemListGrid> {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            templist.length>0?
+            Container(
+              margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
+              child: GridView.builder(
+                itemCount: templist.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            SizeConfig.blockSizeVertical * 3)),
+                    elevation: 2.0,
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: templist
+                              .elementAt(index)
+                              .productImage
+                              .elementAt(0),
+                          width: SizeConfig.screenWidth * 0.25,
+                          height: SizeConfig.screenHeight * 0.1,
+                        ),
+                        Divider(),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                templist.elementAt(index).productName,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                    SizeConfig.blockSizeVertical * 1.75,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Price \$${templist.elementAt(index).productPrice}",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: SizeConfig.blockSizeVertical * 1),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: SizeConfig.blockSizeVertical * 0.5),
+                          height: SizeConfig.blockSizeVertical * 2.8,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "Qty : ${templist.elementAt(index).productPrice}",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize:
+                                    SizeConfig.blockSizeVertical * 1.5,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: SizeConfig.blockSizeHorizontal * 15,
+                                height: SizeConfig.blockSizeVertical * 3,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        if (templist.elementAt(index).count >
+                                            0) {
+                                          templist.elementAt(index).count =
+                                              templist
+                                                  .elementAt(index)
+                                                  .count -
+                                                  1;
+                                        }
+                                        setState(() {
+
+                                        });
+                                      },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.red,
+                                              )),
+                                          child: Icon(
+                                            Icons.remove,
+                                            color: Colors.red,
+                                            size: SizeConfig.blockSizeVertical *
+                                                1.5,
+                                          )),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: SizeConfig.blockSizeHorizontal *
+                                              1.5,
+                                          right:
+                                          SizeConfig.blockSizeHorizontal *
+                                              1.5),
+                                      child: Text(
+                                        templist
+                                            .elementAt(index)
+                                            .count
+                                            .toString(),
+                                        style: TextStyle(),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        templist.elementAt(index).count =
+                                            templist.elementAt(index).count +
+                                                1;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.green,
+                                              )),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.green,
+                                            size: SizeConfig.blockSizeVertical *
+                                                1.5,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 4 / 4,
+                  crossAxisSpacing: SizeConfig.blockSizeHorizontal * 3,
+                  mainAxisSpacing: SizeConfig.blockSizeVertical * 2,
+                  crossAxisCount: 2,
+                ),
+              ),
+            ):
             Container(
               margin: EdgeInsets.all(SizeConfig.blockSizeVertical * 2.25),
               child: GridView.builder(

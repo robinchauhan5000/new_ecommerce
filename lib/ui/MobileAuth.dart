@@ -12,6 +12,7 @@ import 'package:flutter_ecommerce/utils/CommonUtils.dart';
 import 'package:flutter_ecommerce/ui/OTPSscreen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter_ecommerce/data/repo/ForgetPasswordRepo.dart';
+import 'package:flutter_ecommerce/data/repo/UpdateMobileNumber.dart';
 
 class MobileScreen extends StatefulWidget
 {
@@ -31,6 +32,7 @@ class _MobileScreenState extends State<MobileScreen> {
   var fgtpwdrepo = new ForgetPasswordRepo();
   var passCont = TextEditingController();
   bool isRegisterd = false;
+  var updatemob = UpdateMobileRepo();
   final GlobalKey<State> loginloader = new GlobalKey<State>();
   var passFocus = FocusNode();
   var applogo = "";
@@ -303,7 +305,7 @@ class _MobileScreenState extends State<MobileScreen> {
                             setState(() {
                               isloading = true;
                             });
-                            fgtpwdrepo.forgetPassword(countrycode+mobile.text.trim().toString(), context).then((value)
+                            updatemob.updatemobile(context,countrycode+mobile.text.trim().toString(),widget.email ).then((value)
                             {
                               setState(() {
                                 isloading = false;

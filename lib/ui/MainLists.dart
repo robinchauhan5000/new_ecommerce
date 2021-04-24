@@ -11,6 +11,8 @@ import 'package:flutter_ecommerce/ui/LoginScreen.dart';
 import 'package:flutter_ecommerce/ui/ProductList.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
+import 'package:flutter_ecommerce/ui/CartListScreen.dart';
+import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -19,11 +21,11 @@ class MainListPage extends StatefulWidget {
 
 class _MainListPageState extends State<MainListPage> {
   GetLoginUserEntity entity = new GetLoginUserEntity();
-
+  var textcont = new TextEditingController();
   var getItemsList = CartListRepo();
   bool isloading = false;
   var getListItemsModel = CartListEntity();
-
+  List<Docs1> list = new List();
   @override
   void initState() {
     isloading = true;
@@ -55,10 +57,10 @@ class _MainListPageState extends State<MainListPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(entity.docs.elementAt(0).sId);
     SizeConfig().init(context);
     List<Widget> widgetList = new List<Widget>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffE33B3B),
         onPressed: () {},
@@ -146,10 +148,7 @@ class _MainListPageState extends State<MainListPage> {
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ItemListGrid()),
-                ).then((value) {});
+
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -177,6 +176,26 @@ class _MainListPageState extends State<MainListPage> {
                     left: SizeConfig.blockSizeVertical * 4.5),
                 child: Text(
                   "Profile",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.blockSizeVertical * 2.25),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CartScreen();
+                }));
+              },
+              child: Container(
+                margin: EdgeInsets.only(
+                    top: SizeConfig.blockSizeVertical * 4.5,
+                    left: SizeConfig.blockSizeVertical * 4.5),
+                child: Text(
+                  "My Order",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -247,6 +266,27 @@ class _MainListPageState extends State<MainListPage> {
                           image: AssetImage('assets/tile.png'),
                           fit: BoxFit.fitWidth)),
                   child: TextFormField(
+                    controller: textcont,
+                    onChanged: (s) {
+                      list.clear();
+                      if (textcont.text.trim() != null &&
+                          textcont.text.trim() != "") {
+
+                        for (int i = 0;
+                            i < getListItemsModel.docs.length;
+                            i++) {
+                          if (getListItemsModel.docs
+                              .elementAt(i)
+                              .shoppingLstName.toString().toLowerCase()
+                              .contains(textcont.text.toString().toLowerCase())) {
+                            list.add(getListItemsModel.docs.elementAt(i));
+                          }
+                        }
+                      }
+                      setState(() {
+
+                      });
+                    },
                     decoration: InputDecoration(
                         suffixIcon: Icon(Icons.search),
                         hintText: "Search",
@@ -309,94 +349,226 @@ class _MainListPageState extends State<MainListPage> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: getListItemsModel.docs != null
-                    ? getListItemsModel.docs.length > 0
-                        ? getListItemsModel.docs.length
-                        : 0
-                    : 0,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      debugPrint('List button pressed');
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductList(
-                                listId: getListItemsModel.docs
-                                    .elementAt(index)
-                                    .sId)),
-                      );
-                    },
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: SizeConfig.blockSizeVertical * 2),
-                                child: Text(
-                                  getListItemsModel.docs
-                                      .elementAt(index)
-                                      .shoppingLstName,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+          list.length > 0
+              ? Expanded(
+                  child: ListView.builder(
+                      itemCount: list != null
+                          ? list.length > 0
+                              ? list.length
+                              : 0
+                          : 0,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            debugPrint('List button pressed');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductList(
+                                        listId: list
+                                            .elementAt(index)
+                                            .sId,
+                                        userId: entity.docs.elementAt(0).sId,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    SizeConfig.blockSizeHorizontal * 2.5),
+                            child: Card(
+                              child: Container(
+                                padding: EdgeInsets.all(
+                                    SizeConfig.blockSizeHorizontal * 1.5),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom:
+                                                  SizeConfig.blockSizeVertical *
+                                                      2),
+                                          child: Text(
+                                            getListItemsModel.docs
+                                                .elementAt(index)
+                                                .shoppingLstName,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            getListItemsModel != null &&
+                                                list.length >
+                                                        0 &&
+                                                list
+                                                            .elementAt(0)
+                                                            .productDetails
+                                                            .length >
+                                                        0
+                                                ? 'Item Qty: ${list.elementAt(0).productDetails.length}'
+                                                : "",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    1.75),
+                                          ),
+                                          margin: EdgeInsets.only(
+                                              bottom:
+                                                  SizeConfig.blockSizeVertical *
+                                                      1),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(list != null &&
+                                            list.length >
+                                                    0 &&
+                                            list
+                                                        .elementAt(0)
+                                                        .productDetails
+                                                        .length >
+                                                    0
+                                            ? 'Money Spent : ${list.elementAt(0).totalCost}'
+                                            : ""),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: Colors.green,
+                                                    width: 1.0)),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.green,
+                                            ))
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Container(
-                                child: Text(
-                                  getListItemsModel != null &&
-                                          getListItemsModel.docs.length > 0 &&
-                                          getListItemsModel.docs
-                                                  .elementAt(0)
-                                                  .productDetails
-                                                  .length >
-                                              0
-                                      ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
-                                      : "",
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize:
-                                          SizeConfig.blockSizeVertical * 1.75),
+                            ),
+                          ),
+                        );
+                      }),
+                )
+              : Expanded(
+                  child: ListView.builder(
+                      itemCount: getListItemsModel.docs != null
+                          ? getListItemsModel.docs.length > 0
+                              ? getListItemsModel.docs.length
+                              : 0
+                          : 0,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            debugPrint('List button pressed');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductList(
+                                        listId: getListItemsModel.docs
+                                            .elementAt(index)
+                                            .sId,
+                                        userId: entity.docs.elementAt(0).sId,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    SizeConfig.blockSizeHorizontal * 2.5),
+                            child: Card(
+                              child: Container(
+                                padding: EdgeInsets.all(
+                                    SizeConfig.blockSizeHorizontal * 1.5),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              bottom:
+                                                  SizeConfig.blockSizeVertical *
+                                                      2),
+                                          child: Text(
+                                            getListItemsModel.docs
+                                                .elementAt(index)
+                                                .shoppingLstName,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            getListItemsModel != null &&
+                                                    getListItemsModel
+                                                            .docs.length >
+                                                        0 &&
+                                                    getListItemsModel.docs
+                                                            .elementAt(0)
+                                                            .productDetails
+                                                            .length >
+                                                        0
+                                                ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
+                                                : "",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: SizeConfig
+                                                        .blockSizeVertical *
+                                                    1.75),
+                                          ),
+                                          margin: EdgeInsets.only(
+                                              bottom:
+                                                  SizeConfig.blockSizeVertical *
+                                                      1),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(getListItemsModel != null &&
+                                                getListItemsModel.docs.length >
+                                                    0 &&
+                                                getListItemsModel.docs
+                                                        .elementAt(0)
+                                                        .productDetails
+                                                        .length >
+                                                    0
+                                            ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
+                                            : ""),
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: Colors.green,
+                                                    width: 1.0)),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.green,
+                                            ))
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                margin: EdgeInsets.only(
-                                    bottom: SizeConfig.blockSizeVertical * 1),
                               ),
-                            ],
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(getListItemsModel != null &&
-                                      getListItemsModel.docs.length > 0 &&
-                                      getListItemsModel.docs
-                                              .elementAt(0)
-                                              .productDetails
-                                              .length >
-                                          0
-                                  ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
-                                  : ""),
-                              Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.green, width: 1.0)),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.green,
-                                  ))
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-          ),
+                        );
+                      }),
+                ),
         ],
       ),
     );

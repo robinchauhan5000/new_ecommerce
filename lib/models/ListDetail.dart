@@ -112,9 +112,11 @@ class AddedProducts {
   String productId;
   String finalPrice;
   String finalQuantity;
+  String name;
+  String image;
 
   AddedProducts(
-      {this.sId, this.productId, this.finalPrice, this.finalQuantity});
+      {this.sId, this.productId, this.finalPrice, this.finalQuantity,this.name,this.image});
 
   AddedProducts.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
