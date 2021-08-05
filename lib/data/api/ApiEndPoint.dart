@@ -1,7 +1,6 @@
+class ApiEndpoint {
+  static String BaseUrl = "https://shoppinglist.sellatomy.com:3001/";
 
-class ApiEndpoint
-{
-  static String BaseUrl = "https://shoppinglist.sellatomy.com:3000/";
   static String forgetpwd = "userRegister/forgotPassword";
   static String login = "userRegister/login";
   static String userRegister = "userRegister/register";
@@ -14,11 +13,7 @@ class ApiEndpoint
   static String forgetPassword = "userRegister/forgotPassword";
   static String updatePassword = "userRegister/updatePassword/";
   static String list = "list";
-  static String productFilter = "product/filter";
+  static String productFilter = "product";
   static String addTocart = "addTocart";
   static String updatemobile = "userRegister/updateMobile/";
-
-
-
-
 }

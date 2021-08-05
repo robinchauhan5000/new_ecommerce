@@ -3,10 +3,8 @@ import 'package:flutter_ecommerce/base/BaseRepository.dart';
 import 'package:flutter_ecommerce/data/api/ApiEndPoint.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
 
-
 class GetLoginUser extends BaseRepository {
-  Future<GetLoginUserEntity> getUser(
-      {String email}) async {
+  Future<GetLoginUserEntity> getUser({String email}) async {
     final uri = '${ApiEndpoint.BaseUrl}userProfile/$email';
     var response = await Dio().get(uri,
         options: Options(
@@ -20,6 +18,8 @@ class GetLoginUser extends BaseRepository {
       } else {
         return GetLoginUserEntity(message: response.statusMessage);
       }
-    } catch (error, stacktrace) {}
+    } catch (error, stacktrace) {
+      print(error);
+    }
   }
 }

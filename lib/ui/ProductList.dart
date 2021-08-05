@@ -1,15 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/Widgets/Notification.dart';
+import 'package:flutter_ecommerce/data/repo/AddedCartItemsRepo.dart';
 import 'package:flutter_ecommerce/data/repo/ListDetailRepo.dart';
 import 'package:flutter_ecommerce/models/ListDetail.dart';
-import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_ecommerce/data/repo/AddedCartItemsRepo.dart';
 import 'package:flutter_ecommerce/utils/CommonUtils.dart';
+import 'package:flutter_ecommerce/utils/SizeConfig.dart';
+
 class ProductList extends StatefulWidget {
   String listId;
   String userId;
-  ProductList({this.listId,this.userId});
+  ProductList({this.listId, this.userId});
   @override
   _ProductListState createState() => _ProductListState();
 }
@@ -31,6 +32,7 @@ class _ProductListState extends State<ProductList> {
         isloading = false;
       });
       if (value.status == 1) {
+        print(value.status);
         setState(() {
           getListItemsModel = value;
           print('printing length ${getListItemsModel.docs.length}');
@@ -71,17 +73,12 @@ class _ProductListState extends State<ProductList> {
             setState(() {
               isloading = false;
             });
-            if(cart.status==1)
-            {
-              showAlertDialog(context,cart.message,"Cart");
+            if (cart.status == 1) {
+              showAlertDialog(context, cart.message, "Cart");
+            } else {
+              showAlertDialog(context, cart.message, "");
             }
-            else
-            {
-
-              showAlertDialog(context,cart.message,"");
-            }
-          }).catchError((onError)
-          {
+          }).catchError((onError) {
             setState(() {
               isloading = false;
             });
@@ -141,31 +138,35 @@ class _ProductListState extends State<ProductList> {
                                       fit: BoxFit.fitWidth)),
                               child: TextFormField(
                                 controller: searchtext,
-                                onChanged: (s)
-                                {
+                                onChanged: (s) {
                                   list.clear();
                                   if (searchtext.text.trim() != null &&
                                       searchtext.text.trim() != "") {
                                     for (int i = 0;
-                                    i < getListItemsModel.docs
-                                        .elementAt(0)
-                                        .addedProducts.length;
-                                    i++) {
-                                      if ( getListItemsModel.docs
+                                        i <
+                                            getListItemsModel.docs
+                                                .elementAt(0)
+                                                .addedProducts
+                                                .length;
+                                        i++) {
+                                      if (getListItemsModel.docs
                                           .elementAt(0)
                                           .addedProducts
                                           .elementAt(i)
-                                          .name.toString().toLowerCase()
-                                          .contains(searchtext.text.toString().toLowerCase())) {
+                                          .name
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains(searchtext.text
+                                              .toString()
+                                              .toLowerCase())) {
                                         list.add(getListItemsModel.docs
                                             .elementAt(0)
-                                            .addedProducts.elementAt(i));
+                                            .addedProducts
+                                            .elementAt(i));
                                       }
                                     }
                                   }
-                                  setState(() {
-
-                                  });
+                                  setState(() {});
                                 },
                                 decoration: InputDecoration(
                                     suffixIcon: Icon(Icons.search),
@@ -271,16 +272,15 @@ class _ProductListState extends State<ProductList> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          list.length>0? Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: getListItemsModel.docs != null
-                  ? list.length
-                  : 0,
-              itemBuilder: (context, index) {
-                var productname="";
-                var productimage="";
-                return /*ListTile(
+          list.length > 0
+              ? Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: getListItemsModel.docs != null ? list.length : 0,
+                    itemBuilder: (context, index) {
+                      var productname = "";
+                      var productimage = "";
+                      return /*ListTile(
                     onTap: () {},
                     title: Container(
                       margin: EdgeInsets.only(
@@ -347,307 +347,359 @@ class _ProductListState extends State<ProductList> {
                         ],
                       ),
                     ));*/
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: SizeConfig.blockSizeVertical * 2,
-                        left: SizeConfig.blockSizeHorizontal * 2.5,
-                        right: SizeConfig.blockSizeHorizontal * 2.5),
-                    padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 1.5),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0)),
-                    child: Row(
-                      children: [
-                        Container(width: SizeConfig.blockSizeHorizontal*15,
-                          height:SizeConfig.blockSizeHorizontal*17,
-                          margin: EdgeInsets.only(
-                              right: SizeConfig.blockSizeHorizontal * 2.5),
-                          decoration: BoxDecoration(image: new DecorationImage(image: CachedNetworkImageProvider(list
-                              .elementAt(index).image))),
-                        ),
-                        Container(
-                            width: SizeConfig.blockSizeHorizontal*53,
-                            child:
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: SizeConfig.blockSizeVertical * 2),
-                                  child: Text(
-                                 list
-                                        .elementAt(index).name,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: SizeConfig.blockSizeVertical * 0.25),
-                                  child: Text(
-                                    "Price : \$"+(getListItemsModel.docs!=null?getListItemsModel.docs.elementAt(0).addedProducts.elementAt(index).finalPrice:""),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,color: Colors.black54
-                                    ),
-                                  ),
-                                ),
-                              ],)
-                        ),
-                        Container(
-                            width: SizeConfig.screenWidth * 0.2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.red,
-                                      )),
-                                  child: ImageIcon(
-                                    AssetImage('assets/minus.png'),
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(getListItemsModel.docs!=null?list.elementAt(index).finalQuantity:""),
-                                  margin: EdgeInsets.only(
-                                    left: SizeConfig.blockSizeHorizontal * 1.5,
-                                    right: SizeConfig.blockSizeHorizontal * 1.5,
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.green,
-                                      )),
-                                  child: ImageIcon(
-                                    AssetImage('assets/plus.png'),
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                  );
-              },
-            ),
-          ):
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: getListItemsModel.docs != null
-                  ? getListItemsModel.docs.elementAt(0).addedProducts.length
-                  : 0,
-              itemBuilder: (context, index) {
-                var productname="";
-                var productimage="";
-                if(getListItemsModel.docs!=null) {
-                  for (int i = 0; i < getListItemsModel.docs
-                      .elementAt(0)
-                      .addedProducts
-                      .length; i++) {
-                    for (int j = 0; j < getListItemsModel.docs
-                        .elementAt(0)
-                        .productDetails
-                        .length; j++) {
-                      if (getListItemsModel.docs
-                          .elementAt(0)
-                          .addedProducts
-                          .elementAt(i)
-                          .productId == getListItemsModel.docs
-                          .elementAt(0)
-                          .productDetails
-                          .elementAt(j)
-                          .sId) {
-                        getListItemsModel.docs
-                            .elementAt(0)
-                            .addedProducts
-                            .elementAt(i).name = getListItemsModel.docs
-                            .elementAt(0)
-                            .productDetails
-                            .elementAt(j)
-                            .productName;
-                        getListItemsModel.docs
-                            .elementAt(0)
-                            .addedProducts
-                            .elementAt(i).image = getListItemsModel.docs
-                            .elementAt(0)
-                            .productDetails
-                            .elementAt(j)
-                            .productImage
-                            .elementAt(0);
-                      }
-                    }
-                  }
-                }
-                return /*ListTile(
-                    onTap: () {},
-                    title: Container(
-                      margin: EdgeInsets.only(
-                          bottom: SizeConfig.blockSizeVertical * 2),
-                      child: Text(
-                        getListItemsModel != null &&
-                                getListItemsModel.docs != null &&
-                                getListItemsModel.docs.length > 0 &&
-                                getListItemsModel.docs
-                                        .elementAt(0)
-                                        .productDetails
-                                        .length >
-                                    0
-                            ? getListItemsModel.docs
-                                .elementAt(0)
-                                .productDetails
-                                .elementAt(index)
-                                .productName
-                            : "",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    subtitle: Text(
-                        'Qty: ${getListItemsModel != null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity : ""} Pc  |  Price: \$${getListItemsModel != null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice : ""}'),
-                    leading: Image(image: AssetImage('assets/dove.jpg')),
-                    trailing: Container(
-                      width: SizeConfig.screenWidth * 0.2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
                           Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.red,
-                                )),
-                            child: ImageIcon(
-                              AssetImage('assets/minus.png'),
-                              color: Colors.red,
-                            ),
-                          ),
-                          Container(
-                            child: Text("1"),
-                            margin: EdgeInsets.only(
-                              left: SizeConfig.blockSizeHorizontal * 1.5,
-                              right: SizeConfig.blockSizeHorizontal * 1.5,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.green,
-                                )),
-                            child: ImageIcon(
-                              AssetImage('assets/plus.png'),
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ));*/
-                    Container(
-                  margin: EdgeInsets.only(
-                      top: SizeConfig.blockSizeVertical * 2,
-                      left: SizeConfig.blockSizeHorizontal * 2.5,
-                      right: SizeConfig.blockSizeHorizontal * 2.5),
-                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 1.5),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: Row(
-                    children: [
-                      Container(width: SizeConfig.blockSizeHorizontal*15,
-                      height:SizeConfig.blockSizeHorizontal*17,
                         margin: EdgeInsets.only(
+                            top: SizeConfig.blockSizeVertical * 2,
+                            left: SizeConfig.blockSizeHorizontal * 2.5,
                             right: SizeConfig.blockSizeHorizontal * 2.5),
-                        decoration: BoxDecoration(image: new DecorationImage(image: CachedNetworkImageProvider(getListItemsModel.docs
-                            .elementAt(0)
-                            .addedProducts
-                            .elementAt(index).image))),
-                      ),
-                      Container(
-                          width: SizeConfig.blockSizeHorizontal*53,
-                          child:
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              bottom: SizeConfig.blockSizeVertical * 2),
-                          child: Text(
-                            getListItemsModel.docs
-                                .elementAt(0)
-                                .addedProducts
-                                .elementAt(index).name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              top: SizeConfig.blockSizeVertical * 0.25),
-                          child: Text(
-                            "Price : \$"+(getListItemsModel.docs!=null?getListItemsModel.docs.elementAt(0).addedProducts.elementAt(index).finalPrice:""),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,color: Colors.black54
-                            ),
-                          ),
-                        ),
-                      ],)
-                      ),
-                      Container(
-                        width: SizeConfig.screenWidth * 0.2,
+                        padding: EdgeInsets.all(
+                            SizeConfig.blockSizeHorizontal * 1.5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  )),
-                              child: ImageIcon(
-                                AssetImage('assets/minus.png'),
-                                color: Colors.red,
-                              ),
-                            ),
-                            Container(
-                              child: Text(getListItemsModel.docs!=null?getListItemsModel.docs.elementAt(0).addedProducts.elementAt(index).finalQuantity:""),
+                              width: SizeConfig.blockSizeHorizontal * 15,
+                              height: SizeConfig.blockSizeHorizontal * 17,
                               margin: EdgeInsets.only(
-                                left: SizeConfig.blockSizeHorizontal * 1.5,
-                                right: SizeConfig.blockSizeHorizontal * 1.5,
-                              ),
+                                  right: SizeConfig.blockSizeHorizontal * 2.5),
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          list.elementAt(index).image))),
                             ),
                             Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.green,
-                                  )),
-                              child: ImageIcon(
-                                AssetImage('assets/plus.png'),
-                                color: Colors.green,
-                              ),
-                            ),
+                                width: SizeConfig.blockSizeHorizontal * 53,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              SizeConfig.blockSizeVertical * 2),
+                                      child: Text(
+                                        list.elementAt(index).name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: SizeConfig.blockSizeVertical *
+                                              0.25),
+                                      child: Text(
+                                        "Price : \$" +
+                                            (getListItemsModel.docs != null
+                                                ? getListItemsModel.docs
+                                                    .elementAt(0)
+                                                    .addedProducts
+                                                    .elementAt(index)
+                                                    .finalPrice
+                                                : ""),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black54),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                                width: SizeConfig.screenWidth * 0.2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.red,
+                                          )),
+                                      child: ImageIcon(
+                                        AssetImage('assets/minus.png'),
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(getListItemsModel.docs != null
+                                          ? list.elementAt(index).finalQuantity
+                                          : ""),
+                                      margin: EdgeInsets.only(
+                                        left: SizeConfig.blockSizeHorizontal *
+                                            1.5,
+                                        right: SizeConfig.blockSizeHorizontal *
+                                            1.5,
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.green,
+                                          )),
+                                      child: ImageIcon(
+                                        AssetImage('assets/plus.png'),
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                )),
                           ],
-                        )),
-                    ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          )
+                )
+              : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: getListItemsModel.docs != null
+                        ? getListItemsModel.docs
+                            .elementAt(0)
+                            .addedProducts
+                            .length
+                        : 0,
+                    itemBuilder: (context, index) {
+                      var productname = "";
+                      var productimage = "";
+                      if (getListItemsModel.docs != null) {
+                        for (int i = 0;
+                            i <
+                                getListItemsModel.docs
+                                    .elementAt(0)
+                                    .addedProducts
+                                    .length;
+                            i++) {
+                          for (int j = 0;
+                              j <
+                                  getListItemsModel.docs
+                                      .elementAt(0)
+                                      .productDetails
+                                      .length;
+                              j++) {
+                            if (getListItemsModel.docs
+                                    .elementAt(0)
+                                    .addedProducts
+                                    .elementAt(i)
+                                    .productId ==
+                                getListItemsModel.docs
+                                    .elementAt(0)
+                                    .productDetails
+                                    .elementAt(j)
+                                    .sId) {
+                              getListItemsModel.docs
+                                      .elementAt(0)
+                                      .addedProducts
+                                      .elementAt(i)
+                                      .name =
+                                  getListItemsModel.docs
+                                      .elementAt(0)
+                                      .productDetails
+                                      .elementAt(j)
+                                      .productName;
+                              getListItemsModel.docs
+                                      .elementAt(0)
+                                      .addedProducts
+                                      .elementAt(i)
+                                      .image =
+                                  getListItemsModel.docs
+                                      .elementAt(0)
+                                      .productDetails
+                                      .elementAt(j)
+                                      .productImage
+                                      .elementAt(0);
+                            }
+                          }
+                        }
+                      }
+                      return /*ListTile(
+                    onTap: () {},
+                    title: Container(
+                      margin: EdgeInsets.only(
+                          bottom: SizeConfig.blockSizeVertical * 2),
+                      child: Text(
+                        getListItemsModel != null &&
+                                getListItemsModel.docs != null &&
+                                getListItemsModel.docs.length > 0 &&
+                                getListItemsModel.docs
+                                        .elementAt(0)
+                                        .productDetails
+                                        .length >
+                                    0
+                            ? getListItemsModel.docs
+                                .elementAt(0)
+                                .productDetails
+                                .elementAt(index)
+                                .productName
+                            : "",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(
+                        'Qty: ${getListItemsModel != null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productQuantity : ""} Pc  |  Price: \$${getListItemsModel != null && getListItemsModel.docs != null && getListItemsModel.docs.length > 0 && getListItemsModel.docs.elementAt(0).productDetails.length > 0 ? getListItemsModel.docs.elementAt(0).productDetails.elementAt(index).productPrice : ""}'),
+                    leading: Image(image: AssetImage('assets/dove.jpg')),
+                    trailing: Container(
+                      width: SizeConfig.screenWidth * 0.2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.red,
+                                )),
+                            child: ImageIcon(
+                              AssetImage('assets/minus.png'),
+                              color: Colors.red,
+                            ),
+                          ),
+                          Container(
+                            child: Text("1"),
+                            margin: EdgeInsets.only(
+                              left: SizeConfig.blockSizeHorizontal * 1.5,
+                              right: SizeConfig.blockSizeHorizontal * 1.5,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.green,
+                                )),
+                            child: ImageIcon(
+                              AssetImage('assets/plus.png'),
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));*/
+                          Container(
+                        margin: EdgeInsets.only(
+                            top: SizeConfig.blockSizeVertical * 2,
+                            left: SizeConfig.blockSizeHorizontal * 2.5,
+                            right: SizeConfig.blockSizeHorizontal * 2.5),
+                        padding: EdgeInsets.all(
+                            SizeConfig.blockSizeHorizontal * 1.5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0)),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: SizeConfig.blockSizeHorizontal * 15,
+                              height: SizeConfig.blockSizeHorizontal * 17,
+                              margin: EdgeInsets.only(
+                                  right: SizeConfig.blockSizeHorizontal * 2.5),
+                              decoration: BoxDecoration(
+                                  image: new DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          getListItemsModel.docs
+                                              .elementAt(0)
+                                              .addedProducts
+                                              .elementAt(index)
+                                              .image))),
+                            ),
+                            Container(
+                                width: SizeConfig.blockSizeHorizontal * 53,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              SizeConfig.blockSizeVertical * 2),
+                                      child: Text(
+                                        getListItemsModel.docs
+                                            .elementAt(0)
+                                            .addedProducts
+                                            .elementAt(index)
+                                            .name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: SizeConfig.blockSizeVertical *
+                                              0.25),
+                                      child: Text(
+                                        "Price : \$" +
+                                            (getListItemsModel.docs != null
+                                                ? getListItemsModel.docs
+                                                    .elementAt(0)
+                                                    .addedProducts
+                                                    .elementAt(index)
+                                                    .finalPrice
+                                                : ""),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black54),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                                width: SizeConfig.screenWidth * 0.2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.red,
+                                          )),
+                                      child: ImageIcon(
+                                        AssetImage('assets/minus.png'),
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(getListItemsModel.docs != null
+                                          ? getListItemsModel.docs
+                                              .elementAt(0)
+                                              .addedProducts
+                                              .elementAt(index)
+                                              .finalQuantity
+                                          : ""),
+                                      margin: EdgeInsets.only(
+                                        left: SizeConfig.blockSizeHorizontal *
+                                            1.5,
+                                        right: SizeConfig.blockSizeHorizontal *
+                                            1.5,
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.green,
+                                          )),
+                                      child: ImageIcon(
+                                        AssetImage('assets/plus.png'),
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
         ],
       ),
     );

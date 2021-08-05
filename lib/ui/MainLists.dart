@@ -5,14 +5,13 @@ import 'package:flutter_ecommerce/Widgets/Notification.dart';
 import 'package:flutter_ecommerce/data/repo/CartListRepo.dart';
 import 'package:flutter_ecommerce/models/CartListEntity.dart';
 import 'package:flutter_ecommerce/models/GetLoginUserEntity.dart';
+import 'package:flutter_ecommerce/ui/CartListScreen.dart';
 import 'package:flutter_ecommerce/ui/EditProfile2.dart';
 import 'package:flutter_ecommerce/ui/ItemListGrid.dart';
 import 'package:flutter_ecommerce/ui/LoginScreen.dart';
 import 'package:flutter_ecommerce/ui/ProductList.dart';
 import 'package:flutter_ecommerce/utils/SharedPref.dart';
 import 'package:flutter_ecommerce/utils/SizeConfig.dart';
-import 'package:flutter_ecommerce/ui/CartListScreen.dart';
-import 'package:flutter_ecommerce/models/CartListEntity.dart';
 
 class MainListPage extends StatefulWidget {
   @override
@@ -31,7 +30,6 @@ class _MainListPageState extends State<MainListPage> {
     isloading = true;
     super.initState();
     SharedPreferencesTest().saveuserdata("get").then((value) {
-      print(value);
       setState(() {
         Map userupdateddata = json.decode(value);
         entity = GetLoginUserEntity.fromJson(userupdateddata);
@@ -93,8 +91,11 @@ class _MainListPageState extends State<MainListPage> {
                   CircleAvatar(
                     radius: SizeConfig.blockSizeVertical * 4.75,
                     backgroundColor: Colors.white,
-                    child: Image(
-                      image: AssetImage(''),
+                    backgroundImage: NetworkImage(
+                      entity.docs != null &&
+                              entity.docs.elementAt(0).userProfileImage != null
+                          ? entity.docs.elementAt(0).userProfileImage
+                          : "",
                     ),
                   ),
                   Container(
@@ -148,7 +149,6 @@ class _MainListPageState extends State<MainListPage> {
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -271,21 +271,21 @@ class _MainListPageState extends State<MainListPage> {
                       list.clear();
                       if (textcont.text.trim() != null &&
                           textcont.text.trim() != "") {
-
                         for (int i = 0;
                             i < getListItemsModel.docs.length;
                             i++) {
                           if (getListItemsModel.docs
                               .elementAt(i)
-                              .shoppingLstName.toString().toLowerCase()
-                              .contains(textcont.text.toString().toLowerCase())) {
+                              .shoppingLstName
+                              .toString()
+                              .toLowerCase()
+                              .contains(
+                                  textcont.text.toString().toLowerCase())) {
                             list.add(getListItemsModel.docs.elementAt(i));
                           }
                         }
                       }
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
                     decoration: InputDecoration(
                         suffixIcon: Icon(Icons.search),
@@ -365,9 +365,7 @@ class _MainListPageState extends State<MainListPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ProductList(
-                                        listId: list
-                                            .elementAt(index)
-                                            .sId,
+                                        listId: list.elementAt(index).sId,
                                         userId: entity.docs.elementAt(0).sId,
                                       )),
                             );
@@ -403,9 +401,8 @@ class _MainListPageState extends State<MainListPage> {
                                         Container(
                                           child: Text(
                                             getListItemsModel != null &&
-                                                list.length >
-                                                        0 &&
-                                                list
+                                                    list.length > 0 &&
+                                                    list
                                                             .elementAt(0)
                                                             .productDetails
                                                             .length >
@@ -430,9 +427,8 @@ class _MainListPageState extends State<MainListPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(list != null &&
-                                            list.length >
-                                                    0 &&
-                                            list
+                                                list.length > 0 &&
+                                                list
                                                         .elementAt(0)
                                                         .productDetails
                                                         .length >
@@ -461,113 +457,113 @@ class _MainListPageState extends State<MainListPage> {
                 )
               : Expanded(
                   child: ListView.builder(
-                      itemCount: getListItemsModel.docs != null
-                          ? getListItemsModel.docs.length > 0
-                              ? getListItemsModel.docs.length
-                              : 0
-                          : 0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            debugPrint('List button pressed');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductList(
-                                        listId: getListItemsModel.docs
-                                            .elementAt(index)
-                                            .sId,
-                                        userId: entity.docs.elementAt(0).sId,
-                                      )),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal:
-                                    SizeConfig.blockSizeHorizontal * 2.5),
-                            child: Card(
-                              child: Container(
-                                padding: EdgeInsets.all(
-                                    SizeConfig.blockSizeHorizontal * 1.5),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              bottom:
-                                                  SizeConfig.blockSizeVertical *
-                                                      2),
-                                          child: Text(
-                                            getListItemsModel.docs
-                                                .elementAt(index)
-                                                .shoppingLstName,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                    itemCount: getListItemsModel.docs != null
+                        ? getListItemsModel.docs.length > 0
+                            ? getListItemsModel.docs.length
+                            : 0
+                        : 0,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          debugPrint('List button pressed');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductList(
+                                      listId: getListItemsModel.docs
+                                          .elementAt(index)
+                                          .sId,
+                                      userId: entity.docs.elementAt(0).sId,
+                                    )),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: SizeConfig.blockSizeHorizontal * 2.5),
+                          child: Card(
+                            child: Container(
+                              padding: EdgeInsets.all(
+                                  SizeConfig.blockSizeHorizontal * 1.5),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            bottom:
+                                                SizeConfig.blockSizeVertical *
+                                                    2),
+                                        child: Text(
+                                          getListItemsModel.docs
+                                              .elementAt(index)
+                                              .shoppingLstName,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Container(
-                                          child: Text(
-                                            getListItemsModel != null &&
-                                                    getListItemsModel
-                                                            .docs.length >
-                                                        0 &&
-                                                    getListItemsModel.docs
-                                                            .elementAt(0)
-                                                            .productDetails
-                                                            .length >
-                                                        0
-                                                ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
-                                                : "",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: SizeConfig
-                                                        .blockSizeVertical *
-                                                    1.75),
-                                          ),
-                                          margin: EdgeInsets.only(
-                                              bottom:
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          getListItemsModel != null &&
+                                                  getListItemsModel
+                                                          .docs.length >
+                                                      0 &&
+                                                  getListItemsModel.docs
+                                                          .elementAt(0)
+                                                          .productDetails
+                                                          .length >
+                                                      0
+                                              ? 'Item Qty: ${getListItemsModel.docs.elementAt(0).productDetails.length}'
+                                              : "",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize:
                                                   SizeConfig.blockSizeVertical *
-                                                      1),
+                                                      1.75),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(getListItemsModel != null &&
-                                                getListItemsModel.docs.length >
-                                                    0 &&
-                                                getListItemsModel.docs
-                                                        .elementAt(0)
-                                                        .productDetails
-                                                        .length >
-                                                    0
-                                            ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
-                                            : ""),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    color: Colors.green,
-                                                    width: 1.0)),
-                                            child: Icon(
-                                              Icons.add,
-                                              color: Colors.green,
-                                            ))
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                        margin: EdgeInsets.only(
+                                            bottom:
+                                                SizeConfig.blockSizeVertical *
+                                                    1),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(getListItemsModel != null &&
+                                              getListItemsModel.docs.length >
+                                                  0 &&
+                                              getListItemsModel.docs
+                                                      .elementAt(0)
+                                                      .productDetails
+                                                      .length >
+                                                  0
+                                          ? 'Money Spent : ${getListItemsModel.docs.elementAt(0).totalCost}'
+                                          : ""),
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Colors.green,
+                                                  width: 1.0)),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.green,
+                                          ))
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        );
-                      }),
+                        ),
+                      );
+                    },
+                  ),
                 ),
         ],
       ),

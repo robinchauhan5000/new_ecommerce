@@ -40,6 +40,10 @@ dependencies:
   google_fonts:
   image_picker:
   sizer: ^1.1.8
+  firebase_core:
+  firebase_auth:
+  flutter_facebook_auth:  2.0.2+1
+
 
 
   flutter:
